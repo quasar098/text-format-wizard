@@ -1,10 +1,11 @@
 <script lang="ts">
     import { ModuleType, moduleMetadata } from './ts/types.ts'
     export let type: ModuleType;
+    export let addModalInfo = undefined;
     let metadata = moduleMetadata[type];
     function doStuff(e) {
         if (e.keyCode == 32 || e.keyCode == undefined) {
-            alert("todo do this");
+            addModalInfo = {moduleType: type};
         }
     }
 </script>

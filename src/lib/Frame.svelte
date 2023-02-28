@@ -1,10 +1,14 @@
 <script lang="ts">
     export let title: string = undefined;
+    export let color: string = undefined;
     export let width: number = 100;
-    export let placeholder: string = "This frame is empty";
+    export let onclose = undefined;
     let displayType: string = "block";
     if (width != 100) {
         displayType = "inline-block";
+    }
+    if (color == undefined) {
+        color = 'var(--ACCENT)';
     }
 </script>
 
@@ -13,16 +17,15 @@
         display: {displayType}
     ">
     {#if title != undefined}
-        <div class="title-sect">
+        <div class="title-sect" style="background-color: {color}">
             <h2>{title}</h2>
+            {#if onclose != undefined}
+                <p class="close" on:click={onclose}></p>
+            {/if}
         </div>
     {/if}
     <div class='frame'>
-        {#if $$slots.default}
-            <slot></slot>
-        {:else}
-            <p>{placeholder}</p>
-        {/if}
+        <slot></slot>
     </div>
 </div>
 
@@ -32,7 +35,6 @@
         border-radius: 4px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
-        background-color: var(--ACCENT);
         padding: 5px;
         padding-top: 13px;
         width: calc(100% - 10px);
@@ -42,6 +44,7 @@
     }
     h2 {
         font-size: 24px;
+        display: inline-block;
     }
     .outer-frame {
         float: left;
@@ -64,6 +67,24 @@
         left: 0;
         width: calc(100% - 10px);
         display: inline-block;
+    }
+    .close {
+        font-size: 24px;
+        float: right;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 5px;
+        padding-right: 2px;
+        padding-top: 1px;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    .close:hover {
+        background-color: #FFFFFF11;
     }
 </style>
 
