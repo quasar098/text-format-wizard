@@ -1,0 +1,40 @@
+@font-face {
+    font-family: FireCoda;
+    src: url("/firacode.ttf");
+}
+
+:not(i) {
+    font-family: FireCoda;
+
+    /* variables */
+    --BG-COLOR: #0c1213;
+    --ACCENT: #e07a5f;
+    --DULL-ACCENT: #f2cc8f;
+    --FRAME-COLOR: #efefefdd;
+    --FOCUSED: #96adc8;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+body {
+    width: 100%;
+    min-height: 100%;
+    background-color: var(--BG-COLOR);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+p {
+    letter-spacing: -1px;
+}
