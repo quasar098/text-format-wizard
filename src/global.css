@@ -16,11 +16,11 @@
 
 html {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 }
 body {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     background-color: var(--BG-COLOR);
 }
 
@@ -37,4 +37,25 @@ body {
 
 p {
     letter-spacing: -1px;
+}
+
+/* input boxes */
+input[type="text"] {
+    outline: none;
+    border: 1px solid var(--BG-COLOR);
+}
+input {
+    font-variant-ligatures: none;
+}
+input[type="text"]:focus {
+    outline: none;
+}
+spacer {
+    height: 8px;
+    display: block;
+}
+
+::selection {
+    color: white;
+    background-color: var(--BG-COLOR);
 }

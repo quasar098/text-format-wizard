@@ -2,6 +2,7 @@
     export let title: string = undefined;
     export let color: string = undefined;
     export let width: number = 100;
+    export let height: string = "100%";
     export let onclose = undefined;
     let displayType: string = "block";
     if (width != 100) {
@@ -14,17 +15,18 @@
 
 <div class="outer-frame" style="
         width: calc({width}% - 10px - {width/10}px);
-        display: {displayType}
+        display: {displayType};
+        height: calc({height} - 15px)
     ">
     {#if title != undefined}
         <div class="title-sect" style="background-color: {color}">
             <h2>{title}</h2>
             {#if onclose != undefined}
-                <p class="close" on:click={onclose}></p>
+                <p class="close" on:click={onclose} on:keydown={ () => {} }></p>
             {/if}
         </div>
     {/if}
-    <div class='frame'>
+    <div class='frame' style="height: calc({height} - 63px)">
         <slot></slot>
     </div>
 </div>
@@ -67,6 +69,13 @@
         left: 0;
         width: calc(100% - 10px);
         display: inline-block;
+        overflow-y: auto;
+    }
+    .frame::-webkit-scrollbar {
+        display: none;
+    }
+    .frame::-moz-scrollbar {
+        display: none;
     }
     .close {
         font-size: 24px;
@@ -85,6 +94,10 @@
     }
     .close:hover {
         background-color: #FFFFFF11;
+    }
+    .close:focus-visible {
+        outline: none;
+        background-color: #ffffff11;
     }
 </style>
 

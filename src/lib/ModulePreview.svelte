@@ -1,19 +1,35 @@
 <script lang="ts">
-    import { ModuleType, moduleMetadata } from './ts/types.ts'
-    export let type: ModuleType;
-    export let addModalInfo = undefined;
-    let metadata = moduleMetadata[type];
-    function doStuff(e) {
-        if (e.keyCode == 32 || e.keyCode == undefined) {
-            addModalInfo = {moduleType: type, moduleName: metadata.name};
-        }
+    import AppendModule from "./modules/AppendModule.svelte";
+    import ReplaceModule from "./modules/ReplaceModule.svelte";
+    import RemoveModule from "./modules/RemoveModule.svelte";
+    import InsertModule from "./modules/InsertModule.svelte";
+
+    import { ModuleType, moduleMetadata } from "./ts/types";
+
+    import { recipeModules } from "./ts/stores";
+
+    export let moduleObject;
+
+    let metadata = moduleMetadata[moduleObject.moduleType];
+
+    const moduleMap = {
+        [ModuleType.Append]: AppendModule,
+        [ModuleType.Replace]: ReplaceModule,
+        [ModuleType.Remove]: RemoveModule,
+        [ModuleType.Insert]: InsertModule
+    };
+
+    function removeMe() {
+        recipeModules.update((old) => {
+            return old.filter(_ => _ != moduleObject);
+        });
     }
 </script>
 
-<div class="module-select">
-    <div class="small add-button" on:click={doStuff} on:keydown={doStuff}>
-        <p class="plus">
-            +
+<div class="module-preview">
+    <div class="small add-button" on:click={removeMe} on:keydown={removeMe}>
+        <p class="ekkxs">
+            
         </p>
     </div>
     <div class="big">
@@ -21,7 +37,8 @@
             <h3>{metadata.name}</h3>
         </div>
         <div class="module-description" style="background-color: #{metadata.color}99">
-            <p>{metadata.lore}</p>
+            <svelte:component this={moduleMap[moduleObject.moduleType]}
+            bind:info={moduleObject.args} redo={() => setTimeout(() => {recipeModules.update(_ => _)}, 10)}/>
         </div>
     </div>
 </div>
@@ -33,10 +50,10 @@
     h3, p {
         display: inline;
     }
-    p.plus {
-        font-size: 24px;
+    p.ekkxs {
+        font-size: 18px;
     }
-    .module-select {
+    .module-preview {
         display: flex;
         justify-content: center;
         align-items: stretch;
@@ -64,6 +81,10 @@
     .big {
         width: calc(100% - 20px);
         display: inline-block;
+    }
+    ::selection {
+        color: white;
+        background-color: var(--BG-COLOR);
     }
     .module-title {
         border-top-right-radius: 4px;
