@@ -1,8 +1,8 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
-    import { ModuleType, moduleMetadata } from './ts/types';
-    import { recipeModules, calculate } from "./ts/stores";
+    import { moduleMap, moduleMetadata } from './ts/types';
+    import { recipeModules } from "./ts/stores";
     import AppendModule from "./modules/AppendModule.svelte";
     import ReplaceModule from "./modules/ReplaceModule.svelte";
     import RemoveModule from "./modules/RemoveModule.svelte";
@@ -27,14 +27,6 @@
             document.activeElement.blur();
         }
     });
-
-
-    const moduleMap = {
-        [ModuleType.Append]: AppendModule,
-        [ModuleType.Replace]: ReplaceModule,
-        [ModuleType.Remove]: RemoveModule,
-        [ModuleType.Insert]: InsertModule
-    };
 
     function addModule() {
         recipeModules.update((old) => {

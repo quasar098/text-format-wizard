@@ -3,7 +3,9 @@
     export let color: string = undefined;
     export let width: number = 100;
     export let height: string = "100%";
+    export let alignment: string = "none";
     export let onclose = undefined;
+    export let overflow = "auto";
     let displayType: string = "block";
     if (width != 100) {
         displayType = "inline-block";
@@ -20,13 +22,14 @@
     ">
     {#if title != undefined}
         <div class="title-sect" style="background-color: {color}">
-            <h2>{title}</h2>
+            <h2 style="text-align: {alignment}" class="align-{alignment}">{title}</h2>
             {#if onclose != undefined}
                 <p class="close" on:click={onclose} on:keydown={ () => {} }></p>
             {/if}
         </div>
     {/if}
-    <div class='frame' style="height: calc({height} - 63px)">
+    <div class='frame'
+        style="height: calc({height} - 63px); overflow-y: {overflow}">
         <slot></slot>
     </div>
 </div>
@@ -42,17 +45,21 @@
         width: calc(100% - 10px);
         padding-bottom: 6px;
         user-select: none;
-        overflow-x: hidden;
+        display: inline-block;
+        position: relative;
     }
     h2 {
         font-size: 24px;
-        display: inline-block;
+    }
+    .align-center {
+        transform: translateX(-3px);
     }
     .outer-frame {
         float: left;
         margin: 10px;
         margin-right: 0px;
         margin-bottom: 0px;
+        position: relative;
     }
     ::selection {
         color: white;
@@ -69,7 +76,6 @@
         left: 0;
         width: calc(100% - 10px);
         display: inline-block;
-        overflow-y: auto;
     }
     .frame::-webkit-scrollbar {
         display: none;
@@ -91,6 +97,9 @@
         height: 20px;
         cursor: pointer;
         border-radius: 4px;
+        position: absolute;
+        right: 0px;
+        top: 12px;
     }
     .close:hover {
         background-color: #FFFFFF11;

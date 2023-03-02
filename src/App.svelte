@@ -3,19 +3,36 @@
     import ModuleSelect from "./lib/ModuleSelect.svelte";
     import ModulePreview from "./lib/ModulePreview.svelte";
     import AddModuleModal from "./lib/AddModuleModal.svelte";
+    import Toolbar from "./lib/Toolbar.svelte"
 
-    import { recipeModules, calculate } from "./lib/ts/stores";
-    import { ModuleType, moduleMetadata } from './lib/ts/types';
+    import { recipeModules, outputAsJs } from "./lib/ts/stores";
+    import { ModuleType, calculate, moduleMetadata } from './lib/ts/types';
     let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
     let addModalInfo = undefined;
 
     $: inputText = "";
-    $: outputText = calculate(inputText);
+    $: outputText = calculate(inputText, outputAsJs);
 
     recipeModules.subscribe(() => {
-        outputText = calculate(inputText);
+        outputText = calculate(inputText, outputAsJs);
     });
+
+    function sorted(moduleTypes) {
+        let final = [];
+        for (let moduleType of moduleTypes) {
+            if (uuidRegex.test(moduleType)) {
+                final.push(moduleType);
+            }
+        }
+        return final.sort((a, b) => {
+            let acolor = moduleMetadata[a].color;
+            let aname = moduleMetadata[a].name;
+            let bcolor = moduleMetadata[b].color;
+            let bname = moduleMetadata[b].name;
+            return acolor.localeCompare(bcolor)*10+aname.localeCompare(bname);
+        });
+    }
 </script>
 
 <main>
@@ -30,22 +47,23 @@
             {/each}
         </Frame>
         <Frame title="Modules" width=40 height="100% + 10px">
-            {#each Object.values(ModuleType) as value, index}
-                {#if uuidRegex.test(value)}
-                    <ModuleSelect type={value} bind:addModalInfo>
-                    </ModuleSelect>
-                {/if}
+            {#each sorted(Object.values(ModuleType)) as value, index}
+                <ModuleSelect type={value} bind:addModalInfo>
+                </ModuleSelect>
             {/each}
         </Frame>
     </div>
 
     <div class="bottom">
-        <Frame title="Input" width=50>
+        <Frame title="Input" width=50 overflow="hidden">
             <textarea spellcheck="false" bind:value={inputText}/>
         </Frame>
-        <Frame title="Output" width=50>
+        <Frame title="Output" width=45 overflow="hidden">
             <textarea spellcheck="false" class="out"
                 disabled="true" bind:value={outputText}></textarea>
+        </Frame>
+        <Frame title="󱌣" width=5 alignment="center" overflow="hidden">
+            <Toolbar/>
         </Frame>
     </div>
 
@@ -64,6 +82,14 @@
         font-variant-ligatures: none;
         background-color: white;
         color: black;
+        overflow-y: auto;
+    }
+    textarea {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    textarea::-webkit-scrollbar {
+        display: none;
     }
     textarea.out {
         cursor: text;

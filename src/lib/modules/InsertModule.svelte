@@ -1,16 +1,16 @@
 <script lang="ts">
     import { get } from 'svelte/store'
     import { recipeModules } from '../ts/stores';
+    import InputBox from '../InputBox.svelte';
 
     export let info = {};
-    export let redo = () => {};
 </script>
 
-<p>Text to insert</p>
-<input type="text" bind:value={info.insert} spellcheck="false" autofocus="true" on:keydown={redo}/>
+<p>String to insert</p>
+<InputBox bind:value={info.insert}/>
 <spacer/>
 <p>Index to insert at</p>
-<input type="text" bind:value={info.index} spellcheck="false" on:keydown={redo}/>
+<InputBox bind:value={info.index}/>
 
 <style>
 

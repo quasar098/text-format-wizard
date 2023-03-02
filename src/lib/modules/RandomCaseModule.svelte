@@ -7,11 +7,7 @@
     export let info = {};
 </script>
 
-<p>Regex to replace</p>
-<InputBox bind:value={info.remove}/>
-<spacer/>
-<p>String to insert</p>
-<InputBox bind:value={info.insert}/>
+<p>No parameters here</p>
 
 <style>
 

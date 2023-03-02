@@ -2,12 +2,13 @@
     import { get } from 'svelte/store'
     import { recipeModules } from '../ts/stores';
 
+    import InputBox from '../InputBox.svelte';
+
     export let info = {};
-    export let redo = () => {};
 </script>
 
-<p>Text to append</p>
-<input type="text" bind:value={info.append} spellcheck="false" autofocus="true" on:keydown={redo}/>
+<p>String to append</p>
+<InputBox bind:value={info.append}/>
 
 <style>
 

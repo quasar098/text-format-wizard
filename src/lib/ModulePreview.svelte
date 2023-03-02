@@ -4,20 +4,13 @@
     import RemoveModule from "./modules/RemoveModule.svelte";
     import InsertModule from "./modules/InsertModule.svelte";
 
-    import { ModuleType, moduleMetadata } from "./ts/types";
+    import { moduleMetadata, moduleMap } from "./ts/types";
 
     import { recipeModules } from "./ts/stores";
 
     export let moduleObject;
 
     let metadata = moduleMetadata[moduleObject.moduleType];
-
-    const moduleMap = {
-        [ModuleType.Append]: AppendModule,
-        [ModuleType.Replace]: ReplaceModule,
-        [ModuleType.Remove]: RemoveModule,
-        [ModuleType.Insert]: InsertModule
-    };
 
     function removeMe() {
         recipeModules.update((old) => {
@@ -38,7 +31,7 @@
         </div>
         <div class="module-description" style="background-color: #{metadata.color}99">
             <svelte:component this={moduleMap[moduleObject.moduleType]}
-            bind:info={moduleObject.args} redo={() => setTimeout(() => {recipeModules.update(_ => _)}, 10)}/>
+            bind:info={moduleObject.args}/>
         </div>
     </div>
 </div>
