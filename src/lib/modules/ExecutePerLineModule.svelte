@@ -1,0 +1,29 @@
+<script lang="ts">
+    import { get } from 'svelte/store'
+    import { ModuleType } from "../ts/types";
+    import { recipeModules } from '../ts/stores';
+    import InputBox from '../InputBox.svelte';
+
+    import ModulePreview from '../ModulePreview.svelte';
+    import ModulePicker from '../ModulePicker.svelte';
+
+    export let info = {};
+
+    let chosenModule = { moduleType: undefined, args: {} };
+</script>
+
+<p>Pick module</p>
+<ModulePicker bind:picked={chosenModule}></ModulePicker>
+<spacer/>
+<p>Edit module</p>
+{#if chosenModule.moduleType != undefined}
+    <ModulePreview bind:moduleObject={chosenModule} closeable={false}></ModulePreview>
+{:else}
+    <p class="shrug">No module selected</p>
+{/if}
+
+<style>
+    .shrug {
+        font-style: italic;
+    }
+</style>

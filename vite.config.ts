@@ -8,6 +8,7 @@ export default defineConfig({
           onwarn: (warning, handler) => {
             // e.g. don't warn on a11y-autofocus
             if (warning.code === 'a11y-autofocus') return
+            if (warning.code === "unused-export-let") return
 
             handler(warning)
           }

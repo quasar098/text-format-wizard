@@ -1,14 +1,14 @@
 <script lang="ts">
-    import AppendModule from "./modules/AppendModule.svelte";
-    import ReplaceModule from "./modules/ReplaceModule.svelte";
-    import RemoveModule from "./modules/RemoveModule.svelte";
-    import InsertModule from "./modules/InsertModule.svelte";
 
-    import { moduleMetadata, moduleMap } from "./ts/types";
+    import { moduleMetadata, moduleMap, ModuleType } from "./ts/types";
+
+    import InputBox from "./InputBox.svelte";
 
     import { recipeModules } from "./ts/stores";
 
     export let moduleObject;
+
+    export let closeable = true;
 
     let metadata = moduleMetadata[moduleObject.moduleType];
 
@@ -19,20 +19,37 @@
     }
 </script>
 
-<div class="module-preview">
-    <div class="small add-button" on:click={removeMe} on:keydown={removeMe}>
-        <p class="ekkxs">
-            
-        </p>
-    </div>
+<div class="module-preview" style="{!closeable ? 'justify-content: start' : ''}">
+    {#if closeable}
+        <div class="small add-button" on:click={removeMe} on:keydown={removeMe}>
+            <p class="ekkxs">
+                
+            </p>
+        </div>
+    {/if}
     <div class="big">
-        <div class="module-title" style="background-color: #{metadata.color}">
-            <h3>{metadata.name}</h3>
-        </div>
-        <div class="module-description" style="background-color: #{metadata.color}99">
-            <svelte:component this={moduleMap[moduleObject.moduleType]}
-            bind:info={moduleObject.args}/>
-        </div>
+        {#if moduleObject.moduleType == ModuleType.Comment}
+            {#if moduleObject.args.title.length != 0}
+                <div class="module-title" style="background-color: #{metadata.color}">
+                    <h3>{moduleObject.args.title}</h3>
+                </div>
+                <div class="module-description" style="background-color: #{metadata.color}99">
+                    <InputBox bind:value={moduleObject.args.description}/>
+                </div>
+            {:else}
+                <div class="module-description amog" style="background-color: #{metadata.color}99">
+                    <InputBox bind:value={moduleObject.args.description}/>
+                </div>
+            {/if}
+        {:else}
+            <div class="module-title" style="background-color: #{metadata.color}">
+                <h3>{metadata.name}</h3>
+            </div>
+            <div class="module-description" style="background-color: #{metadata.color}99">
+                <svelte:component this={moduleMap[moduleObject.moduleType]}
+                    bind:info={moduleObject.args}/>
+            </div>
+        {/if}
     </div>
 </div>
 
@@ -74,6 +91,9 @@
     .big {
         width: calc(100% - 20px);
         display: inline-block;
+    }
+    .amog {
+        border-radius: 4px;
     }
     ::selection {
         color: white;

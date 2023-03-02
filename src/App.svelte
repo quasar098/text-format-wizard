@@ -6,8 +6,8 @@
     import Toolbar from "./lib/Toolbar.svelte"
 
     import { recipeModules, outputAsJs } from "./lib/ts/stores";
-    import { ModuleType, calculate, moduleMetadata } from './lib/ts/types';
-    let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
+    import { ModuleType, calculate, moduleMetadata,
+        uuidRegex, sortedModuleTypes } from './lib/ts/types';
 
     let addModalInfo = undefined;
 
@@ -18,20 +18,12 @@
         outputText = calculate(inputText, outputAsJs);
     });
 
-    function sorted(moduleTypes) {
-        let final = [];
-        for (let moduleType of moduleTypes) {
-            if (uuidRegex.test(moduleType)) {
-                final.push(moduleType);
-            }
+    function textareaNoTab(e) {
+        if (e.keyCode == 9) {
+            // todo: put 4 spaces where cursor is
+            e.preventDefault(true);
+            return false;
         }
-        return final.sort((a, b) => {
-            let acolor = moduleMetadata[a].color;
-            let aname = moduleMetadata[a].name;
-            let bcolor = moduleMetadata[b].color;
-            let bname = moduleMetadata[b].name;
-            return acolor.localeCompare(bcolor)*10+aname.localeCompare(bname);
-        });
     }
 </script>
 
@@ -47,7 +39,7 @@
             {/each}
         </Frame>
         <Frame title="Modules" width=40 height="100% + 10px">
-            {#each sorted(Object.values(ModuleType)) as value, index}
+            {#each sortedModuleTypes() as value, index}
                 <ModuleSelect type={value} bind:addModalInfo>
                 </ModuleSelect>
             {/each}
@@ -56,7 +48,7 @@
 
     <div class="bottom">
         <Frame title="Input" width=50 overflow="hidden">
-            <textarea spellcheck="false" bind:value={inputText}/>
+            <textarea spellcheck="false" bind:value={inputText} on:keydown={textareaNoTab}/>
         </Frame>
         <Frame title="Output" width=45 overflow="hidden">
             <textarea spellcheck="false" class="out"
