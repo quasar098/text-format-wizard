@@ -3,6 +3,7 @@
     export let picked;
 
     import { moduleMetadata } from "./ts/types";
+    import cssVars from 'svelte-css-vars';
 
     let metadata = moduleMetadata[id] ?? {};
 
@@ -10,12 +11,14 @@
         picked.moduleType = id;
         picked.args = {};
     }
+
+    $: styleVars = {
+        "bg-color": `#${metadata.color}`,
+        "border-color": `#${picked.moduleType == id ? 'black' : metadata.color}`
+    }
 </script>
 
-<div class="poption" style="
-    background-color: #{metadata.color};
-    border-color: #{picked.moduleType == id ? 'black' : metadata.color}
-    " on:click={setAsPicked} on:keydown={setAsPicked}>
+<div class="poption" use:cssVars={styleVars} on:click={setAsPicked} on:keydown={setAsPicked}>
     <p>{metadata.name}</p>
 </div>
 
@@ -30,5 +33,7 @@
         border: 2px solid black;
         cursor: pointer;
         user-select: none;
+        background-color: var(--bg-color);
+        border-color: var(--border-color);
     }
 </style>

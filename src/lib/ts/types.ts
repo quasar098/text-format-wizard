@@ -1,5 +1,7 @@
-import { recipeModules } from './stores'
+import { recipeModules, outputAsJs } from './stores'
 import { get } from "svelte/store"
+import md5 from "md5";
+import { sha256 } from "./sha256.ts"
 
 // change when new module:
 import AppendModule from "../modules/AppendModule.svelte";
@@ -11,6 +13,13 @@ import InsertAfterModule from "../modules/InsertAfterModule.svelte";
 import InsertBeforeModule from "../modules/InsertBeforeModule.svelte";
 import CommentModule from "../modules/CommentModule.svelte";
 import ExecutePerLineModule from "../modules/ExecutePerLineModule.svelte";
+import ExecutePerFindModule from "../modules/ExecutePerFindModule.svelte";
+import ChangeCaseModule from "../modules/ChangeCaseModule.svelte";
+import CountLineOccurencesModule from "../modules/CountLineOccurencesModule.svelte";
+import CountMatchesModule from "../modules/CountMatchesModule.svelte";
+import CaptureGroupModule from "../modules/CaptureGroupModule.svelte";
+import RemoveBlankLinesModule from "../modules/RemoveBlankLinesModule.svelte";
+import HashModule from "../modules/HashModule.svelte";
 
 // random string thing
 function rst(): string {
@@ -26,7 +35,14 @@ export enum ModuleType {
     InsertAfter = rst(),
     InsertBefore = rst(),
     Comment = rst(),
-    ExecutePerLine = rst()
+    ExecutePerLine = rst(),
+    ExecutePerFind = rst(),
+    ChangeCase = rst(),
+    CountLineOccurences = rst(),
+    CountMatches = rst(),
+    CaptureGroup = rst(),
+    RemoveBlankLines = rst(),
+    Hash = rst()
 }
 
 export const moduleMap = {
@@ -38,7 +54,14 @@ export const moduleMap = {
     [ModuleType.InsertAfter]: InsertAfterModule,
     [ModuleType.InsertBefore]: InsertBeforeModule,
     [ModuleType.Comment]: CommentModule,
-    [ModuleType.ExecutePerLine]: ExecutePerLineModule
+    [ModuleType.ExecutePerLine]: ExecutePerLineModule,
+    [ModuleType.ExecutePerFind]: ExecutePerFindModule,
+    [ModuleType.ChangeCase]: ChangeCaseModule,
+    [ModuleType.CountLineOccurences]: CountLineOccurencesModule,
+    [ModuleType.CountMatches]: CountMatchesModule,
+    [ModuleType.CaptureGroup]: CaptureGroupModule,
+    [ModuleType.RemoveBlankLines]: RemoveBlankLinesModule,
+    [ModuleType.Hash]: HashModule
 };
 
 let moduleMetadata = {
@@ -57,6 +80,15 @@ let moduleMetadata = {
                 // todo: raise error here
                 return text => text;
             }
+        }
+    },
+    [ModuleType.RemoveBlankLines]: {
+        name: "Remove Blank Lines",
+        color: "e23e31",
+        lore: "Self explanatory",
+        description: "Self explanatory",
+        processMaker: (args) => {
+            return text => text.split("\n").filter(_ => _ != '').join("\n");
         }
     },
     [ModuleType.Replace]: {
@@ -189,6 +221,10 @@ let moduleMetadata = {
         lore: "Execute a module for each line",
         description: "Run a module on each line individually and concatenate the results",
         processMaker: (args) => {
+            if ( args.moduleType == undefined) {
+                // todo: raise error here
+                return text => text;
+            }
             return (text) => {
                 let lineRegex = /(\n|^).*/g;
                 let index = 0;
@@ -198,11 +234,168 @@ let moduleMetadata = {
                     if (index != 0) {
                         matchedText = matchedText.slice(1)
                     }
-                    allModified.push(matchedText);
+                    allModified.push(calculate(matchedText, [args]));
                     index++;
                 }
                 return allModified.join("\n");
             };
+        }
+    },
+    [ModuleType.ExecutePerFind]: {
+        name: "Execute Per Find",
+        color: "fbb761",
+        lore: "Execute a module for each regex match",
+        description: "Run a module on each regex match and replace the original in the text",
+        processMaker: (args) => {
+            if ( args.moduleType == undefined) {
+                // todo: raise error here
+                return text => text;
+            }
+            try {
+                return (text) => {
+                    let lineRegex = new RegExp(args.regex ?? '.*', 'g')
+                    let index = 0;
+                    let allModified = [];
+                    for (let match of text.matchAll(lineRegex)) {
+                        let matchedText = match[0];
+                        allModified.push(calculate(matchedText, [args]));
+                        index++;
+                    }
+                    return allModified.join("");
+                };
+            } catch {
+                // todo: raise error here
+                return text => text
+            }
+        }
+    },
+    [ModuleType.ChangeCase]: {
+        name: "Change case",
+        color: "fbb761",
+        lore: "Change the case of some text",
+        description: "Change case of all regex matches to uppercase/lowercase",
+        processMaker: (args) => {
+            let { regex, newcase } = args;
+            regex = regex ?? ".";
+            newcase = newcase ?? "keep";
+            if (newcase == "keep") {
+                return text => text;
+            }
+            try {
+                let regexObj = new RegExp(regex, 'g')
+                return (text) => {
+                    let matches = text.matchAll(regexObj);
+                    text = text.replaceAll(regexObj, (a, x) => {
+                        if (newcase == "flip" || newcase == "flipflop") {
+                            return a.split('').map((c) => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
+                        }
+                        if (newcase == "upper") {
+                            return a.toUpperCase();
+                        }
+                        if (newcase == "lower") {
+                            return a.toLowerCase();
+                        }
+
+                        // todo: raise error here
+                        return a;
+                    });
+                    return text;
+                };
+            } catch {
+                // todo: raise error here
+                return text => text;
+            }
+        }
+    },
+    [ModuleType.CountLineOccurences]: {
+        name: "Count Line Occurences",
+        color: "f9cb40",
+        lore: "Count the number of occurences of each line",
+        description:
+            "Count the number of occurences of each line and output it in a specific format",
+        processMaker: (args) => {
+            let { format } = args;
+            format = format ?? "%count% > %text%";
+            return (text) => {
+                let counted = new Map();
+                for (let line of text.split("\n")) {
+                    counted.set(line, (counted.get(line) ?? 0) + 1)
+                }
+                counted = new Map([...counted.entries()].sort((a,b) => "" + (1*b[1]-1*a[1])));
+                let texts = [];
+                for (let pair of counted) {
+                    texts.push(
+                        format.replaceAll("%count%", pair[1])
+                              .replaceAll("%line%", pair[0]));
+                }
+                text = texts.join("\n")
+                return text;
+            }
+        }
+    },
+    [ModuleType.CountMatches]: {
+        name: "Count Matches",
+        color: "f9cb40",
+        lore: "Count number of regex matches",
+        description: "Count the number of regex matches and set the text to that number",
+        processMaker: (args) => {
+            let { regex } = args;
+            regex = regex ?? "\n";
+            try {
+                let regexObj = new RegExp(regex, 'g');
+                return (text) => text.match(regexObj).length;
+            } catch {
+                // todo: raise error here
+                return (text) => text;
+            }
+        }
+    },
+    [ModuleType.CaptureGroup]: {
+        name: "Capture Group",
+        color: "f9cb40",
+        lore: "Only keep a capture group from a regex query",
+        description: "Only keep capture group from regex query. Additionally, specify which capture group to keep",
+        processMaker: (args) => {
+            let { regex, index } = args;
+            regex = regex ?? "\n";
+            index = index ?? 0;
+            try {
+                let regexObj = new RegExp(regex, 'g');
+                return (text) => {
+                    try {
+                        for (let _ of text.matchAll(regexObj)) {
+                            return _[(index+1)*1] + "";
+                        }
+                    } catch {
+                        return "undefined";
+                    }
+                }
+            } catch {
+                // todo: raise error here
+                return (text) => text;
+            }
+        }
+    },
+    [ModuleType.Hash]: {
+        name: "Hash Algorithm",
+        color: "f9cb40",
+        lore: "Hash the text with a hash algorithm",
+        description: "Hash the text with a hash algorithm like sha256",
+        processMaker: (args) => {
+            let { algorithm } = args;
+            algorithm = algorithm ?? "";
+            switch (algorithm.toLowerCase().replaceAll("-", "")) {
+                case "md5":
+                    return text => md5(text);
+                case "sha256":
+                    return text => {
+                        return Array.from(sha256(text))
+                            .map((i) => i.toString(16).padStart(2, '0'))
+                            .join('');
+                    }
+                default:
+                    return text => text;
+            }
         }
     }
 };
@@ -265,14 +458,18 @@ export function sortedModuleTypes() {
 
 export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
-export function calculate(text, ascode=false) {
-    let modules = get(recipeModules);
+export function calculate(text, modules=undefined) {
+    if (modules == undefined) {
+        modules = get(recipeModules);
+    }
     let recipe = [];
 
     for (let modul of modules) {
         let argumens = {...modul.args}
         for (let arg of Object.keys(argumens)) {
-            argumens[arg] = argumens[arg].replaceAll(/(?<!\\)\\n/g, "\n");
+            if (typeof argumens[arg] == 'string') {
+                argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\n"), "\n");
+            }
         }
         let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
         recipe.push([modul.args, moduleMetadata[modul.moduleType].processMaker]);
@@ -290,7 +487,11 @@ export function calculate(text, ascode=false) {
     return _inp_text;
 }`;
 
-    return get(ascode) ? customJs : text;
+    return get(outputAsJs) ? customJs : text;
+}
+
+function notBackslashedRegex(r) {
+    return new RegExp(`(?<!\\\\)${r}`, 'g')
 }
 
 export { moduleMetadata };

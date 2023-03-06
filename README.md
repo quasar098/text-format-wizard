@@ -8,7 +8,29 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 ## todo:
 
 - keyboard shortcuts
-- text processor
 - custom modules
 - module finder menu
-- more modules
+- resizable input/output window
+- save recipe in localstorage
+- fix module picker black border around selected module not being there
+- fix calculate being not defined in custom JS function (by nonobvious method)
+- example video of solving cyberskyline log analysis
+- custom style for pre tags
+
+## module ideas:
+- execute if condition
+- count chars
+- count regex match
+- count lines
+- count vowels
+- count consonants
+- fib sequence
+- jtr reverse
+- jtr double
+- jtr reflect
+- register logic
+- rotate text right
+- rotate text left
+- caesar cipher
+- random char from chars
+- random number

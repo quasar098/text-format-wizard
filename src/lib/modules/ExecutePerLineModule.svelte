@@ -7,17 +7,15 @@
     import ModulePreview from '../ModulePreview.svelte';
     import ModulePicker from '../ModulePicker.svelte';
 
-    export let info = {};
-
-    let chosenModule = { moduleType: undefined, args: {} };
+    export let info = { moduleType: undefined, args: {} };
 </script>
 
 <p>Pick module</p>
-<ModulePicker bind:picked={chosenModule}></ModulePicker>
+<ModulePicker bind:picked={info}></ModulePicker>
 <spacer/>
 <p>Edit module</p>
-{#if chosenModule.moduleType != undefined}
-    <ModulePreview bind:moduleObject={chosenModule} closeable={false}></ModulePreview>
+{#if info.moduleType != undefined}
+    <ModulePreview bind:moduleObject={info} closeable={false}></ModulePreview>
 {:else}
     <p class="shrug">No module selected</p>
 {/if}

@@ -1,5 +1,7 @@
 <script lang="ts">
     import { ModuleType, moduleMetadata } from './ts/types.ts'
+    import cssVars from 'svelte-css-vars';
+
     export let type: ModuleType;
     export let addModalInfo = undefined;
     let metadata = moduleMetadata[type];
@@ -7,6 +9,10 @@
         if (e.keyCode == 32 || e.keyCode == undefined) {
             addModalInfo = {moduleType: type, moduleName: metadata.name};
         }
+    }
+    $: styleVars = {
+        "title-color": `#${metadata.color}`,
+        "desc-color": `#${metadata.color}99`
     }
 </script>
 
@@ -16,11 +22,11 @@
             +
         </p>
     </div>
-    <div class="big">
-        <div class="module-title" style="background-color: #{metadata.color}">
+    <div use:cssVars={styleVars} class="big">
+        <div class="module-title">
             <h3>{metadata.name}</h3>
         </div>
-        <div class="module-description" style="background-color: #{metadata.color}99">
+        <div class="module-description">
             <p>{metadata.lore}</p>
         </div>
     </div>
@@ -38,7 +44,7 @@
     }
     .module-select {
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: stretch;
         margin-bottom: 5px;
         margin-top: 3px;
@@ -68,8 +74,10 @@
     .module-title {
         border-top-right-radius: 4px;
         padding: 5px;
+        background-color: var(--title-color);
     }
     .module-description {
+        background-color: var(--desc-color);
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.3);
         border-bottom-right-radius: 4px;
         padding: 5px;

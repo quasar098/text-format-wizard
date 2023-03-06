@@ -10,8 +10,37 @@
             height: 100%;
         }
     </style>
+    <noscript>
+        <style media="screen">
+            body,html,.noscript-container {
+                width: 100%;
+                margin: 0px;
+                height: 100%;
+            }
+            .noscript-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+            }
+            noscript {
+                text-align: center;
+                font-family: Helvetica;
+            }
+            #app {
+                display: none;
+            }
+        </style>
+    </noscript>
   </head>
   <body>
+    <div class="noscript-container">
+        <noscript>
+            You need to enable javascript to view this site.<br>
+            If you do not do that then I will invade your walls and steal your cookies.
+        </noscript>
+    </div>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
