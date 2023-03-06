@@ -17,6 +17,7 @@ import ExecutePerFindModule from "../modules/ExecutePerFindModule.svelte";
 import ChangeCaseModule from "../modules/ChangeCaseModule.svelte";
 import CountLineOccurencesModule from "../modules/CountLineOccurencesModule.svelte";
 import CountMatchesModule from "../modules/CountMatchesModule.svelte";
+import CountCharsModule from "../modules/CountCharsModule.svelte";
 import CaptureGroupModule from "../modules/CaptureGroupModule.svelte";
 import RemoveBlankLinesModule from "../modules/RemoveBlankLinesModule.svelte";
 import HashModule from "../modules/HashModule.svelte";
@@ -42,7 +43,8 @@ export enum ModuleType {
     CountMatches = rst(),
     CaptureGroup = rst(),
     RemoveBlankLines = rst(),
-    Hash = rst()
+    Hash = rst(),
+    CountChars = rst()
 }
 
 export const moduleMap = {
@@ -61,7 +63,8 @@ export const moduleMap = {
     [ModuleType.CountMatches]: CountMatchesModule,
     [ModuleType.CaptureGroup]: CaptureGroupModule,
     [ModuleType.RemoveBlankLines]: RemoveBlankLinesModule,
-    [ModuleType.Hash]: HashModule
+    [ModuleType.Hash]: HashModule,
+    [ModuleType.CountChars]: CountCharsModule
 };
 
 let moduleMetadata = {
@@ -343,11 +346,24 @@ let moduleMetadata = {
             regex = regex ?? "\n";
             try {
                 let regexObj = new RegExp(regex, 'g');
-                return (text) => text.match(regexObj).length;
+                return (text) => {
+                    return "" + (text.match(regexObj) ?? []).length;
+                };
             } catch {
                 // todo: raise error here
                 return (text) => text;
             }
+        }
+    },
+    [ModuleType.CountChars]: {
+        name: "Count Chars",
+        color: "f9cb40",
+        lore: "Count number of chars",
+        description: "Count number of chars. Option to exclude chars",
+        processMaker: (args) => {
+            let { excluded } = args;
+            excluded = excluded ?? "";
+            return (text) => text.split("").filter(_ => !excluded.includes(_)).join("").length + "";
         }
     },
     [ModuleType.CaptureGroup]: {
@@ -388,11 +404,7 @@ let moduleMetadata = {
                 case "md5":
                     return text => md5(text);
                 case "sha256":
-                    return text => {
-                        return Array.from(sha256(text))
-                            .map((i) => i.toString(16).padStart(2, '0'))
-                            .join('');
-                    }
+                    return text => sha256(text);
                 default:
                     return text => text;
             }
@@ -463,6 +475,10 @@ export function calculate(text, modules=undefined) {
         modules = get(recipeModules);
     }
     let recipe = [];
+
+    if (text == null) {
+        text = "";
+    }
 
     for (let modul of modules) {
         let argumens = {...modul.args}

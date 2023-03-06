@@ -4,7 +4,7 @@
 
     import { moduleMetadata } from "./ts/types";
     import cssVars from 'svelte-css-vars';
-
+    
     let metadata = moduleMetadata[id] ?? {};
 
     function setAsPicked() {
@@ -33,6 +33,7 @@
         border: 2px solid black;
         cursor: pointer;
         user-select: none;
+        width: calc(100% - 20px);
         background-color: var(--bg-color);
         border-color: var(--border-color);
     }

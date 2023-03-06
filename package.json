@@ -21,6 +21,7 @@
   "dependencies": {
     "crypto-js": "^4.1.1",
     "md5": "^2.3.0",
-    "svelte-css-vars": "^0.0.3"
+    "svelte-css-vars": "^0.0.3",
+    "svrollbar": "^0.12.0"
   }
 }

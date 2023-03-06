@@ -5,6 +5,8 @@
     import AddModuleModal from "./lib/AddModuleModal.svelte";
     import Toolbar from "./lib/Toolbar.svelte"
 
+    import { Svroller } from "svrollbar";
+
     import { recipeModules } from "./lib/ts/stores";
     import { ModuleType, calculate, moduleMetadata,
         uuidRegex, sortedModuleTypes } from './lib/ts/types';
@@ -127,10 +129,12 @@
             {/each}
         </Frame>
         <Frame title="Modules" width=40 height="100% + 10px">
-            {#each sortedModuleTypes() as value, index}
-                <ModuleSelect type={value} bind:addModalInfo>
-                </ModuleSelect>
-            {/each}
+            <Svroller width="100%" height="100%" alwaysVisible="true">
+                {#each sortedModuleTypes() as value, index}
+                    <ModuleSelect type={value} bind:addModalInfo>
+                    </ModuleSelect>
+                {/each}
+            </Svroller>
         </Frame>
     </div>
 

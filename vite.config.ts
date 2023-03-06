@@ -9,6 +9,7 @@ export default defineConfig({
             // e.g. don't warn on a11y-autofocus
             if (warning.code === 'a11y-autofocus') return
             if (warning.code === "unused-export-let") return
+            if (warning.code === "a11y-click-events-have-key-events") return
 
             handler(warning)
           }

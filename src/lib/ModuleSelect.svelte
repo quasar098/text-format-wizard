@@ -48,6 +48,7 @@
         align-items: stretch;
         margin-bottom: 5px;
         margin-top: 3px;
+        width: calc(100% - 16px);
     }
     .small {
         width: 30px;

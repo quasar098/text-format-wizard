@@ -1,4 +1,11 @@
+let sha256cache = new Map();
+
+const doSha256Caching = false;
+
 export function sha256(data) {
+    if (sha256cache.has(data)) {
+        return sha256cache.get(data);
+    }
     let h0 = 0x6a09e667, h1 = 0xbb67ae85, h2 = 0x3c6ef372, h3 = 0xa54ff53a,
         h4 = 0x510e527f, h5 = 0x9b05688c, h6 = 0x1f83d9ab, h7 = 0x5be0cd19,
         tsz = 0, bp = 0;
@@ -80,7 +87,12 @@ export function sha256(data) {
           };
     if (data === undefined) return {add, digest};
     add(data);
-    return digest();
+    let thing3 = digest();
+    thing3 = Array.from(thing3).map((i) => i.toString(16).padStart(2, '0')).join('');
+    if (doSha256Caching) {
+        sha256cache.set(data, thing3);
+    }
+    return thing3;
 }
 
 // HMAC-SHA256 implementation

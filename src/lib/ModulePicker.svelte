@@ -3,6 +3,7 @@
         uuidRegex, sortedModuleTypes, moduleMetadata } from "./ts/types";
     import ModulePickerOption from "./ModulePickerOption.svelte";
 
+    import { Svroller } from "svrollbar";
     export let picked;
 
     let moduleTypes = sortedModuleTypes().filter((item) => {
@@ -11,9 +12,11 @@
 </script>
 
 <div class="picker">
-    {#each moduleTypes as mId, index}
-        <ModulePickerOption id={mId} bind:picked={picked}/>
-    {/each}
+    <Svroller width="100%" height="100%" alwaysVisible="true">
+        {#each moduleTypes as mId, index}
+            <ModulePickerOption id={mId} bind:picked={picked}/>
+        {/each}
+    </Svroller>
 </div>
 
 <style>
@@ -21,7 +24,10 @@
         border-radius: 4px;
         background-color: white;
         margin: 10px 0px 10px 0px;
-        height: 300px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 3px;
+        height: 200px;
         width: 100%;
         overflow-y: auto;
         box-shadow: inset 0 0 0.4rem rgba(0, 0, 0, 0.2);
