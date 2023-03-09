@@ -22,6 +22,6 @@ export default defineConfig({
   },
   publicDir: "./global",
   build:   {
-    outDir: '~/Desktop/quasar.name/public/tfw'
+    outDir: '/home/ubuntu/Desktop/quasar.name/public/tfw'
   }
 })
