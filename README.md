@@ -19,15 +19,12 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 
 ## module ideas:
 - execute if condition
-- count chars
 - count regex match
 - count lines
 - count vowels
 - count consonants
 - fib sequence
-- jtr reverse
 - jtr double
-- jtr reflect
 - register logic
 - rotate text right
 - rotate text left

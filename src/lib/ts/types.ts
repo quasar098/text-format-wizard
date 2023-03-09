@@ -1,6 +1,7 @@
 import { recipeModules, outputAsJs } from './stores'
 import { get } from "svelte/store"
 import md5 from "md5";
+import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 
 // change when new module:
@@ -21,6 +22,9 @@ import CountCharsModule from "../modules/CountCharsModule.svelte";
 import CaptureGroupModule from "../modules/CaptureGroupModule.svelte";
 import RemoveBlankLinesModule from "../modules/RemoveBlankLinesModule.svelte";
 import HashModule from "../modules/HashModule.svelte";
+import ReverseModule from "../modules/ReverseModule.svelte";
+import ReflectModule from "../modules/ReflectModule.svelte";
+import CaesarModule from "../modules/CaesarModule.svelte";
 
 // random string thing
 function rst(): string {
@@ -44,7 +48,10 @@ export enum ModuleType {
     CaptureGroup = rst(),
     RemoveBlankLines = rst(),
     Hash = rst(),
-    CountChars = rst()
+    CountChars = rst(),
+    Reverse = rst(),
+    Reflect = rst(),
+    Caesar = rst()
 }
 
 export const moduleMap = {
@@ -64,7 +71,10 @@ export const moduleMap = {
     [ModuleType.CaptureGroup]: CaptureGroupModule,
     [ModuleType.RemoveBlankLines]: RemoveBlankLinesModule,
     [ModuleType.Hash]: HashModule,
-    [ModuleType.CountChars]: CountCharsModule
+    [ModuleType.CountChars]: CountCharsModule,
+    [ModuleType.Reverse]: ReverseModule,
+    [ModuleType.Reflect]: ReflectModule,
+    [ModuleType.Caesar]: CaesarModule
 };
 
 let moduleMetadata = {
@@ -407,6 +417,33 @@ let moduleMetadata = {
                     return text => sha256(text);
                 default:
                     return text => text;
+            }
+        }
+    },
+    [ModuleType.Reverse]: {
+        name: "Reverse",
+        color: "fbb761",
+        lore: "Reverse the text",
+        description: "Reverse the text (qwer -> rewq)",
+        processMaker: (args) => (text => text.split('').reverse().join(""))
+    },
+    [ModuleType.Reflect]: {
+        name: "Reflect",
+        color: "fbb761",
+        lore: "Reflect the text",
+        description: "Reflect the text (qwer -> qwerrewq)",
+        processMaker: (args) => (text => text + text.split('').reverse().join(""))
+    },
+    [ModuleType.Caesar]: {
+        name: "Caesar Shift",
+        color: "fbb771",
+        lore: "Shift the text with caesar cipher",
+        description: "Shift the text with caesar cipher",
+        processMaker: (args) => {
+            let { shift } = args;
+            shift = shift ?? 0;
+            return (text) => {
+                return caesarCipher(text, shift);
             }
         }
     }
