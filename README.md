@@ -31,3 +31,6 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - caesar cipher
 - random char from chars
 - random number
+
+## note when "npm run build"
+i changed the out dir to something else so just change it back in vite.config.ts
