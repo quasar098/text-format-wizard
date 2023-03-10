@@ -3,7 +3,9 @@
     import ModuleSelect from "./lib/ModuleSelect.svelte";
     import ModulePreview from "./lib/ModulePreview.svelte";
     import AddModuleModal from "./lib/AddModuleModal.svelte";
-    import Toolbar from "./lib/Toolbar.svelte"
+    import ResizeInOutFrames from "./lib/ResizeInOutFrames.svelte";
+    import Toolbar from "./lib/Toolbar.svelte";
+    import cssVars from 'svelte-css-vars';
 
     import { Svroller } from "svrollbar";
 
@@ -115,6 +117,11 @@
             this.firstChild.disabled = true;
         }
     }
+
+    let bottomAreaXposition = Math.floor(window.innerWidth/2);
+
+    $: inWindowX = Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
+    $: outWindowX = 95-Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
 </script>
 
 <main>
@@ -139,10 +146,11 @@
     </div>
 
     <div class="bottom">
-        <Frame title="Input" width=50 overflow="hidden">
+        <Frame title="Input" bind:width={inWindowX} overflow="hidden">
             <textarea spellcheck="false" bind:value={inputText} on:keydown={textareaEventHandle}/>
         </Frame>
-        <Frame title="Output" width=45 overflow="hidden">
+        <ResizeInOutFrames bind:xposition={bottomAreaXposition}/>
+        <Frame title="Output" bind:width={outWindowX} overflow="hidden">
             <div on:click={triplePower} class="fullsize">
                 <textarea spellcheck="false" class="out"
                 disabled="true" bind:value={outputText}></textarea>

@@ -19,6 +19,8 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "atob": "^2.1.2",
+    "btoa": "^1.2.1",
     "crypto-js": "^4.1.1",
     "md5": "^2.3.0",
     "svelte-css-vars": "^0.0.3",

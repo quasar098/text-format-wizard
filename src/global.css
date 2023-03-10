@@ -54,6 +54,11 @@ spacer {
     height: 8px;
     display: block;
 }
+pre {
+    margin: 10px 0 10px 0;
+    border: 1px solid black;
+    padding: 3px;
+}
 
 ::selection {
     color: white;

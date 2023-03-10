@@ -25,6 +25,7 @@ import HashModule from "../modules/HashModule.svelte";
 import ReverseModule from "../modules/ReverseModule.svelte";
 import ReflectModule from "../modules/ReflectModule.svelte";
 import CaesarModule from "../modules/CaesarModule.svelte";
+import Base64Module from "../modules/Base64Module.svelte";
 
 // random string thing
 function rst(): string {
@@ -51,7 +52,8 @@ export enum ModuleType {
     CountChars = rst(),
     Reverse = rst(),
     Reflect = rst(),
-    Caesar = rst()
+    Caesar = rst(),
+    Base64 = rst()
 }
 
 export const moduleMap = {
@@ -74,7 +76,8 @@ export const moduleMap = {
     [ModuleType.CountChars]: CountCharsModule,
     [ModuleType.Reverse]: ReverseModule,
     [ModuleType.Reflect]: ReflectModule,
-    [ModuleType.Caesar]: CaesarModule
+    [ModuleType.Caesar]: CaesarModule,
+    [ModuleType.Base64]: Base64Module
 };
 
 let moduleMetadata = {
@@ -443,11 +446,43 @@ let moduleMetadata = {
             let { shift } = args;
             shift = shift ?? 0;
             return (text) => {
-                return caesarCipher(text, shift);
+                if (isNumeric(shift)) {
+                    return caesarCipher(text, shift);
+                } else {
+                    return text;
+                }
+            }
+        }
+    },
+    [ModuleType.Base64]: {
+        name: "Base 64 Encryption",
+        color: "fbb771",
+        lore: "Encrypt or decrypt base 64",
+        description: "Encrypt or decrypt base 64",
+        processMaker: (args) => {
+            let { method } = args;
+            method = method ?? "encrypt";
+            return (text) => {
+                try {
+                    if (method == "encrypt") {
+                        return btoa(text);
+                    } else if (method == "decrypt") {
+                        return atob(text);
+                    } else {
+                        return text;
+                    }
+                } catch {
+                    // todo: raise error here
+                    return text;
+                }
             }
         }
     }
 };
+
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
+}
 
 const rgbToHSL = (r, g, b) => {
   r /= 255;
@@ -485,6 +520,10 @@ const hexToRGB = (hex) => {
 
 const getHueFromHex = (hex) => {
     return rgbToHSL(...hexToRGB(hex))[0]
+}
+
+export function clamp(n, a, b) {
+    return Math.min(Math.max(a,n), b);
 }
 
 export function sortedModuleTypes() {
