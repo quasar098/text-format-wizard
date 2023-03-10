@@ -20,5 +20,9 @@ export default defineConfig({
       usePolling: true
     }
   },
-  publicDir: "./global"
+  publicDir: "./global",
+  build:   {
+    outDir: '/home/ubuntu/Desktop/quasar.name/public/tfw'
+  },
+  base: ''
 })
