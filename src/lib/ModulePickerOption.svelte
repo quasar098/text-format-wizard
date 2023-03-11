@@ -2,7 +2,7 @@
     export let id = "00000000-0000-0000-0000-000000000000";
     export let picked;
 
-    import { moduleMetadata } from "./ts/types";
+    import { moduleMetadata } from "./ts/master";
     import cssVars from 'svelte-css-vars';
     
     let metadata = moduleMetadata[id] ?? {};

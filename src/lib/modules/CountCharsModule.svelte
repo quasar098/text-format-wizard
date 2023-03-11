@@ -9,7 +9,7 @@
 <p>Excluded chars:</p>
 <InputBox bind:value={info.excluded}/>
 <spacer/>
-<p>Keep in mind that \n is a newline character</p>
+<p>Keep in mind that \n is a newline character and isn't excluded by default</p>
 
 <style>
 

@@ -11,7 +11,7 @@
 
     import { recipeModules } from "./lib/ts/stores";
     import { ModuleType, calculate, moduleMetadata,
-        uuidRegex, sortedModuleTypes } from './lib/ts/types';
+        uuidRegex, sortedModuleTypes } from './lib/ts/master';
 
     let addModalInfo = undefined;
 

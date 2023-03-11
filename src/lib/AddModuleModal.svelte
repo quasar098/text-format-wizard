@@ -1,7 +1,7 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
-    import { moduleMap, moduleMetadata } from './ts/types';
+    import { moduleMap, moduleMetadata } from './ts/master';
     import { recipeModules } from "./ts/stores";
     import AppendModule from "./modules/AppendModule.svelte";
     import ReplaceModule from "./modules/ReplaceModule.svelte";

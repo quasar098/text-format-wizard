@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ModuleType, moduleMap,
-        uuidRegex, sortedModuleTypes, moduleMetadata } from "./ts/types";
+        uuidRegex, sortedModuleTypes, moduleMetadata } from "./ts/master";
     import ModulePickerOption from "./ModulePickerOption.svelte";
 
     import { Svroller } from "svrollbar";

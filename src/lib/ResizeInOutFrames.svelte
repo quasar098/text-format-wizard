@@ -2,7 +2,7 @@
 <script lang="ts">
     export let xposition;
     import cssVars from 'svelte-css-vars';
-    import { clamp } from "./ts/types"
+    import { clamp } from "./ts/master"
 
     $: styleVars = {
         left: `calc(${xposition}px - 10px)`

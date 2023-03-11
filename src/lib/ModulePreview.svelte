@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { moduleMetadata, moduleMap, ModuleType } from "./ts/types";
+    import { moduleMetadata, moduleMap, ModuleType } from "./ts/master";
     import InputBox from "./InputBox.svelte";
     import { recipeModules } from "./ts/stores";
     import cssVars from 'svelte-css-vars';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ModuleType, moduleMetadata } from './ts/types.ts'
+    import { ModuleType, moduleMetadata } from './ts/master.ts'
     import cssVars from 'svelte-css-vars';
 
     export let type: ModuleType;
