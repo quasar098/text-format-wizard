@@ -11,9 +11,9 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - custom modules
 - module finder menu
 - save recipe in localstorage
-- fix module picker black border around selected module not being there
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - example video of solving cyberskyline log analysis
+- settings page
 
 ## module ideas:
 - execute if condition

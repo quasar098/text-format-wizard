@@ -4,7 +4,7 @@
 }
 
 :not(i) {
-    font-family: FireCoda;
+    font-family: FireCoda, monospace;
 
     /* variables */
     --BG-COLOR: #0c1213;

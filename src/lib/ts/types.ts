@@ -4,28 +4,7 @@ import md5 from "md5";
 import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 
-// change when new module:
-import AppendModule from "../modules/AppendModule.svelte";
-import InsertModule from "../modules/InsertModule.svelte";
-import RemoveModule from "../modules/RemoveModule.svelte";
-import ReplaceModule from "../modules/ReplaceModule.svelte";
-import RandomCaseModule from "../modules/RandomCaseModule.svelte";
-import InsertAfterModule from "../modules/InsertAfterModule.svelte";
-import InsertBeforeModule from "../modules/InsertBeforeModule.svelte";
-import CommentModule from "../modules/CommentModule.svelte";
-import ExecutePerLineModule from "../modules/ExecutePerLineModule.svelte";
-import ExecutePerFindModule from "../modules/ExecutePerFindModule.svelte";
-import ChangeCaseModule from "../modules/ChangeCaseModule.svelte";
-import CountLineOccurencesModule from "../modules/CountLineOccurencesModule.svelte";
-import CountMatchesModule from "../modules/CountMatchesModule.svelte";
-import CountCharsModule from "../modules/CountCharsModule.svelte";
-import CaptureGroupModule from "../modules/CaptureGroupModule.svelte";
-import RemoveBlankLinesModule from "../modules/RemoveBlankLinesModule.svelte";
-import HashModule from "../modules/HashModule.svelte";
-import ReverseModule from "../modules/ReverseModule.svelte";
-import ReflectModule from "../modules/ReflectModule.svelte";
-import CaesarModule from "../modules/CaesarModule.svelte";
-import Base64Module from "../modules/Base64Module.svelte";
+export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
 // random string thing
 function rst(): string {
@@ -56,29 +35,20 @@ export enum ModuleType {
     Base64 = rst()
 }
 
-export const moduleMap = {
-    [ModuleType.Append]: AppendModule,
-    [ModuleType.Replace]: ReplaceModule,
-    [ModuleType.Remove]: RemoveModule,
-    [ModuleType.Insert]: InsertModule,
-    [ModuleType.RandomCase]: RandomCaseModule,
-    [ModuleType.InsertAfter]: InsertAfterModule,
-    [ModuleType.InsertBefore]: InsertBeforeModule,
-    [ModuleType.Comment]: CommentModule,
-    [ModuleType.ExecutePerLine]: ExecutePerLineModule,
-    [ModuleType.ExecutePerFind]: ExecutePerFindModule,
-    [ModuleType.ChangeCase]: ChangeCaseModule,
-    [ModuleType.CountLineOccurences]: CountLineOccurencesModule,
-    [ModuleType.CountMatches]: CountMatchesModule,
-    [ModuleType.CaptureGroup]: CaptureGroupModule,
-    [ModuleType.RemoveBlankLines]: RemoveBlankLinesModule,
-    [ModuleType.Hash]: HashModule,
-    [ModuleType.CountChars]: CountCharsModule,
-    [ModuleType.Reverse]: ReverseModule,
-    [ModuleType.Reflect]: ReflectModule,
-    [ModuleType.Caesar]: CaesarModule,
-    [ModuleType.Base64]: Base64Module
-};
+let moduleMap_ = {};
+
+(() => {
+    for (let mType_ of Object.keys(ModuleType)) {
+        if (!uuidRegex.test(ModuleType[mType_])) {
+            moduleMap_[mType_] = undefined;
+            import(`../modules/${ModuleType[mType_]}Module.svelte`).then(mod => {
+                moduleMap_[mType_] = mod.default;
+            })
+        }
+    }
+})()
+
+export const moduleMap = moduleMap_;
 
 let moduleMetadata = {
     [ModuleType.Remove]: {
@@ -543,8 +513,6 @@ export function sortedModuleTypes() {
         return hueMod + aname.localeCompare(bname);
     });
 }
-
-export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
 export function calculate(text, modules=undefined) {
     if (modules == undefined) {
