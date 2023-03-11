@@ -11,6 +11,9 @@ function rst(): string {
     return crypto.randomUUID();
 }
 
+// wtf
+const replaceTag = (k,v)=>((text)=>text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'),v).replaceAll(`\\%${k}%`,`%${k}%`))
+
 export enum ModuleType {
     Append = rst(),
     Replace = rst(),
@@ -314,9 +317,7 @@ let moduleMetadata = {
                 counted = new Map([...counted.entries()].sort((a,b) => "" + (1*b[1]-1*a[1])));
                 let texts = [];
                 for (let pair of counted) {
-                    texts.push(
-                        format.replaceAll("%count%", pair[1])
-                              .replaceAll("%line%", pair[0]));
+                    texts.push(replaceTag("count", pair[1])(replaceTag("line", pair[0])(format)));
                 }
                 text = texts.join("\n")
                 return text;
