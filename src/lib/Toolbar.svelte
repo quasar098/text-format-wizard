@@ -5,11 +5,16 @@
         outputAsJs.update(_ => !_);
         recipeModules.update(_ => _);
     }
+
+    function clearModules() {
+        recipeModules.update(() => []);
+    }
 </script>
 
 <div class="toolbar">
-    <h4 class="icon settings">󰒓</h4>
-    <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}></h4>
+    <h4 class="icon settings"> 󰒓 </h4>
+    <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
+    <h4 class="icon code" on:click={clearModules} on:keydown={clearModules}>  </h4>
 </div>
 
 <style>

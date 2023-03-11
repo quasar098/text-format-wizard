@@ -48,7 +48,7 @@
             </div>
         {:else}
             <div class="module-title">
-                <h3>{metadata.name}</h3>
+                <h3>{(metadata ?? {}).name}</h3>
             </div>
             <div class="module-description {closeable ? '' : 'round'}">
                 <svelte:component this={moduleMap[moduleObject.moduleType]}

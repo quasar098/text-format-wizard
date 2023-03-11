@@ -2,8 +2,16 @@
 
 *this project is under construction*
 
+## what this
+
 text format issues begone!
 gone are the days of ad-ridden poor-quality online tools! now you can do it in one place and in a more powerful manner.
+
+## external libraries
+
+- uses svelte, a front-end component framework
+- uses [svrollbar](https://github.com/daylilyfield/svrollbar), a scrollbar component for svelte
+- uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css
 
 ## todo:
 
@@ -17,9 +25,6 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 
 ## module ideas:
 - execute if condition
-- count lines
-- count vowels
-- count consonants
 - fib sequence
 - jtr double
 - register logic
@@ -27,6 +32,3 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - rotate text left
 - random char from chars
 - random number
-
-## note when "npm run build"
-i changed the out dir to something else so just change it back in vite.config.ts

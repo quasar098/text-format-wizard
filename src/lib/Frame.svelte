@@ -6,6 +6,9 @@
     export let alignment: string = "none";
     export let onclose = undefined;
     export let overflow = "auto";
+    export let enterTransition = () => {};
+    export let exitTransition = () => {};
+
     let displayType: string = "block";
     if (width != 100) {
         displayType = "inline-block";
@@ -13,23 +16,35 @@
     if (color == undefined) {
         color = 'var(--ACCENT)';
     }
+    import cssVars from "svelte-css-vars";
+
+    $: styleVars = {
+        // outer frame stuff
+        outerFrameWidth: `calc(${width}% - 10px - ${width/10}px)`,
+        outerFrameDisplay: displayType,
+        outerFrameHeight: `calc(${height} - 15px)`,
+
+        // title stuff
+        titleSectBg: color,
+        titleTransform: alignment == "center" ? 'translateX(-3px)' : 'none',  // translate to left b/c only centered titles are icons
+        titleAlignment: alignment,
+
+        // (inner) frame stuff
+        frameOverflowY: overflow,
+        frameHeight: `calc(${height} - 63px)`
+    };
 </script>
 
-<div class="outer-frame" style="
-        width: calc({width}% - 10px - {width/10}px);
-        display: {displayType};
-        height: calc({height} - 15px)
-    ">
+<div class="outer-frame" use:cssVars={styleVars} in:enterTransition out:exitTransition>
     {#if title != undefined}
-        <div class="title-sect" style="background-color: {color}">
-            <h2 style="text-align: {alignment}" class="align-{alignment}">{title}</h2>
+        <div class="title-sect">
+            <h2 class="title">{title}</h2>
             {#if onclose != undefined}
                 <p class="close" on:click={onclose} on:keydown={ () => {} }></p>
             {/if}
         </div>
     {/if}
-    <div class='frame'
-        style="height: calc({height} - 63px); overflow-y: {overflow}">
+    <div class='frame'>
         <slot></slot>
     </div>
 </div>
@@ -47,12 +62,10 @@
         user-select: none;
         display: inline-block;
         position: relative;
+        background-color: var(--titleSectBg);
     }
     h2 {
         font-size: 24px;
-    }
-    .align-center {
-        transform: translateX(-3px);
     }
     .outer-frame {
         float: left;
@@ -60,10 +73,17 @@
         margin-right: 0px;
         margin-bottom: 0px;
         position: relative;
+        width: var(--outerFrameWidth);
+        height: var(--outerFrameHeight);
+        display: var(--outerFrameDisplay);
     }
     ::selection {
         color: white;
         background-color: var(--BG-COLOR);
+    }
+    .title {
+        transform: var(--titleTransform);
+        text-align: var(--titleAlignment);
     }
     .frame {
         background-color: var(--FRAME-COLOR);
@@ -75,7 +95,9 @@
         top: 0;
         left: 0;
         width: calc(100% - 10px);
+        overflow-y: var(--frameOverflowY);
         display: inline-block;
+        height: var(--frameHeight);
     }
     .frame::-webkit-scrollbar {
         display: none;

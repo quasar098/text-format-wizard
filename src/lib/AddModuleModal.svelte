@@ -7,6 +7,7 @@
     import ReplaceModule from "./modules/ReplaceModule.svelte";
     import RemoveModule from "./modules/RemoveModule.svelte";
     import InsertModule from "./modules/InsertModule.svelte";
+    import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
 
     export let addModalInfo = undefined;
 
@@ -42,14 +43,18 @@
 </script>
 
 {#if addModalInfo}
-    <div class="outer-modal">
+    <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
-            <Frame title='Add "{info.moduleName}" module'
-                onclose={() => {addModalInfo = undefined}}>
+            <Frame title='Add "{info.moduleName}" module' onclose={() => {addModalInfo = undefined}}
+                enterTransition={discordIn} exitTransition={discordOut}>
+
                 <p class="description">> {metadata.description}</p>
+
                 <svelte:component this={moduleMap[info.moduleType]}
                     bind:info={addModuleInfo}></svelte:component>
+
                 <button class="add-module" tabindex="0" on:click={addModule}>Add</button>
+
             </Frame>
         </div>
     </div>

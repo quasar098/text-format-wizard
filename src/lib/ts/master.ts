@@ -32,7 +32,11 @@ export enum ModuleType {
     Reverse = rst(),
     Reflect = rst(),
     Caesar = rst(),
-    Base64 = rst()
+    Base64 = rst(),
+    CountLines = rst(),
+    CountVowels = rst(),
+    CountWords = rst(),
+    CountConsonants = rst()
 }
 
 let moduleMap_ = {};
@@ -237,8 +241,8 @@ let moduleMetadata = {
                 // todo: raise error here
                 return text => text;
             }
-            try {
-                return (text) => {
+            return (text) => {
+                try {
                     let lineRegex = new RegExp(args.regex ?? '.*', 'g')
                     let index = 0;
                     let allModified = [];
@@ -248,15 +252,15 @@ let moduleMetadata = {
                         index++;
                     }
                     return allModified.join("");
-                };
-            } catch {
-                // todo: raise error here
-                return text => text
-            }
+                } catch {
+                    // todo: raise error here
+                    return text => text
+                }
+            };
         }
     },
     [ModuleType.ChangeCase]: {
-        name: "Change case",
+        name: "Change Case",
         color: "fbb761",
         lore: "Change the case of some text",
         description: "Change case of all regex matches to uppercase/lowercase",
@@ -446,6 +450,42 @@ let moduleMetadata = {
                     return text;
                 }
             }
+        }
+    },
+    [ModuleType.CountLines]: {
+        name: "Count Lines",
+        color: "f9cb40",
+        lore: "Count number of lines",
+        description: "Count the number of lines (empty string is 1 line)",
+        processMaker: (args) => {
+            return text => ((text ?? "").split("\n") ?? "").length;
+        }
+    },
+    [ModuleType.CountVowels]: {
+        name: "Count Vowels",
+        color: "f9cb40",
+        lore: "Count number of vowels",
+        description: "Count the number of vowels (a,e,i,o,u)",
+        processMaker: (args) => {
+            return text => (text.match(/[aeiou]/gi) ?? "").length;
+        }
+    },
+    [ModuleType.CountConsonants]: {
+        name: "Count Consonants",
+        color: "f9cb40",
+        lore: "Count number of consonants",
+        description: "Count the number of vowels (any that aren't a,e,i,o,u)",
+        processMaker: (args) => {
+            return text => (text.match(/[^aeiou]/gi) ?? "").length;
+        }
+    },
+    [ModuleType.CountWords]: {
+        name: "Count Words",
+        color: "f9cb40",
+        lore: "Count number of words",
+        description: "Count the number of words in the text",
+        processMaker: (args) => {
+            return text => (text.match(/\w+(?:'\w+)?/g ?? "")).length;
         }
     }
 };

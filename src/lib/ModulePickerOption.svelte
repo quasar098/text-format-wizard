@@ -4,7 +4,7 @@
 
     import { moduleMetadata } from "./ts/master";
     import cssVars from 'svelte-css-vars';
-    
+
     let metadata = moduleMetadata[id] ?? {};
 
     function setAsPicked() {

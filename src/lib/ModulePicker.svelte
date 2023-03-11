@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { fade } from 'svelte/transition'
     import { ModuleType, moduleMap,
         uuidRegex, sortedModuleTypes, moduleMetadata } from "./ts/master";
     import ModulePickerOption from "./ModulePickerOption.svelte";
@@ -9,10 +10,13 @@
     let moduleTypes = sortedModuleTypes().filter((item) => {
         return moduleMetadata[item].name != "Comment";
     });
+
+    let noTransition = node => fade(node, { duration: 0 });
 </script>
 
 <div class="picker">
-    <Svroller width="100%" height="100%" alwaysVisible="true">
+    <Svroller width="100%" height="100%" alwaysVisible="true" vTrackOut={noTransition} vTrackIn={noTransition}
+        vThumbIn={noTransition} vThumbOut={noTransition} hideAfter=0>
         {#each moduleTypes as mId, index}
             <ModulePickerOption id={mId} bind:picked={picked}/>
         {/each}
