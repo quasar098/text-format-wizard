@@ -22,6 +22,8 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - example video of solving cyberskyline log analysis
 - settings page
+- module lazy loading
+- ctrl-f to find in text
 
 ## module ideas:
 - execute if condition

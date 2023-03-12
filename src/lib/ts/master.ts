@@ -39,7 +39,8 @@ export enum ModuleType {
     CountLines = rst(),
     CountVowels = rst(),
     CountWords = rst(),
-    CountConsonants = rst()
+    CountConsonants = rst(),
+    Rotate = rst()
 }
 
 let moduleMap_ = {};
@@ -487,6 +488,31 @@ let moduleMetadata = {
         description: "Count the number of words in the text",
         processMaker: (args) => {
             return text => (text.match(/\w+(?:'\w+)?/g ?? "")).length;
+        }
+    },
+    [ModuleType.Rotate]: {
+        name: "Rotate",
+        color: "fbb761",
+        lore: "Move characters to the other end",
+        description: "Loop the characters and offset them. Ex: Qwerty -> wertyQ",
+        processMaker: (args) => {
+            let { rotate } = args;
+            rotate = rotate ?? 0;
+            return (text) => {
+                try {
+                    rotate = rotate*1;
+                    if (isNaN(rotate)) {
+                        // todo: raise error here
+                        
+                        return text;
+                    }
+                    let modded = ((rotate % text.length) + text.length) % text.length
+                    return text.substring(modded) + text.substring(0, modded);
+                } catch (e) {
+                    // todo: raise error here
+                    return text;
+                }
+            }
         }
     }
 };
