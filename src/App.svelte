@@ -3,6 +3,7 @@
     import ModuleSelect from "./lib/ModuleSelect.svelte";
     import ModulePreview from "./lib/ModulePreview.svelte";
     import AddModuleModal from "./lib/AddModuleModal.svelte";
+    import FindModuleModal from "./lib/FindModuleModal.svelte";
     import ResizeInOutFrames from "./lib/ResizeInOutFrames.svelte";
     import Toolbar from "./lib/Toolbar.svelte";
     import cssVars from 'svelte-css-vars';
@@ -120,12 +121,15 @@
 
     let bottomAreaXposition = Math.floor(window.innerWidth/2);
 
+    let findModuleModalShown = false;
+
     $: inWindowX = Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
     $: outWindowX = 95-Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
 </script>
 
 <main>
     <AddModuleModal bind:addModalInfo/>
+    <FindModuleModal bind:addModalInfo bind:shown={findModuleModalShown}/>
 
     <div class="top">
         <Frame title="Recipe" width=60 height="100% + 10px">

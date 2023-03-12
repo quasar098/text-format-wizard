@@ -3,10 +3,6 @@
     import Frame from "./Frame.svelte";
     import { moduleMap, moduleMetadata } from './ts/master';
     import { recipeModules } from "./ts/stores";
-    import AppendModule from "./modules/AppendModule.svelte";
-    import ReplaceModule from "./modules/ReplaceModule.svelte";
-    import RemoveModule from "./modules/RemoveModule.svelte";
-    import InsertModule from "./modules/InsertModule.svelte";
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
 
     export let addModalInfo = undefined;
@@ -22,12 +18,16 @@
 
     let addModuleInfo = {};
 
-    document.addEventListener("keydown", (e) => {
+    function keyDownHandler(e) {
         if (e.keyCode == 27) {
             hideModal();
             document.activeElement.blur();
         }
-    });
+
+        if (e.keyCode == 80 && e.shiftKey && e.ctrlKey) {
+            addModalInfo = undefined;
+        }
+    }
 
     function addModule() {
         recipeModules.update((old) => {
@@ -41,6 +41,8 @@
         }, 40);
     }
 </script>
+
+<svelte:body on:keydown={keyDownHandler}/>
 
 {#if addModalInfo}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
