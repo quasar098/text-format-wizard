@@ -4,6 +4,7 @@
     import cssVars from 'svelte-css-vars';
 
     export let type: ModuleType;
+    export let maxWidth: string;
     export let onclick = () => {};
 
     let metadata = moduleMetadata[type];
@@ -20,13 +21,13 @@
     }
 </script>
 
-<div class="module-select">
+<div class="module-select" use:cssVars={styleVars}>
     <div class="small add-button" on:click={doStuff} on:keydown={doStuff}>
         <p class="plus">
             +
         </p>
     </div>
-    <div use:cssVars={styleVars} class="big">
+    <div class="big">
         <div class="module-title">
             <h3>{metadata.name}</h3>
         </div>

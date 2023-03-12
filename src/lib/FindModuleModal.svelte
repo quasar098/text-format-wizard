@@ -96,8 +96,7 @@
                     <Svroller width="100%" height="calc(100% - 30px)" alwaysVisible="true">
                         {#key searchTerm}
                             {#each betterSorted() as value, index}
-                                <ModuleSelect type={value} onclick={modalClosed}>
-                                </ModuleSelect>
+                                <ModuleSelect type={value} onclick={modalClosed}/>
                             {:else}
                                 {#if searchTerm.length}
                                     <p class="nomod">No modules found :(</p>
