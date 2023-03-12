@@ -1,6 +1,6 @@
 import { recipeModules, outputAsJs } from './stores'
 import { get } from "svelte/store"
-import md5 from "md5";
+import { md5 } from "./md5.ts";
 import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 
@@ -592,6 +592,8 @@ export function sortedModuleTypes() {
     });
 }
 
+let bundledFunctions = [sha256, md5, caesarCipher, isNumeric];
+
 export function calculate(text, modules=undefined) {
     if (modules == undefined) {
         modules = get(recipeModules);
@@ -620,7 +622,10 @@ export function calculate(text, modules=undefined) {
         customJs += `_inp_text = (${String(step[1])})(${JSON.stringify(step[0])})(_inp_text);`;
     }
 
+    let bundledTexts = bundledFunctions.join("\n");
+
     customJs = `function formatText(_inp_text) {
+    ${bundledTexts}
     ${customJs}
     return _inp_text;
 }`;

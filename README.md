@@ -29,6 +29,7 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - example video of solving cyberskyline log analysis
+- only bundle necessary functions when custom JS
 - settings page
 - module lazy loading
 - ctrl-f to find in text
