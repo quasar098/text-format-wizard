@@ -2,6 +2,10 @@
 
 *this project is under construction*
 
+## working demo
+
+working demo can be found [here](https://quasar.name/text-format-wizard/)
+
 ## what this
 
 text format issues begone!
@@ -12,6 +16,10 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - uses svelte, a front-end component framework
 - uses [svrollbar](https://github.com/daylilyfield/svrollbar), a scrollbar component for svelte
 - uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css
+
+## demonstration
+
+*todo: insert demo video here*
 
 ## todo:
 
