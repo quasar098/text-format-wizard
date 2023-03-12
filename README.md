@@ -38,7 +38,5 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 - fib sequence
 - jtr double
 - register logic
-- rotate text right
-- rotate text left
 - random char from chars
 - random number

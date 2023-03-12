@@ -30,7 +30,6 @@ export function discordOut(node, { duration }) {
             return `
                 transform: scale(${eased});
                 opacity: ${eased*1.5-0.5};
-                filter: blur(${4-Math.floor(eased)*4}px);
                 pointer-events: none;
             `
         }

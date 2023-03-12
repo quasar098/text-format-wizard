@@ -75,6 +75,7 @@
         border: solid 1px var(--BG-COLOR);
         display: block;
         transition: 0.2s background-color;
+        cursor: pointer;
     }
     .add-module:focus-visible {
         background-color: var(--FOCUSED);

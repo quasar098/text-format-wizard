@@ -358,21 +358,32 @@ let moduleMetadata = {
     [ModuleType.CaptureGroup]: {
         name: "Capture Group",
         color: "f9cb40",
-        lore: "Only keep a capture group from a regex query",
-        description: "Only keep capture group from regex query. Additionally, specify which capture group to keep",
+        lore: "Format capture groups in a regex query",
+        description: "Format capture groups from regex query. Additionally, specify which capture groups to keep",
         processMaker: (args) => {
-            let { regex, index } = args;
+            let { regex, format } = args;
             regex = regex ?? "\n";
-            index = index ?? 0;
+            format = format ?? "";
             try {
                 let regexObj = new RegExp(regex, 'g');
                 return (text) => {
                     try {
-                        for (let _ of text.matchAll(regexObj)) {
-                            return _[(index+1)*1] + "";
+                        let texts = [];
+                        for (let match of text.matchAll(regexObj)) {
+                            let formatcopy = format;
+                            for (let index in match) {
+                                let group = match[index];
+                                if (index == 0) {
+                                    formatcopy = replaceTag("original", group)(formatcopy);
+                                    continue;
+                                }
+                                formatcopy = replaceTag((index-1) + "", group)(formatcopy);
+                            }
+                            texts.push(formatcopy);
                         }
+                        return texts.join("\n");
                     } catch {
-                        return "undefined";
+                        return text;
                     }
                 }
             } catch {
@@ -503,7 +514,7 @@ let moduleMetadata = {
                     rotate = rotate*1;
                     if (isNaN(rotate)) {
                         // todo: raise error here
-                        
+
                         return text;
                     }
                     let modded = ((rotate % text.length) + text.length) % text.length

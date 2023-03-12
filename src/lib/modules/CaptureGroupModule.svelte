@@ -10,18 +10,29 @@
 <p>Regex</p>
 <InputBox bind:value={info.regex}/>
 
-<p>Capture group index</p>
-<InputBox bind:value={info.index}/>
+<p>Output format</p>
+<InputBox bind:value={info.format}/>
 
 <spacer/>
 <p>Note that if the capture group index is out of bounds, undefined will be outputted instead</p>
 <spacer/>
-<p>Example regex:</p>
-<pre>ERR\\s(...)\\s.*</pre>
-<p>Example input:</p>
+<spacer/>
+<spacer/>
+<spacer/>
+<h4>Example:<spacer/></h4>
+<p>
+Regex:</p>
+<pre>ERR\s(...)\s(.*)</pre>
+<p>Format:</p>
+<pre>[%0%]: %1%</pre>
+<p>Input:</p>
 <pre>ERR 418 I'm a teapot</pre>
-<p>With the index as 0, the output is 418</p>
+<p>Output:</p>
+<pre>[418]: I'm a teapot</pre>
 
 <style>
-
+    h4 {
+        font-size: 18px;
+        font-style: italic;
+    }
 </style>

@@ -40,7 +40,9 @@
         <div class="title-sect">
             <h2 class="title">{title}</h2>
             {#if onclose != undefined}
-                <p class="close" on:click={onclose} on:keydown={ () => {} }></p>
+                <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
+                    <p class="close"></p>
+                </div>
             {/if}
         </div>
     {/if}
@@ -48,6 +50,15 @@
         <slot></slot>
     </div>
 </div>
+
+{#if title == undefined}
+    <style>
+        .frame {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+    </style>
+{/if}
 
 <style>
     p, h2 { margin: 0 }
@@ -105,38 +116,27 @@
     .frame::-moz-scrollbar {
         display: none;
     }
-    .close {
-        font-size: 24px;
+    .close-outer {
+        position: absolute;
         float: right;
-        display: inline-flex;
+        height: 43px;
+        width: 43px;
+        right: 0px;
+        top: 0px;
         justify-content: center;
         align-items: center;
-        margin-bottom: 5px;
-        padding-right: 2px;
-        padding-top: 1px;
-        margin-right: 10px;
-        width: 20px;
-        height: 20px;
+        display: flex;
+        border-top-right-radius: 4px;
         cursor: pointer;
-        border-radius: 4px;
-        position: absolute;
-        right: 0px;
-        top: 12px;
     }
-    .close:hover {
+    .close {
+        font-size: 24px;
+    }
+    .close-outer:hover {
         background-color: #FFFFFF11;
     }
-    .close:focus-visible {
+    .close-outer:focus-visible {
         outline: none;
         background-color: #ffffff11;
     }
 </style>
-
-{#if title == undefined}
-    <style>
-        .frame {
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-        }
-    </style>
-{/if}
