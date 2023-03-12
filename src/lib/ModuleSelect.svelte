@@ -1,15 +1,16 @@
 <script lang="ts">
-    import { ModuleType, moduleMetadata } from './ts/master.ts'
+    import { ModuleType, moduleMetadata } from './ts/master.ts';
+    import { showAddModuleModal, addModuleModalInfo } from './ts/stores';
     import cssVars from 'svelte-css-vars';
 
     export let type: ModuleType;
-    export let addModalInfo = undefined;
     export let onclick = () => {};
 
     let metadata = moduleMetadata[type];
     function doStuff(e) {
         if (e.keyCode == 32 || e.keyCode == undefined) {
-            addModalInfo = {moduleType: type, moduleName: metadata.name};
+            $addModuleModalInfo = {moduleType: type, moduleName: metadata.name};
+            $showAddModuleModal = true;
         }
         onclick();
     }

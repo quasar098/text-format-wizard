@@ -3,18 +3,16 @@
     import Frame from "./Frame.svelte";
     import { ModuleType, moduleMetadata } from './ts/master';
     import { sortedModuleTypes } from "./ts/master";
+    import { showFindModuleModal, addModuleModalInfo, showAddModuleModal } from './ts/stores';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
     import { Svroller } from "svrollbar";
     import ModuleSelect from "./ModuleSelect.svelte";
 
     import Fuse from 'fuse.js';
 
-    export let shown = false;
-    export let addModalInfo;
-
     function keydownHandle(e) {
         if (e.keyCode == 27) {
-            shown = false;
+            modalClosed();
         }
         if (e.keyCode != 80) {
             return;
@@ -26,7 +24,7 @@
         if (!e.shiftKey) {
             return;
         }
-        shown = true;
+        $showFindModuleModal = true;
     }
 
     const fuseOptions = {
@@ -67,7 +65,7 @@
     $: searchTerm = "";
 
     function modalClosed() {
-        shown = false;
+        $showFindModuleModal = false;
         searchTerm = "";
     }
 
@@ -76,7 +74,8 @@
         if (e.keyCode == 13) {
             if (betterSortedItems.length) {
                 modalClosed();
-                addModalInfo = {moduleType: betterSortedItems[0], moduleName: moduleMetadata[betterSortedItems[0]].name}
+                $addModuleModalInfo = {moduleType: betterSortedItems[0], moduleName: moduleMetadata[betterSortedItems[0]].name}
+                $showAddModuleModal = true;
             }
         }
     }
@@ -85,7 +84,7 @@
 
 <svelte:body on:keydown={keydownHandle}/>
 
-{#if shown}
+{#if $showFindModuleModal}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
             <Frame title='Find module' enterTransition={discordIn} exitTransition={discordOut}>
@@ -97,7 +96,7 @@
                     <Svroller width="100%" height="calc(100% - 30px)" alwaysVisible="true">
                         {#key searchTerm}
                             {#each betterSorted() as value, index}
-                                <ModuleSelect type={value} bind:addModalInfo onclick={modalClosed}>
+                                <ModuleSelect type={value} onclick={modalClosed}>
                                 </ModuleSelect>
                             {:else}
                                 {#if searchTerm.length}

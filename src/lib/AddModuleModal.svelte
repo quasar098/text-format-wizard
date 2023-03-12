@@ -2,17 +2,16 @@
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
     import { moduleMap, moduleMetadata } from './ts/master';
-    import { recipeModules } from "./ts/stores";
+    import { recipeModules, addModuleModalInfo, showAddModuleModal } from "./ts/stores";
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
-
-    export let addModalInfo = undefined;
 
     function hideModal() {
         addModuleInfo = {};
-        addModalInfo = undefined;
+        $addModuleModalInfo = undefined;
+        $showAddModuleModal = false;
     }
 
-    $: info = [addModalInfo ?? {}][0];
+    $: info = [$addModuleModalInfo ?? {}][0];
 
     $: metadata = moduleMetadata[info.moduleType];
 
@@ -25,7 +24,8 @@
         }
 
         if (e.keyCode == 80 && e.shiftKey && e.ctrlKey) {
-            addModalInfo = undefined;
+            $addModuleModalInfo = undefined;
+            $showAddModuleModal = false;
         }
     }
 
@@ -34,7 +34,8 @@
             old.push({moduleType: info.moduleType, args: {...addModuleInfo}});
             return old;
         })
-        addModalInfo = undefined;
+        $addModuleModalInfo = undefined;
+        $showAddModuleModal = false;
         addModuleInfo = {};
         setTimeout(() => {
             addModuleInfo = {};
@@ -44,10 +45,10 @@
 
 <svelte:body on:keydown={keyDownHandler}/>
 
-{#if addModalInfo}
+{#if $showAddModuleModal}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
-            <Frame title='Add "{info.moduleName}" module' onclose={() => {addModalInfo = undefined}}
+            <Frame title='Add "{info.moduleName}" module' onclose={hideModal}
                 enterTransition={discordIn} exitTransition={discordOut}>
 
                 <p class="description">> {metadata.description}</p>

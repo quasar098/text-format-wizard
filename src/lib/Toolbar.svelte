@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { outputAsJs, recipeModules } from './ts/stores'
+    import { outputAsJs, recipeModules, showFindModuleModal } from './ts/stores'
 
     function changeJs() {
         outputAsJs.update(_ => !_);
@@ -7,7 +7,11 @@
     }
 
     function clearModules() {
-        recipeModules.update(() => []);
+        recipeModules.set([]);
+    }
+
+    function openSearchMenu() {
+        $showFindModuleModal = true;
     }
 </script>
 
@@ -19,6 +23,7 @@
          <span></span>
     </h4></a>
     <a href="https://quasar.name/"><h4 class="icon code">  </h4></a>
+    <h4 class="icon code" on:click={openSearchMenu}>  </h4>
 </div>
 
 <style>
