@@ -2,13 +2,14 @@
     import { get } from 'svelte/store'
     import { ModuleType } from "../ts/master";
     import { recipeModules } from '../ts/stores';
-    import InputBox from '../InputBox.svelte';
+    import Dropdown from '../Dropdown.svelte';
 
     export let info = {};
+
+    info.method = info.method ?? "encrypt";
 </script>
 
-<p>Method (encrypt/decrypt)</p>
-<InputBox bind:value={info.method}/>
+<Dropdown bind:value={info.method} options={["encrypt", "decrypt"]}/>
 
 <style>
 

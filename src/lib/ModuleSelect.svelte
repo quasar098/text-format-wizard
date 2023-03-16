@@ -4,7 +4,7 @@
     import cssVars from 'svelte-css-vars';
 
     export let type: ModuleType;
-    export let maxWidth: string;
+    export let maxWidth: string = "100";
     export let onclick = () => {};
 
     let metadata = moduleMetadata[type];

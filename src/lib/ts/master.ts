@@ -19,7 +19,6 @@ export enum ModuleType {
     Replace = rst(),
     Remove = rst(),
     Insert = rst(),
-    RandomCase = rst(),
     InsertAfter = rst(),
     InsertBefore = rst(),
     Comment = rst(),
@@ -131,21 +130,6 @@ let moduleMetadata = {
             return (text) => text.slice(0, index) + insert + text.slice(index)
         }
     },
-    [ModuleType.RandomCase]: {
-        name: "Random Case",
-        color: "fbb761",
-        lore: "Randomize the case of the text",
-        description: "Randomize uppercase/lowercase for each letter of the text",
-        processMaker: (args) => {
-            return (text) => {
-                let newText = "";
-                for (let letter of text) {
-                    newText += Math.random() > 0.5 ? letter.toUpperCase() : letter.toLowerCase();
-                }
-                return newText;
-            }
-        }
-    },
     [ModuleType.InsertAfter]: {
         name: "Insert After",
         color: "208f40",
@@ -215,7 +199,7 @@ let moduleMetadata = {
         lore: "Execute a module for each line",
         description: "Run a module on each line individually and concatenate the results",
         processMaker: (args) => {
-            if ( args.moduleType == undefined) {
+            if (args.moduleType == undefined) {
                 // todo: raise error here
                 return text => text;
             }
@@ -241,22 +225,17 @@ let moduleMetadata = {
         lore: "Execute a module for each regex match",
         description: "Run a module on each regex match and replace the original in the text",
         processMaker: (args) => {
-            if ( args.moduleType == undefined) {
+            if (args.moduleType == undefined) {
                 // todo: raise error here
                 return text => text;
             }
             return (text) => {
                 try {
-                    let lineRegex = new RegExp(args.regex ?? '.*', 'g')
-                    let index = 0;
-                    let allModified = [];
-                    for (let match of text.matchAll(lineRegex)) {
-                        let matchedText = match[0];
-                        allModified.push(calculate(matchedText, [args]));
-                        index++;
-                    }
-                    return allModified.join("");
-                } catch {
+                    let findRegex = new RegExp(args.regex ?? '.*', 'g')
+                    return text.replaceAll(findRegex, (a) => {
+                        return calculate(a, [args]);
+                    });
+                } catch (e) {
                     // todo: raise error here
                     return text => text
                 }
@@ -278,8 +257,7 @@ let moduleMetadata = {
             try {
                 let regexObj = new RegExp(regex, 'g')
                 return (text) => {
-                    let matches = text.matchAll(regexObj);
-                    text = text.replaceAll(regexObj, (a, x) => {
+                    text = text.replaceAll(regexObj, (a) => {
                         if (newcase == "flip" || newcase == "flipflop") {
                             return a.split('').map((c) => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
                         }
@@ -289,14 +267,22 @@ let moduleMetadata = {
                         if (newcase == "lower") {
                             return a.toLowerCase();
                         }
+                        if (newcase == "random") {
+                            let newText = "";
+                            for (let letter of a) {
+                                newText += Math.random() > 0.5 ? letter.toUpperCase() : letter.toLowerCase();
+                            }
+                            return newText;
+                        }
 
                         // todo: raise error here
                         return a;
                     });
                     return text;
                 };
-            } catch {
+            } catch (e) {
                 // todo: raise error here
+                console.log(e)
                 return text => text;
             }
         }

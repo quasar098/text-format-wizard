@@ -4,15 +4,19 @@
 
     import InputBox from '../InputBox.svelte';
 
+    import Dropdown from '../Dropdown.svelte';
+
     export let info = {};
+
+    info.newcase = info.newcase ?? "keep";
 </script>
 
 <p>Regex to find and change case of</p>
 <InputBox bind:value={info.regex}/>
 <spacer/>
 
-<p>New case (upper/lower/flipflop/keep)</p>
-<InputBox bind:value={info.newcase}/>
+<p>New case</p>
+<Dropdown bind:value={info.newcase} options={["upper", "lower", "flipflop", "keep", "random"]}/>
 
 <style>
 
