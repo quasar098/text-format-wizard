@@ -39,7 +39,8 @@ export enum ModuleType {
     CountVowels = rst(),
     CountWords = rst(),
     CountConsonants = rst(),
-    Rotate = rst()
+    Rotate = rst(),
+    SumDigits = rst()
 }
 
 let moduleMap_ = {};
@@ -240,6 +241,25 @@ let moduleMetadata = {
                     return text => text
                 }
             };
+        }
+    },
+    [ModuleType.SumDigits]: {
+        name: "Sum Digits",
+        color: "fbb761",
+        lore: "Sum the digits of an integer",
+        description: "Sum the digits of an integer. Does not work on scientific notation.",
+        processMaker: (args) => {
+            return (text) => {
+                try {
+                    if (isNaN(text*1)) {
+                        return "undefined";
+                    }
+                    return text.toString().split("").map(Number).reduce((a, b) => {return a+b}, 0);
+                } catch {
+                    // todo: raise error here
+                    return "undefined";
+                }
+            }
         }
     },
     [ModuleType.ChangeCase]: {

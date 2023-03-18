@@ -39,7 +39,6 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - settings page
 - module lazy loading
 - ctrl-f to find in text
-- Dropdown.svelte
 
 ## module ideas:
 - execute if condition
