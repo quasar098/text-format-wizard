@@ -9,8 +9,5 @@
     info.method = info.method ?? "encrypt";
 </script>
 
+<p>What to do</p>
 <Dropdown bind:value={info.method} options={["encrypt", "decrypt"]}/>
-
-<style>
-
-</style>

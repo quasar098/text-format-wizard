@@ -12,7 +12,7 @@ function rst(): string {
 }
 
 // wtf
-const replaceTag = (k,v)=>((text)=>text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'),v).replaceAll(`\\%${k}%`,`%${k}%`))
+function replaceTag (k,v){return((text)=>text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'),v).replaceAll(`\\%${k}%`,`%${k}%`))}
 
 export enum ModuleType {
     Append = rst(),
@@ -377,7 +377,7 @@ let moduleMetadata = {
                         let texts = [];
                         for (let match of text.matchAll(regexObj)) {
                             let formatcopy = format;
-                            for (let index in match) {
+                            for (var index = 0; index < match.length; index++) {
                                 let group = match[index];
                                 if (index == 0) {
                                     formatcopy = replaceTag("original", group)(formatcopy);
@@ -598,7 +598,7 @@ export function sortedModuleTypes() {
     });
 }
 
-let bundledFunctions = [sha256, md5, caesarCipher, isNumeric];
+let bundledFunctions = [replaceTag, caesarCipher, isNumeric];
 
 export function calculate(text, modules=undefined) {
     if (modules == undefined) {
@@ -628,7 +628,7 @@ export function calculate(text, modules=undefined) {
         customJs += `_inp_text = (${String(step[1])})(${JSON.stringify(step[0])})(_inp_text);`;
     }
 
-    let bundledTexts = bundledFunctions.join("\n");
+    let bundledTexts = bundledFunctions.join(";\n");
 
     customJs = `function formatText(_inp_text) {
     ${bundledTexts}

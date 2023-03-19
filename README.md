@@ -34,8 +34,8 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - custom modules
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
+- similarly to above, bundle necessary functions when custom JS
 - example video of solving cyberskyline log analysis
-- only bundle necessary functions when custom JS
 - settings page
 - module lazy loading
 - ctrl-f to find in text
