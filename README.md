@@ -13,7 +13,9 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 
 ## try now
 
-it can be found [here](https://quasar.name/text-format-wizard/)
+it can be found at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard/)<br>
+if it's not working, it's because my server crashed probably<br>
+you can try cloning, running `npm i`, and then `npm run dev` and going to `http://localhost:5173` instead
 
 ## cool packages that i used
 
