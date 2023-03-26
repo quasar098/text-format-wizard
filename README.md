@@ -9,7 +9,7 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 
 ## demonstration
 
-*todo: insert demo video here*
+[![Watch the demonstration on youtube](https://yt-embed.live/embed?v=A9qjGUYoL7o)](https://www.youtube.com/watch?v=A9qjGUYoL7o)
 
 ## try now
 
