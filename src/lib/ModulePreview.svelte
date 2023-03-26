@@ -19,14 +19,19 @@
 
     $: styleVars = metadata != undefined ? {
         "title-color": `#${metadata.color}`,
-        "desc-color": `#${metadata.color}99`
+        "desc-color": `#${metadata.color}99`,
+        "bottom-right-desc-radius": closeable ? "0px" : "4px"
     } : {}
 
-    let closed = false;
+    let collapsed = false;
 
     let titleHasLength;
     if (moduleObject.args.title != undefined) {
         titleHasLength = moduleObject.args.title.length != 0
+    }
+
+    function toggleCollapsed() {
+        collapsed = !collapsed;
     }
 </script>
 
@@ -42,15 +47,33 @@
         <div class="module-title">
             <h3>{(metadata ?? {}).name}</h3>
         </div>
-        <div class="module-description {closeable ? '' : 'round'}">
-            {#if !closed}
+        {#if !collapsed}
+            <div class="module-description {closeable ? '' : 'round'}">
                 <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
+            </div>
+            {#if closeable}
+                <div class='collapse' on:click={toggleCollapsed}>
+                    
+                </div>
             {/if}
-        </div>
+        {:else}
+            <div class='expand' on:click={toggleCollapsed}>
+                
+            </div>
+        {/if}
     </div>
 </div>
 
 <style>
+    .expand,.collapse {
+        width: 100%;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        cursor: pointer;
+    }
     h3 {
         font-size: 18px;
     }
@@ -89,7 +112,7 @@
         width: calc(100% - 20px);
         display: inline-block;
     }
-    .round {
+    .closeable {
         border-radius: 4px;
     }
     ::selection {
@@ -103,7 +126,7 @@
     }
     .module-description {
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.3);
-        border-bottom-right-radius: 4px;
+        border-bottom-right-radius: var(--bottom-right-desc-radius);
         padding: 5px;
         background-color: var(--desc-color);
     }
