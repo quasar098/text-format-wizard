@@ -33,11 +33,13 @@
         background-color: #EEE;
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
         position: relative;
+        cursor: pointer;
     }
     .dropdown-option {
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         z-index: 10;
     }
     .dropdown-title {

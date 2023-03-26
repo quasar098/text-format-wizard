@@ -40,7 +40,8 @@ export enum ModuleType {
     CountWords = rst(),
     CountConsonants = rst(),
     Rotate = rst(),
-    SumDigits = rst()
+    SumDigits = rst(),
+    Duplicate = rst()
 }
 
 let moduleMap_ = {};
@@ -525,6 +526,30 @@ let moduleMetadata = {
                     }
                     let modded = ((rotate % text.length) + text.length) % text.length
                     return text.substring(modded) + text.substring(0, modded);
+                } catch (e) {
+                    // todo: raise error here
+                    return text;
+                }
+            }
+        }
+    },
+    [ModuleType.Duplicate]: {
+        name: "Duplicate",
+        color: "fbb761",
+        lore: "Duplicate the text some number of times",
+        description: "Duplicate the text a few times",
+        processMaker: (args) => {
+            let { amount } = args;
+            amount = amount ?? 0;
+            return (text) => {
+                try {
+                    amount = amount*1;
+                    if (isNaN(amount)) {
+                        // todo: raise error here
+
+                        return text;
+                    }
+                    return text.repeat(amount);
                 } catch (e) {
                     // todo: raise error here
                     return text;

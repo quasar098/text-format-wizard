@@ -1,5 +1,6 @@
 <script lang="ts">
     import { ModuleType, moduleMetadata } from './ts/master.ts';
+    import Tooltipable from './Tooltipable.svelte';
     import { showAddModuleModal, addModuleModalInfo } from './ts/stores';
     import cssVars from 'svelte-css-vars';
 
@@ -22,11 +23,13 @@
 </script>
 
 <div class="module-select" use:cssVars={styleVars}>
-    <div class="small add-button" on:click={doStuff} on:keydown={doStuff}>
-        <p class="plus">
-            +
-        </p>
-    </div>
+    <Tooltipable text={metadata.description} icon="Info">
+        <div class="small add-button" on:click={doStuff} on:keydown={doStuff}>
+            <p class="plus">
+                +
+            </p>
+        </div>
+    </Tooltipable>
     <div class="big">
         <div class="module-title">
             <h3>{metadata.name}</h3>
@@ -68,6 +71,7 @@
         cursor: pointer;
         user-select: none;
         transition: 0.2s background-color;
+        height: 100%;
     }
     .small:hover {
         background-color: var(--FOCUSED);

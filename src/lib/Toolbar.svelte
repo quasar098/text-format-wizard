@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { outputAsJs, recipeModules, showFindModuleModal } from './ts/stores'
+    import { outputAsJs, recipeModules, showFindModuleModal } from './ts/stores';
+    import Tooltipable from './Tooltipable.svelte';
 
     function changeJs() {
         outputAsJs.update(_ => !_);
@@ -7,7 +8,10 @@
     }
 
     function clearModules() {
-        recipeModules.set([]);
+        // todo: change from confirm to custom component
+        if (confirm("Are you sure you want to do this?")) {
+            recipeModules.set([]);
+        }
     }
 
     function openSearchMenu() {
@@ -16,14 +20,29 @@
 </script>
 
 <div class="toolbar">
-    <h4 class="icon settings"> 󰒓 </h4>
-    <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
-    <h4 class="icon code" on:click={clearModules} on:keydown={clearModules}>  </h4>
-    <a href="https://github.com/quasar098/text-format-wizard#demonstration" rel="noreferrer" target="_blank"><h4 class="icon code right">
-         <span></span>
-    </h4></a>
-    <a href="https://quasar.name/"><h4 class="icon code">  </h4></a>
-    <h4 class="icon code" on:click={openSearchMenu}>  </h4>
+    <!-- todo: implement settings -->
+    <Tooltipable text="Settings (not implemented yet)" icon="Info">
+        <h4 class="icon settings"> 󰒓 </h4>
+    </Tooltipable>
+    <Tooltipable text="Toggle Custom JS Output (may or may not work yet)" icon="Info">
+        <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
+    </Tooltipable>
+    <Tooltipable text="Clear all Modules" icon="Info">
+        <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}>  </h4>
+    </Tooltipable>
+    <Tooltipable text="Demonstration of Text Format Wizard" icon="Info">
+        <a href="https://github.com/quasar098/text-format-wizard#demonstration" rel="noreferrer" target="_blank">
+            <h4 class="icon demo right">
+                 <span></span>
+            </h4>
+        </a>
+    </Tooltipable>
+    <Tooltipable text="Go Back to quasar.name" icon="Info">
+        <a href="https://quasar.name/"><h4 class="icon home">  </h4></a>
+    </Tooltipable>
+    <Tooltipable text="Module Quick Finder (Ctrl-Shift-P)" icon="Info">
+        <h4 class="icon search" on:click={openSearchMenu}>  </h4>
+    </Tooltipable>
 </div>
 
 <style>

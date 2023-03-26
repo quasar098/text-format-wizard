@@ -8,6 +8,7 @@
     import cssVars from 'svelte-css-vars';
 
     import { Svroller } from "svrollbar";
+    import TooltipBox from "./lib/TooltipBox.svelte";
 
     import InputOutputTextareas from "./lib/InputOutputTextareas.svelte";
 
@@ -41,16 +42,20 @@
 
     <div class="bottom">
         <InputOutputTextareas/>
-        <Frame title="󱌣" width=5 alignment="center" overflow="hidden">
-            <Toolbar/>
+        <Frame title="󱌣" width=5 alignment="center" overflow="auto">
+            <Svroller width="100%" height="100%" alwaysVisible="true">
+                <Toolbar/>
+            </Svroller>
         </Frame>
     </div>
+
+    <TooltipBox/>
 
 </main>
 
 <style>
     .top {
-        height: 55%;
+        height: 50%;
     }
     .bottom {
         height: 45%;
