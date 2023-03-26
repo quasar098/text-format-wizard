@@ -27,7 +27,7 @@
 
 <style>
     .outer {
-        height: calc(5% - 10px);
+        height: 30px;
         margin-left: 10px;
         margin-right: 10px;
         background-color: var(--FRAME-COLOR);

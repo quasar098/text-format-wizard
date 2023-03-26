@@ -43,7 +43,8 @@
         // fieldNormWeight: 1,
         keys: [
             "metadata.name",
-            "metadata.lore"
+            "metadata.lore",
+            "metadata.keywords"
         ]
     };
 

@@ -16,6 +16,7 @@
         }
         onclick();
     }
+
     $: styleVars = {
         "title-color": `#${metadata.color}`,
         "desc-color": `#${metadata.color}99`

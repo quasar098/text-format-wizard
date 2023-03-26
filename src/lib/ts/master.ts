@@ -27,7 +27,7 @@ export enum ModuleType {
     ChangeCase = rst(),
     CountLineOccurences = rst(),
     CountMatches = rst(),
-    CaptureGroup = rst(),
+    KeepRegex = rst(),
     RemoveBlankLines = rst(),
     Hash = rst(),
     CountChars = rst(),
@@ -90,14 +90,28 @@ let moduleMetadata = {
         name: "Regex Replace",
         color: "f9cb40",
         lore: "Replace any matches of regex",
-        description: "Find matches of regex and replace each of those matches with another text",
+        description: "Find matches of regex and replace each of those matches with another format",
         processMaker: (args) => {
-            let { remove, insert } = args;
+            let { remove, format } = args;
             remove = remove ?? "";
-            insert = insert ?? "";
+            format = format ?? "";
             try {
                 let regexp = new RegExp(remove, 'g')
-                return (text) => { return text.replaceAll(regexp, insert) }
+                return (text) => {
+                    return text.replaceAll(regexp, (...match) => {
+                        let formatcopy = format;
+                        match = match.slice(0, -2);
+                        for (var index = 0; index < match.length; index++) {
+                            let group = match[index];
+                            if (index == 0) {
+                                formatcopy = replaceTag("original", group)(formatcopy);
+                                continue;
+                            }
+                            formatcopy = replaceTag((index-1) + "", group)(formatcopy);
+                        }
+                        return formatcopy;
+                    })
+                }
             } catch {
                 // todo: raise error here
                 return text => text;
@@ -362,11 +376,12 @@ let moduleMetadata = {
             return (text) => text.split("").filter(_ => !excluded.includes(_)).join("").length + "";
         }
     },
-    [ModuleType.CaptureGroup]: {
-        name: "Capture Group",
+    [ModuleType.KeepRegex]: {
+        name: "Keep Regex",
         color: "f9cb40",
-        lore: "Format capture groups in a regex query",
-        description: "Format capture groups from regex query. Additionally, specify which capture groups to keep",
+        lore: "Keep Regex matches and format them too",
+        description: "Only keep matches of regex and list them out",
+        keywords: "Capture Group",
         processMaker: (args) => {
             let { regex, format } = args;
             regex = regex ?? "\n";

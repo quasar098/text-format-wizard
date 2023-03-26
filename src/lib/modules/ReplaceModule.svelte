@@ -10,8 +10,8 @@
 <p>Regex to replace</p>
 <InputBox bind:value={info.remove}/>
 <spacer/>
-<p>String to insert</p>
-<InputBox bind:value={info.insert}/>
+<p>Replacement format</p>
+<InputBox bind:value={info.format}/>
 
 <style>
 

@@ -22,6 +22,8 @@
         "desc-color": `#${metadata.color}99`
     } : {}
 
+    let closed = false;
+
     let titleHasLength;
     if (moduleObject.args.title != undefined) {
         titleHasLength = moduleObject.args.title.length != 0
@@ -37,24 +39,14 @@
         </div>
     {/if}
     <div class="big">
-        {#if moduleObject.moduleType == ModuleType.Comment}
-            {#if titleHasLength}
-                <div class="module-title">
-                    <h3>{moduleObject.args.title}</h3>
-                </div>
+        <div class="module-title">
+            <h3>{(metadata ?? {}).name}</h3>
+        </div>
+        <div class="module-description {closeable ? '' : 'round'}">
+            {#if !closed}
+                <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
             {/if}
-            <div class="module-description {closeable ? '' : 'round'}">
-                <InputBox bind:value={moduleObject.args.description}/>
-            </div>
-        {:else}
-            <div class="module-title">
-                <h3>{(metadata ?? {}).name}</h3>
-            </div>
-            <div class="module-description {closeable ? '' : 'round'}">
-                <svelte:component this={moduleMap[moduleObject.moduleType]}
-                    bind:info={moduleObject.args}/>
-            </div>
-        {/if}
+        </div>
     </div>
 </div>
 

@@ -55,10 +55,10 @@
 
 <style>
     .top {
-        height: 50%;
+        height: calc(50% - 20px);
     }
     .bottom {
-        height: 45%;
+        height: calc(50% - 20px);
     }
     main {
         height: 100%;
