@@ -1,8 +1,9 @@
-import { recipeModules, outputAsJs } from './stores'
+import { recipeModules, outputAsJs, tooltipStack } from './stores'
 import { get } from "svelte/store"
 import { md5 } from "./md5.ts";
 import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
+import { genTooltip } from "./tooltip.ts"
 
 export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
@@ -560,7 +561,7 @@ let moduleMetadata = {
                 try {
                     amount = amount*1;
                     if (isNaN(amount)) {
-                        // todo: raise error here
+                        showError("Duplicate Module takes a number")
 
                         return text;
                     }
@@ -573,6 +574,13 @@ let moduleMetadata = {
         }
     }
 };
+
+function showError(message) {
+    tooltipStack.update((stack) => {
+        stack.push(genTooltip(message, "Warning", WARNING_UUID));
+        return stack;
+    })
+}
 
 function isNumeric(value) {
     return /^-?\d+$/.test(value);
@@ -639,8 +647,15 @@ export function sortedModuleTypes() {
 }
 
 let bundledFunctions = [replaceTag, caesarCipher, isNumeric];
+const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
 
 export function calculate(text, modules=undefined) {
+    tooltipStack.update((stack) => {
+        // interesting...
+        stack = stack.filter(_ => _.uuid != WARNING_UUID);
+        return stack;
+    })
+
     if (modules == undefined) {
         modules = get(recipeModules);
     }

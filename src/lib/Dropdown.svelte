@@ -51,6 +51,9 @@
         justify-content: space-between;
         user-select: none;
     }
+    .outer-dropdown:hover:not(:has(.dropdown-option:hover)) {
+        background-color: var(--FOCUSED);
+    }
     .caret-down {
         font-size: 24px;
     }
@@ -66,6 +69,7 @@
         height: 32px;
     }
     .dropdown-option:hover {
-        background-color: var(--DULL-ACCENT);
+        background-color: var(--FOCUSED);
+        box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
     }
 </style>

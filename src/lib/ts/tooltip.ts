@@ -11,3 +11,7 @@ export interface Tooltip {
     icon: TooltipIcon,
     uuid: string
 }
+
+export function genTooltip(text, iconName, uuid=undefined): Tooltip {
+    return {text, icon: iconName, uuid: uuid ?? crypto.randomUUID()};
+}

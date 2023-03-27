@@ -6,6 +6,7 @@
     export let info = {};
 </script>
 
+<span></span>
 <InputBox bind:value={info.description}/>
 
 <style>
