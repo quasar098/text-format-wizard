@@ -51,7 +51,7 @@
             <h3>{(metadata ?? {}).name}</h3>
         </div>
         {#if !collapsed}
-            <div class="module-description{closeable ? ' ' : ' closeable'}" transition:slide={{duration: 400}}>
+            <div class="module-description{closeable ? ' ' : ' closeable'}" transition:slide|local>
                 <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
             </div>
         {/if}
