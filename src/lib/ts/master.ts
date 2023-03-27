@@ -73,7 +73,7 @@ let moduleMetadata = {
                 let regexp = new RegExp(remove, 'g')
                 return (text) => { return text.replaceAll(regexp, '') }
             } catch {
-                // todo: raise error here
+                showWarning(`Invalid regex at Remove module`);
                 return text => text;
             }
         }
@@ -113,8 +113,8 @@ let moduleMetadata = {
                         return formatcopy;
                     })
                 }
-            } catch {
-                // todo: raise error here
+            } catch (e) {
+                showWarning(`Error with Regex Replace module: ${e}`);
                 return text => text;
             }
         }
@@ -140,7 +140,7 @@ let moduleMetadata = {
             insert = insert ?? "";
             index = index ?? 0;
             if (isNaN(parseInt(index))) {
-                // todo: raise error here
+                showWarning(`Invalid index for Insert module`);
                 return text => text;
             }
             index = parseInt(index);
@@ -169,7 +169,7 @@ let moduleMetadata = {
                     return text;
                 };
             } catch {
-                // todo: raise error here
+                showWarning(`Invalid Regex at Insert After module`);
                 return text => text;
             }
         }
@@ -196,7 +196,7 @@ let moduleMetadata = {
                     return text;
                 };
             } catch {
-                // todo: raise error here
+                showWarning(`Invalid Regex at Insert Before module`);
                 return text => text;
             }
         }
@@ -217,7 +217,7 @@ let moduleMetadata = {
         description: "Run a module on each line individually and concatenate the results",
         processMaker: (args) => {
             if (args.moduleType == undefined) {
-                // todo: raise error here
+                showWarning(`Please select a module`);
                 return text => text;
             }
             return (text) => {
@@ -243,7 +243,7 @@ let moduleMetadata = {
         description: "Run a module on each regex match and replace the original in the text",
         processMaker: (args) => {
             if (args.moduleType == undefined) {
-                // todo: raise error here
+                showWarning(`Please select a module`);
                 return text => text;
             }
             return (text) => {
@@ -253,7 +253,7 @@ let moduleMetadata = {
                         return calculate(a, [args]);
                     });
                 } catch (e) {
-                    // todo: raise error here
+                    showWarning(`Invalid Regex at Execute Per Find module: ${e}`);
                     return text => text
                 }
             };
@@ -262,17 +262,18 @@ let moduleMetadata = {
     [ModuleType.SumDigits]: {
         name: "Sum Digits",
         color: "fbb761",
-        lore: "Sum the digits of an integer",
-        description: "Sum the digits of an integer. Does not work on scientific notation.",
+        lore: "Sum the digits of an number",
+        description: "Sum the digits of an number. Does not work on scientific notation. Outputs undefined on error",
         processMaker: (args) => {
             return (text) => {
                 try {
                     if (isNaN(text*1)) {
+                        showWarning("Error at Sum Digits module");
                         return "undefined";
                     }
                     return text.toString().split("").map(Number).reduce((a, b) => {return a+b}, 0);
                 } catch {
-                    // todo: raise error here
+                    showWarning("Error at Sum Digits module");
                     return "undefined";
                 }
             }
@@ -311,14 +312,13 @@ let moduleMetadata = {
                             return newText;
                         }
 
-                        // todo: raise error here
+                        showWarning(`Something went wrong with Change Case module`);
                         return a;
                     });
                     return text;
                 };
             } catch (e) {
-                // todo: raise error here
-                console.log(e)
+                showWarning(`Error at Change Case module: ${e}`);
                 return text => text;
             }
         }
@@ -361,7 +361,7 @@ let moduleMetadata = {
                     return "" + (text.match(regexObj) ?? []).length;
                 };
             } catch {
-                // todo: raise error here
+                showWarning(`Invalid Regex at Count Matches Module`);
                 return (text) => text;
             }
         }
@@ -405,12 +405,13 @@ let moduleMetadata = {
                             texts.push(formatcopy);
                         }
                         return texts.join("\n");
-                    } catch {
+                    } catch (e) {
+                        showWarning(`Error with Keep Regex Module: ${e}`);
                         return text;
                     }
                 }
-            } catch {
-                // todo: raise error here
+            } catch (e) {
+                showWarning(`Error with Keep Regex Module: ${e}`);
                 return (text) => text;
             }
         }
@@ -482,7 +483,7 @@ let moduleMetadata = {
                         return text;
                     }
                 } catch {
-                    // todo: raise error here
+                    showWarning("Error with Base64 Module")
                     return text;
                 }
             }
@@ -536,14 +537,14 @@ let moduleMetadata = {
                 try {
                     rotate = rotate*1;
                     if (isNaN(rotate)) {
-                        // todo: raise error here
+                        showWarning(`Rotate Module takes a number`);
 
                         return text;
                     }
                     let modded = ((rotate % text.length) + text.length) % text.length
                     return text.substring(modded) + text.substring(0, modded);
                 } catch (e) {
-                    // todo: raise error here
+                    showWarning(`Rotate Module Error: ${e}`)
                     return text;
                 }
             }
@@ -561,13 +562,13 @@ let moduleMetadata = {
                 try {
                     amount = amount*1;
                     if (isNaN(amount)) {
-                        showError("Duplicate Module takes a number")
+                        showWarning("Duplicate Module takes a number");
 
                         return text;
                     }
                     return text.repeat(amount);
                 } catch (e) {
-                    // todo: raise error here
+                    showWarning(`Duplicate Module Error: ${e}`);
                     return text;
                 }
             }
@@ -575,9 +576,9 @@ let moduleMetadata = {
     }
 };
 
-function showError(message) {
+function showWarning(message) {
     tooltipStack.update((stack) => {
-        stack.push(genTooltip(message, "Warning", WARNING_UUID));
+        stack.splice(0, 0, genTooltip(message, "Warning", WARNING_UUID));
         return stack;
     })
 }
