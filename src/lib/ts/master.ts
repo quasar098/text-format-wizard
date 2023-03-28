@@ -522,7 +522,7 @@ let moduleMetadata = {
         lore: "Count number of words",
         description: "Count the number of words in the text",
         processMaker: (args) => {
-            return text => (text.match(/\w+(?:'\w+)?/g ?? "")).length;
+            return text => (text.match(/\w+(?:'\w+)?/g) ?? "").length;
         }
     },
     [ModuleType.Rotate]: {
