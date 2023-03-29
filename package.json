@@ -26,6 +26,7 @@
     "fuse.js": "^6.6.2",
     "svelte": "github:sveltejs/svelte",
     "svelte-css-vars": "^0.0.3",
-    "svrollbar": "^0.12.0"
+    "svrollbar": "^0.12.0",
+    "uuid": "^9.0.0"
   }
 }

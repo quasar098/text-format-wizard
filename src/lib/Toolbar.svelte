@@ -24,12 +24,6 @@
     <Tooltipable text="Settings (not implemented yet)" icon="Info">
         <h4 class="icon settings"> 󰒓 </h4>
     </Tooltipable>
-    <Tooltipable text="Toggle Custom JS Output (may or may not work yet)" icon="Info">
-        <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
-    </Tooltipable>
-    <Tooltipable text="Clear all Modules" icon="Info">
-        <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}>  </h4>
-    </Tooltipable>
     <Tooltipable text="Demonstration of Text Format Wizard" icon="Info">
         <a href="https://github.com/quasar098/text-format-wizard#demonstration" rel="noreferrer" target="_blank">
             <h4 class="icon demo right">
@@ -37,11 +31,14 @@
             </h4>
         </a>
     </Tooltipable>
-    <Tooltipable text="Go Back to quasar.name" icon="Info">
-        <a href="https://quasar.name/"><h4 class="icon home">  </h4></a>
+    <Tooltipable text="Clear all Modules" icon="Info">
+        <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}>  </h4>
     </Tooltipable>
     <Tooltipable text="Module Quick Finder (Ctrl-Shift-P)" icon="Info">
         <h4 class="icon search" on:click={openSearchMenu}>  </h4>
+    </Tooltipable>
+    <Tooltipable text="Toggle Custom JS Output (may or may not work yet)" icon="Info">
+        <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
     </Tooltipable>
 </div>
 

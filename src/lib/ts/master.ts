@@ -4,12 +4,17 @@ import { md5 } from "./md5.ts";
 import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 import { genTooltip } from "./tooltip.ts"
+import { v5 as uuidv5 } from 'uuid';
 
 export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
+const UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
+
+
+let rstCount = 0;
 // random string thing
 function rst(): string {
-    return crypto.randomUUID();
+    return uuidv5("" + (rstCount++), UUID_NAMESPACE);
 }
 
 // wtf
@@ -460,6 +465,7 @@ let moduleMetadata = {
                 if (isNumeric(shift)) {
                     return caesarCipher(text, shift);
                 } else {
+                    showWarning("Caesar shift takes a number");
                     return text;
                 }
             }

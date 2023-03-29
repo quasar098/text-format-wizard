@@ -88,7 +88,7 @@
 {#if $showFindModuleModal}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
-            <Frame title='Find module' enterTransition={discordIn} exitTransition={discordOut}>
+            <Frame title='Find module' enterTransition={discordIn} exitTransition={discordOut} onclose={modalClosed}>
 
                 <div class='container'>
                     <input type="text" name="tfw-find-module" class="search" spellcheck="false" placeholder="Search for a module..."

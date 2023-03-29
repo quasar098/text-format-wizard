@@ -9,6 +9,8 @@
     export let enterTransition = () => {};
     export let exitTransition = () => {};
 
+    import Tooltipable from "./Tooltipable.svelte";
+
     let displayType: string = "block";
     if (width != 100) {
         displayType = "inline-block";
@@ -40,9 +42,11 @@
         <div class="title-sect">
             <h2 class="title">{title}</h2>
             {#if onclose != undefined}
-                <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
-                    <p class="close"></p>
-                </div>
+                <Tooltipable text="Close Modal (esc)" icon="Info">
+                    <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
+                        <p class="close"></p>
+                    </div>
+                </Tooltipable>
             {/if}
         </div>
     {/if}
