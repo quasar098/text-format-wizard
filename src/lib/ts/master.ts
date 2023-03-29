@@ -17,8 +17,17 @@ function rst(): string {
     return uuidv5("" + (rstCount++), UUID_NAMESPACE);
 }
 
-// wtf
-function replaceTag (k,v){return((text)=>text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'),v).replaceAll(`\\%${k}%`,`%${k}%`))}
+// the best things
+function replaceTag (k,v){
+    if (typeof v == "function") {
+        return ((text) => {
+            return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), (...result) => v(...result)).replaceAll(`\\%${k}%`, `%${k}%`);
+        })
+    }
+    return ((text) => {
+        return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), v).replaceAll(`\\%${k}%`, `%${k}%`);
+    });
+}
 
 export enum ModuleType {
     Append = rst(),
@@ -566,6 +575,10 @@ let moduleMetadata = {
             amount = amount ?? 0;
             return (text) => {
                 try {
+                    if (amount == "") {
+                        showWarning("Duplicate Module is missing the argument");
+                        return text;
+                    }
                     amount = amount*1;
                     if (isNaN(amount)) {
                         showWarning("Duplicate Module takes a number");
