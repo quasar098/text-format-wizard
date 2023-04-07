@@ -18,7 +18,7 @@ function rst(): string {
 }
 
 // the best things
-function replaceTag (k,v){
+function replaceTag(k,v) {
     if (typeof v == "function") {
         return ((text) => {
             return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), (...result) => v(...result)).replaceAll(`\\%${k}%`, `%${k}%`);
@@ -56,7 +56,8 @@ export enum ModuleType {
     CountConsonants = rst(),
     Rotate = rst(),
     SumDigits = rst(),
-    Duplicate = rst()
+    Duplicate = rst(),
+    XOREachByte = rst()
 }
 
 let moduleMap_ = {};
@@ -130,6 +131,29 @@ let moduleMetadata = {
             } catch (e) {
                 showWarning(`Error with Regex Replace module: ${e}`);
                 return text => text;
+            }
+        }
+    },
+    [ModuleType.XOREachByte]: {
+        name: "XOR Each Byte",
+        color: "f9cb40",
+        lore: "XOR each byte",
+        description: "Take the ascii value of a bit, and then XOR it by a value between 0-255",
+        processMaker: (args) => {
+            let { value } = args;
+            value = value ?? 0;
+            if (value > 255) {
+                showWarning("Too high integer at XOR Each Byte module");
+                return (text) => text;
+            }
+            if (value < 0) {
+                showWarning("Too low integer at XOR Each Byte module");
+                return (text) => text;
+            }
+            try {
+                return (text) => text.split("").map(_ => String.fromCharCode(_.charCodeAt(0)^value)).join("");
+            } catch {
+                showWarning("Invalid integer value at XOR Each Byte module");
             }
         }
     },
@@ -666,6 +690,21 @@ export function sortedModuleTypes() {
     });
 }
 
+// %rand% -> 0 or 1
+// %rand(max)% -> 0...max-1 inclusive
+// %rand(min, max)% -> min...max-1 inclusive
+let replaceRand = replaceTag("rand(?:\\((?:([\\d]+(?:\\.[\\d]+)?)(?:,([\\d]+(?:\\.[\\d]+)?))?)?\\))?", (...args) => {
+    let first = args[1];
+    let second = args[2];
+    if (first == undefined) {
+        return Math.floor(Math.random()*2);
+    }
+    if (second == undefined) {
+        return Math.floor(Math.random()*(first*1+1));
+    }
+    return Math.floor(Math.random()*(second*1-first*1+1))+first*1;
+});
+
 let bundledFunctions = [replaceTag, caesarCipher, isNumeric];
 const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
 
@@ -690,6 +729,8 @@ export function calculate(text, modules=undefined) {
         for (let arg of Object.keys(argumens)) {
             if (typeof argumens[arg] == 'string') {
                 argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\n"), "\n");
+                argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\t"), "\t");
+                argumens[arg] = replaceRand(argumens[arg]);
             }
         }
         let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
