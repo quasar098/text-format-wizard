@@ -7,10 +7,33 @@
     function toggleShown() {
         shown = !shown;
     }
+
+    function keydownHandler(e) {
+        if (dropdownTitle == null) {
+            return;
+        }
+        if (dropdownTitle.matches(":hover")) {
+            if (options.indexOf(value) == -1) {
+                return;
+            }
+            if (e.keyCode == 38) {
+                value = options[(((options.indexOf(value)-1) % options.length) + options.length) % options.length]
+            }
+            if (e.keyCode == 40) {
+                value = options[(((options.indexOf(value)+1) % options.length) + options.length) % options.length]
+            }
+            e.preventDefault(true);
+            return false;
+        }
+    }
+
+    let dropdownTitle;
 </script>
 
+<svelte:body on:keydown={keydownHandler}/>
+
 <div class="outer-dropdown">
-    <div class="dropdown-title" on:click={toggleShown}>
+    <div class="dropdown-title" on:click={toggleShown} bind:this={dropdownTitle}>
         <p>{value}</p>
         <p class="caret-down"></p>
     </div>
