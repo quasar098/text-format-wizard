@@ -29,6 +29,10 @@ function replaceTag(k,v) {
     });
 }
 
+function replaceTagWithArgs(tag, argNumber) {
+    // todo: do this maybe
+}
+
 export enum ModuleType {
     Append = rst(),
     Replace = rst(),
@@ -705,7 +709,7 @@ let replaceRand = replaceTag("rand(?:\\((?:([\\d]+(?:\\.[\\d]+)?)(?:,([\\d]+(?:\
     return Math.floor(Math.random()*(second*1-first*1+1))+first*1;
 });
 
-let bundledFunctions = [replaceTag, caesarCipher, isNumeric];
+let bundledFunctions = [replaceTag, replaceRand, caesarCipher, isNumeric];
 const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
 
 export function calculate(text, modules=undefined) {
