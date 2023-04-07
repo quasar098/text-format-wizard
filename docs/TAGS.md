@@ -6,7 +6,9 @@ tags are used in module arguments and they get replaced during processing of the
 
 example:
 
-*todo put example here*
+![image](https://user-images.githubusercontent.com/70716985/230640677-5ea8e6a2-e693-41d4-8e1f-68bc1cde5b69.png)
+
+in this example, a number from 1 to 5 (inclusive) will be appended
 
 some tags are global, like `%rand%`, but some are specific to modules, like the Keep Regex `%original%`
 
