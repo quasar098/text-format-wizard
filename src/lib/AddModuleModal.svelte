@@ -23,8 +23,10 @@
             document.activeElement.blur();
         }
 
-        if (e.keyCode == 13) {
-            addModule();
+        if (showAddModuleModal) {
+            if (e.keyCode == 13) {
+                addModule();
+            }
         }
 
         if (e.keyCode == 80 && e.shiftKey && e.ctrlKey) {
