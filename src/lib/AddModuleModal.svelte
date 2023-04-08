@@ -23,7 +23,8 @@
             document.activeElement.blur();
         }
 
-        if (showAddModuleModal) {
+        if ($showAddModuleModal) {
+            console.log(showAddModuleModal);
             if (e.keyCode == 13) {
                 addModule();
             }
