@@ -709,6 +709,13 @@ let replaceRand = replaceTag("rand(?:\\((?:([\\d]+(?:\\.[\\d]+)?)(?:,([\\d]+(?:\
     return Math.floor(Math.random()*(second*1-first*1+1))+first*1;
 });
 
+// %choose(chars)% -> random char from chars. ) and , chars can be escaped to be inserted
+let replaceChoose = replaceTag("choose(?:\\((?:((?:(?<=\\\\)(?:.)|[^,)])+))\\))", (...args) => {
+    // kinda jank ngl
+    let possible = args[1].replaceAll(/\\(.)/g, (_,c) => c);
+    return possible[Math.floor(Math.random()*possible.length)];
+})
+
 let bundledFunctions = [replaceTag, replaceRand, caesarCipher, isNumeric];
 const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
 
@@ -735,6 +742,7 @@ export function calculate(text, modules=undefined) {
                 argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\n"), "\n");
                 argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\t"), "\t");
                 argumens[arg] = replaceRand(argumens[arg]);
+                argumens[arg] = replaceChoose(argumens[arg]);
             }
         }
         let convert = moduleMetadata[modul.moduleType].processMaker(argumens);

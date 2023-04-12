@@ -46,12 +46,11 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - settings page
 - module lazy loading
 - ctrl-f to find in text
-- execute for each has a special "index" tag
+- execute for each has a special "index" tag representing the number of iterations
+- change color scheme but keep frequently used modules the same color
 
 ## module ideas:
 - execute if condition
 - fib sequence
 - jtr double
 - register logic
-- random char from chars
-- random number
