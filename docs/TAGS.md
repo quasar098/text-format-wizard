@@ -12,8 +12,6 @@ in this example, a number from 1 to 5 (inclusive) will be appended
 
 some tags are global, like `%rand%`, but some are specific to modules, like the Keep Regex `%original%`
 
-## list of global tags
-
 ## all global tags
 
 ### `%rand%`
@@ -22,3 +20,7 @@ some tags are global, like `%rand%`, but some are specific to modules, like the 
 - `%rand()` - alias for `%rand%`
 - `%rand(max)%` - number from 0 to max, inclusive of both
 - `%rand(min, max)%` - number from min to max, inclusive of both
+
+### `%choose%`
+
+- `%choose(chars)%` - choose random character from chars

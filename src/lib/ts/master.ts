@@ -11,6 +11,8 @@ export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f
 const UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
 
 
+export let loopingModuleIndexStack = [];
+
 let rstCount = 0;
 // random string thing
 function rst(): string {
@@ -263,17 +265,16 @@ let moduleMetadata = {
                 return text => text;
             }
             return (text) => {
-                let lineRegex = /(\n|^).*/g;
                 let index = 0;
+                let indexStackIndex = loopingModuleIndexStack.length;
+                loopingModuleIndexStack.push({index: 0});
                 let allModified = [];
-                for (let match of text.matchAll(lineRegex)) {
-                    let matchedText = match[0];
-                    if (index != 0) {
-                        matchedText = matchedText.slice(1)
-                    }
-                    allModified.push(calculate(matchedText, [args]));
+                for (let match of text.split("\n")) {
+                    allModified.push(calculate(match, [args]));
                     index++;
+                    loopingModuleIndexStack[indexStackIndex].index = index;
                 }
+                loopingModuleIndexStack.pop();
                 return allModified.join("\n");
             };
         }
@@ -291,9 +292,16 @@ let moduleMetadata = {
             return (text) => {
                 try {
                     let findRegex = new RegExp(args.regex ?? '.*', 'g')
-                    return text.replaceAll(findRegex, (a) => {
+                    let index = 0;
+                    let indexStackIndex = loopingModuleIndexStack.length;
+                    loopingModuleIndexStack.push({index: 0});
+                    let _ = text.replaceAll(findRegex, (a) => {
+                        index++;
+                        loopingModuleIndexStack[indexStackIndex].index = index-1;
                         return calculate(a, [args]);
                     });
+                    loopingModuleIndexStack.pop();
+                    return _;
                 } catch (e) {
                     showWarning(`Invalid Regex at Execute Per Find module: ${e}`);
                     return text => text
@@ -727,6 +735,7 @@ export function calculate(text, modules=undefined) {
     })
 
     if (modules == undefined) {
+        loopingModuleIndexStack = [];
         modules = get(recipeModules);
     }
     let recipe = [];
@@ -743,6 +752,10 @@ export function calculate(text, modules=undefined) {
                 argumens[arg] = argumens[arg].replaceAll(notBackslashedRegex("\\\\t"), "\t");
                 argumens[arg] = replaceRand(argumens[arg]);
                 argumens[arg] = replaceChoose(argumens[arg]);
+                for (let obji in loopingModuleIndexStack) {
+                    let obj = loopingModuleIndexStack[obji]
+                    argumens[arg] = replaceTag(`i${obji}`, obj.index)(argumens[arg]);
+                }
             }
         }
         let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
