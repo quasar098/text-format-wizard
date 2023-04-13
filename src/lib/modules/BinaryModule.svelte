@@ -2,10 +2,12 @@
     import { get } from 'svelte/store'
     import { ModuleType } from "../ts/master";
     import { recipeModules } from '../ts/stores';
-    import InputBox from '../InputBox.svelte';
+    import Dropdown from '../Dropdown.svelte';
 
     export let info = {};
+
+    info.method = info.method ?? "decode";
 </script>
 
-<p>Shift amount</p>
-<InputBox bind:value={info.shift}/>
+<p>What to do</p>
+<Dropdown bind:value={info.method} options={["encode", "decode"]}/>

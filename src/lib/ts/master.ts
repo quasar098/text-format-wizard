@@ -63,7 +63,8 @@ export enum ModuleType {
     Rotate = rst(),
     SumDigits = rst(),
     Duplicate = rst(),
-    XOREachByte = rst()
+    XOREachByte = rst(),
+    Binary = rst()
 }
 
 let moduleMap_ = {};
@@ -95,6 +96,51 @@ let moduleMetadata = {
                 return (text) => { return text.replaceAll(regexp, '') }
             } catch {
                 showWarning(`Invalid regex at Remove module`);
+                return text => text;
+            }
+        }
+    },
+    [ModuleType.Binary]: {
+        name: "Binary",
+        color: "e23e31",
+        lore: "Convert to and from 0s and 1s",
+        description: "Map 8-digit binary integers to UTF-16. Works in reverse too",
+        processMaker: (args) => {
+            let { method } = args;
+            method = method ?? "decode";
+            try {
+                return (text) => {
+                    try {
+                        if (method == "decode") {
+                            let cleansed = text.replaceAll(/[^01]+/g, "");
+                            if (cleansed.length % 8) {
+                                showWarning("The # of 0s and 1s is not divisible by eight");
+                                return text;
+                            }
+                            let total = "";
+                            while (cleansed.length) {
+                                cleansed = cleansed.replaceAll(/.{8}$/g, (_) => {
+                                    total = String.fromCharCode(parseInt(_, 2)) + total;
+                                    return "";
+                                })
+                            }
+                            return total;
+                        } else {
+                            return (
+                                Array
+                                .from(text)
+                                .reduce((acc, char) => acc.concat(char.charCodeAt().toString(2)), [])
+                                .map(bin => '0'.repeat(8 - bin.length) + bin )
+                                .join(' ')
+                            );
+                        }
+                    } catch (e) {
+                        showWarning("Evaluation error at Binary module");
+                        return text;
+                    }
+                }
+            } catch {
+                showWarning(`Unspecified error at Binary module`);
                 return text => text;
             }
         }
