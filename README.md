@@ -52,5 +52,5 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 ## module ideas:
 - execute if condition
 - fib sequence
-- jtr double
+- jtr rules maker
 - register logic

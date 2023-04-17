@@ -64,7 +64,12 @@ export enum ModuleType {
     SumDigits = rst(),
     Duplicate = rst(),
     XOREachByte = rst(),
-    Binary = rst()
+    Binary = rst(),
+    Hex = rst()
+}
+
+const moduleColor = {
+    encoding: "87abf0"
 }
 
 let moduleMap_ = {};
@@ -102,9 +107,9 @@ let moduleMetadata = {
     },
     [ModuleType.Binary]: {
         name: "Binary",
-        color: "e23e31",
+        color: moduleColor.encoding,
         lore: "Convert to and from 0s and 1s",
-        description: "Map 8-digit binary integers to UTF-16. Works in reverse too",
+        description: "Map 8-digit binary integers to UTF-8. Works in reverse too",
         processMaker: (args) => {
             let { method } = args;
             method = method ?? "decode";
@@ -130,7 +135,7 @@ let moduleMetadata = {
                                 Array
                                 .from(text)
                                 .reduce((acc, char) => acc.concat(char.charCodeAt().toString(2)), [])
-                                .map(bin => '0'.repeat(8 - bin.length) + bin )
+                                .map(bin => '0'.repeat(8 - bin.length) + bin)
                                 .join(' ')
                             );
                         }
@@ -141,6 +146,55 @@ let moduleMetadata = {
                 }
             } catch {
                 showWarning(`Unspecified error at Binary module`);
+                return text => text;
+            }
+        }
+    },
+    [ModuleType.Hex]: {
+        name: "Hexadecimal",
+        color: moduleColor.encoding,
+        lore: "Convert UTF-8 to hexadecimal and vice versa",
+        description: "Convert UTF-8 to hexadecimal and other way too. Choose UTF-8 if unsure which to choose",
+        processMaker: (args) => {
+            let { method } = args;
+            method = method ?? "decode";
+            try {
+                return (text) => {
+                    try {
+                        if (method == "decode (ascii)") {
+                            let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
+                            if (cleansed.length % 2) {
+                                showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
+                                return text;
+                            }
+                            let total = "";
+                            while (cleansed.length) {
+                                cleansed = cleansed.replaceAll(/.{2}$/g, (_) => {
+                                    total = String.fromCharCode(parseInt(_, 16)) + total;
+                                    return "";
+                                })
+                            }
+                            return total;
+                        } else if (method == "decode (utf-8)") {
+                            let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
+                            if (cleansed.length % 2) {
+                                showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
+                                return text;
+                            }
+                            return decodeURIComponent('%' + cleansed.match(/.{1,2}/g).join('%'));;
+                        } else {
+                            return Array.from(text).map(c =>
+                                c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16) :
+                                encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
+                              ).join('');
+                        }
+                    } catch {
+                        showWarning(`Evaluation error at Hexadecimal module`);
+                        return text;
+                    }
+                }
+            } catch {
+                showWarning(`Unspecified error at Hexadecimal module`);
                 return text => text;
             }
         }
@@ -188,7 +242,7 @@ let moduleMetadata = {
     },
     [ModuleType.XOREachByte]: {
         name: "XOR Each Byte",
-        color: "f9cb40",
+        color: moduleColor.encoding,
         lore: "XOR each byte",
         description: "Take the ascii value of a bit, and then XOR it by a value between 0-255",
         processMaker: (args) => {
@@ -548,7 +602,7 @@ let moduleMetadata = {
         name: "Caesar Shift",
         color: "fbb771",
         lore: "Shift the text with caesar cipher",
-        description: "Shift the text with caesar cipher",
+        description: "Shift the text with caesar cipher. Works on letters A-Z (and a-z)",
         processMaker: (args) => {
             let { shift } = args;
             shift = shift ?? 0;
@@ -564,7 +618,7 @@ let moduleMetadata = {
     },
     [ModuleType.Base64]: {
         name: "Base 64 Encryption",
-        color: "fbb771",
+        color: moduleColor.encoding,
         lore: "Encrypt or decrypt base 64",
         description: "Encrypt or decrypt base 64",
         processMaker: (args) => {
