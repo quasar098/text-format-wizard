@@ -65,11 +65,13 @@ export enum ModuleType {
     Duplicate = rst(),
     XOREachByte = rst(),
     Binary = rst(),
-    Hex = rst()
+    Hex = rst(),
+    WordlistMask = rst()
 }
 
 const moduleColor = {
-    encoding: "87abf0"
+    encoding: "87abf0",
+    pwcrack: "ead637"
 }
 
 let moduleMap_ = {};
@@ -88,6 +90,89 @@ let moduleMap_ = {};
 export const moduleMap = moduleMap_;
 
 let moduleMetadata = {
+    [ModuleType.WordlistMask]: {
+        name: "Wordlist Mask",
+        color: moduleColor.pwcrack,
+        lore: "Emulate John the Ripper masks but slightly different",
+        description: "Expand different possibilities for password cracking wordlists and other utilities",
+        processMaker: (args) => {
+            let { mask } = args;
+            mask = mask ?? "?w";
+            return (text) => {
+                try {
+                    let splitted = [];
+                    mask.replaceAll(/([^?]+|\?.)/g, (m) => {
+                        splitted.push(m);
+                    });
+                    let intermediates = [];
+                    for (let newton of splitted) {
+                        if (!newton.length) {
+                            continue;
+                        }
+                        if (newton[0] == "?") {
+                            let loose = newton[1].toLowerCase() == newton[1];
+                            newton = newton[0] + newton[1].toLowerCase();
+                            // todo: switch-case instead
+                            if (newton[1] == "?") {
+                                intermediates.push({type: "questionmark", options: ["?"], count: 0});
+                            } else if (newton[1] == "w") {
+                                intermediates.push({type: "originalword", options: text.split("\n"), count: 0});
+                            } else if (newton[1] == "d") {
+                                intermediates.push({type: "digit", options: "0123456789".split(""), count: 0});
+                            } else if (newton[1] == "l") {
+                                intermediates.push({type: "letter", options: "abcdefghijklmnopqrstuvwxyz".split(""), count: 0});
+                            } else {
+                                continue;
+                            }
+                            if (loose && newton[1] != "w") {
+                                if (newton[1].toUpperCase() != newton[1].toLowerCase()) {
+                                    intermediates[intermediates.length-1].options.push("");
+                                }
+                            }
+                        } else {
+                            intermediates.push({type: "newton", options: [newton], count: 0});
+                        }
+                    }
+                    let possible = [];
+                    let times = 0;
+                    while (true) {
+                        let newPossible = "";
+                        for (let intermediate of intermediates) {
+                            // this should prevent numbers from showing up
+                            newPossible += (intermediate.options[intermediate.count]).toString(10);
+                        }
+                        possible.push(newPossible);
+                        for (let intermediate of intermediates) {
+                            let intermax = intermediate.options.length;
+                            if (intermediate.count++ >= intermax-1) {
+                                intermediate.count = 0;
+                                continue;
+                            }
+                            break;
+                        }
+                        winner: {
+                            for (let intermediate of intermediates) {
+                                if (intermediate.count != 0) {
+                                    break winner;
+                                }
+                            }
+                            return possible.join("\n");
+                        }
+                        if (times++ > 1000000) {
+                            showWarning("Looping too long at JTR Mask Module")
+                            return text;
+                        }
+                    }
+                    showWarning("Cannot escape while loop at JTR Mask Module");
+                    return text;
+                } catch (e) {
+                    console.log(e);
+                    showWarning(`Evaluation error at JTR Mask Module`);
+                    return text;
+                }
+            };
+        }
+    },
     [ModuleType.Remove]: {
         name: "Regex Remove",
         color: "e23e31",
