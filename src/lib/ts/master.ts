@@ -66,12 +66,17 @@ export enum ModuleType {
     XOREachByte = rst(),
     Binary = rst(),
     Hex = rst(),
-    WordlistMask = rst()
+    WordlistMask = rst(),
+    Reset = rst()
 }
 
 const moduleColor = {
     encoding: "87abf0",
-    pwcrack: "ead637"
+    pwcrack: "ead637",
+    comment: "757577",
+    generic: "fbb761",
+    logic: "f9cb40",
+    misc: "208f40"
 }
 
 let moduleMap_ = {};
@@ -182,7 +187,7 @@ let moduleMetadata = {
     },
     [ModuleType.Remove]: {
         name: "Regex Remove",
-        color: "e23e31",
+        color: moduleColor.generic,
         lore: "Remove any matches of regex",
         description: "Find matches of regex and remove them from the text",
         processMaker: (args) => {
@@ -293,7 +298,7 @@ let moduleMetadata = {
     },
     [ModuleType.RemoveBlankLines]: {
         name: "Remove Blank Lines",
-        color: "e23e31",
+        color: moduleColor.generic,
         lore: "Self explanatory",
         description: "Self explanatory",
         processMaker: (args) => {
@@ -302,7 +307,7 @@ let moduleMetadata = {
     },
     [ModuleType.Replace]: {
         name: "Regex Replace",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Replace any matches of regex",
         description: "Find matches of regex and replace each of those matches with another format",
         processMaker: (args) => {
@@ -357,7 +362,7 @@ let moduleMetadata = {
     },
     [ModuleType.Append]: {
         name: "Append",
-        color: "208f40",
+        color: moduleColor.misc,
         lore: "Append to the end of the text",
         description: "Add a specified text to the end of the current text",
         processMaker: (args) => {
@@ -368,7 +373,7 @@ let moduleMetadata = {
     },
     [ModuleType.Insert]: {
         name: "Insert",
-        color: "208f40",
+        color: moduleColor.misc,
         lore: "Insert text at a specific index",
         description: "Insert text at a specific index in the text. Will not replace text.",
         processMaker: (args) => {
@@ -385,7 +390,7 @@ let moduleMetadata = {
     },
     [ModuleType.InsertAfter]: {
         name: "Insert After",
-        color: "208f40",
+        color: moduleColor.misc,
         lore: "Insert text after some text",
         description: "Insert a string after each regex match",
         processMaker: (args) => {
@@ -412,7 +417,7 @@ let moduleMetadata = {
     },
     [ModuleType.InsertBefore]: {
         name: "Insert Before",
-        color: "208f40",
+        color: moduleColor.misc,
         lore: "Insert text before some text",
         description: "Insert a string before each regex match",
         processMaker: (args) => {
@@ -439,7 +444,7 @@ let moduleMetadata = {
     },
     [ModuleType.Comment]: {
         name: "Comment",
-        color: "757577",
+        color: moduleColor.comment,
         lore: "This does not modify the text",
         description: "This comment does not modify the text",
         processMaker: (args) => {
@@ -448,7 +453,7 @@ let moduleMetadata = {
     },
     [ModuleType.ExecutePerLine]: {
         name: "Execute Per Line",
-        color: "fbb761",
+        color: moduleColor.logic,
         lore: "Execute a module for each line",
         description: "Run a module on each line individually and concatenate the results",
         processMaker: (args) => {
@@ -473,7 +478,7 @@ let moduleMetadata = {
     },
     [ModuleType.ExecutePerFind]: {
         name: "Execute Per Find",
-        color: "fbb761",
+        color: moduleColor.logic,
         lore: "Execute a module for each regex match",
         description: "Run a module on each regex match and replace the original in the text",
         processMaker: (args) => {
@@ -503,7 +508,7 @@ let moduleMetadata = {
     },
     [ModuleType.SumDigits]: {
         name: "Sum Digits",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Sum the digits of an number",
         description: "Sum the digits of an number. Does not work on scientific notation. Outputs undefined on error",
         processMaker: (args) => {
@@ -523,7 +528,7 @@ let moduleMetadata = {
     },
     [ModuleType.ChangeCase]: {
         name: "Change Case",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Change the case of some text",
         description: "Change case of all regex matches to uppercase/lowercase",
         processMaker: (args) => {
@@ -567,7 +572,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountLineOccurences]: {
         name: "Count Line Occurences",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count the number of occurences of each line",
         description:
             "Count the number of occurences of each line and output it in a specific format",
@@ -591,7 +596,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountMatches]: {
         name: "Count Matches",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of regex matches",
         description: "Count the number of regex matches and set the text to that number",
         processMaker: (args) => {
@@ -610,7 +615,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountChars]: {
         name: "Count Chars",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of chars",
         description: "Count number of chars. Option to exclude chars",
         processMaker: (args) => {
@@ -621,7 +626,7 @@ let moduleMetadata = {
     },
     [ModuleType.KeepRegex]: {
         name: "Keep Regex",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Keep Regex matches and format them too",
         description: "Only keep matches of regex and list them out",
         keywords: "Capture Group",
@@ -660,7 +665,7 @@ let moduleMetadata = {
     },
     [ModuleType.Hash]: {
         name: "Hash Algorithm",
-        color: "f9cb40",
+        color: moduleColor.encoding,
         lore: "Hash the text with a hash algorithm",
         description: "Hash the text with a hash algorithm like sha256",
         processMaker: (args) => {
@@ -678,21 +683,21 @@ let moduleMetadata = {
     },
     [ModuleType.Reverse]: {
         name: "Reverse",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Reverse the text",
         description: "Reverse the text (qwer -> rewq)",
         processMaker: (args) => (text => text.split('').reverse().join(""))
     },
     [ModuleType.Reflect]: {
         name: "Reflect",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Reflect the text",
         description: "Reflect the text (qwer -> qwerrewq)",
         processMaker: (args) => (text => text + text.split('').reverse().join(""))
     },
     [ModuleType.Caesar]: {
         name: "Caesar Shift",
-        color: "fbb771",
+        color: moduleColor.encoding,
         lore: "Shift the text with caesar cipher",
         description: "Shift the text with caesar cipher. Works on letters A-Z (and a-z)",
         processMaker: (args) => {
@@ -734,7 +739,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountLines]: {
         name: "Count Lines",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of lines",
         description: "Count the number of lines (empty string is 1 line)",
         processMaker: (args) => {
@@ -743,7 +748,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountVowels]: {
         name: "Count Vowels",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of vowels",
         description: "Count the number of vowels (a,e,i,o,u)",
         processMaker: (args) => {
@@ -752,7 +757,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountConsonants]: {
         name: "Count Consonants",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of consonants",
         description: "Count the number of vowels (any that aren't a,e,i,o,u)",
         processMaker: (args) => {
@@ -761,7 +766,7 @@ let moduleMetadata = {
     },
     [ModuleType.CountWords]: {
         name: "Count Words",
-        color: "f9cb40",
+        color: moduleColor.generic,
         lore: "Count number of words",
         description: "Count the number of words in the text",
         processMaker: (args) => {
@@ -770,7 +775,7 @@ let moduleMetadata = {
     },
     [ModuleType.Rotate]: {
         name: "Rotate",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Move characters to the other end",
         description: "Loop the characters and offset them. Ex: Qwerty -> wertyQ",
         processMaker: (args) => {
@@ -795,7 +800,7 @@ let moduleMetadata = {
     },
     [ModuleType.Duplicate]: {
         name: "Duplicate",
-        color: "fbb761",
+        color: moduleColor.misc,
         lore: "Duplicate the text some number of times",
         description: "Duplicate the text a few times",
         processMaker: (args) => {
@@ -820,6 +825,13 @@ let moduleMetadata = {
                 }
             }
         }
+    },
+    [ModuleType.Reset]: {
+        name: "Reset",
+        color: moduleColor.logic,
+        lore: "Clear the text",
+        description: "Very computationally efficient way to clear the text",
+        processMaker: (args) => ((text) => "")
     }
 };
 

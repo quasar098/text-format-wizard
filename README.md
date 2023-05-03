@@ -38,7 +38,7 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 
 ## todo:
 - keyboard shortcuts
-- custom modules
+- custom modules w/ github oauth integration
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - similarly to above, bundle necessary functions when custom JS
@@ -46,11 +46,10 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - settings page
 - module lazy loading
 - ctrl-f to find in text
-- execute for each has a special "index" tag representing the number of iterations
 - change color scheme but keep frequently used modules the same color
+- be able to drag around the stuff
 
 ## module ideas:
 - execute if condition
 - fib sequence
-- jtr rules maker
 - register logic
