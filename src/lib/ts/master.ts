@@ -125,10 +125,12 @@ let moduleMetadata = {
                                 intermediates.push({type: "special", options: "!@#$%^&*()[]{}<>,.?/\\|+_=-~`\"';:".split(""), count: 0});
                             } else if (newton[1] == "u") {
                                 intermediates.push({type: "upperletter", options: "abcdefghijklmnopqrstuvwxyz".toUpperCase().split(""), count: 0});
+                            } else if (newton[1] == "a") {
+                                intermediates.push({type: "alphanum", options: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split(""), count: 0});
                             } else {
                                 continue;
                             }
-                            if (loose && newton[1] != "w") {
+                            if (loose) {
                                 if (newton[1].toUpperCase() != newton[1].toLowerCase()) {
                                     intermediates[intermediates.length-1].options.push("");
                                 }
@@ -162,7 +164,8 @@ let moduleMetadata = {
                             }
                             return possible.join("\n");
                         }
-                        if (times++ > 1000000) {
+                        // this is necessary (the number, not the restriction), trust me
+                        if (times++ > 6942069) {
                             showWarning("Looping too long at JTR Mask Module")
                             return text;
                         }
