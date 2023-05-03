@@ -23,11 +23,14 @@ Currently supports: <br>
 but ?d represents digits 0-9, and also an empty string (just in case it doesn't exist)
 <spacer/>
 Example:
+</p>
 <pre>
 ?W?D?d
 </pre>
+<p>
 This example mask will try all original words and trail 1 and 2 digits.<br>
 Result if only word in Input was "qwerty":
+</p>
 <pre>
 qwerty0
 qwerty1
@@ -43,7 +46,6 @@ qwerty97
 qwerty98
 qwerty99
 </pre>
-</p>
 
 <style>
 
