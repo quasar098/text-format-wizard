@@ -120,7 +120,11 @@ let moduleMetadata = {
                             } else if (newton[1] == "d") {
                                 intermediates.push({type: "digit", options: "0123456789".split(""), count: 0});
                             } else if (newton[1] == "l") {
-                                intermediates.push({type: "letter", options: "abcdefghijklmnopqrstuvwxyz".split(""), count: 0});
+                                intermediates.push({type: "lowerletter", options: "abcdefghijklmnopqrstuvwxyz".split(""), count: 0});
+                            } else if (newton[1] == "s") {
+                                intermediates.push({type: "special", options: "!@#$%^&*()[]{}<>,.?/\\|+_=-~`\"';:".split(""), count: 0});
+                            } else if (newton[1] == "u") {
+                                intermediates.push({type: "upperletter", options: "abcdefghijklmnopqrstuvwxyz".toUpperCase().split(""), count: 0});
                             } else {
                                 continue;
                             }
@@ -242,7 +246,7 @@ let moduleMetadata = {
         description: "Convert UTF-8 to hexadecimal and other way too. Choose UTF-8 if unsure which to choose",
         processMaker: (args) => {
             let { method } = args;
-            method = method ?? "decode";
+            method = method ?? "decode (ascii)";
             try {
                 return (text) => {
                     try {

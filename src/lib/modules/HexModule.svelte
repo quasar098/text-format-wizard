@@ -6,7 +6,7 @@
 
     export let info = {};
 
-    info.method = info.method ?? "decode";
+    info.method = info.method ?? "decode (ascii)";
 </script>
 
 <p>What to do</p>

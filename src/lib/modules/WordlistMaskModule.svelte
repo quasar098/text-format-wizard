@@ -9,7 +9,8 @@
 <p>Mask to append</p>
 <InputBox bind:value={info.mask}/>
 <spacer/>
-<p>Currently supports ?d for digits, ?w for original word, ?? for actual question mark, and ?l for lowercase letter</p>
+<p>Currently supports ?d for digits, ?w for original word, ?? for actual question mark, ?s for special char, ?u for uppercase, and ?l for lowercase letter<br>
+Use capital mask for guarenteed letter, lowercase for potential (don't have time to explain)</p>
 
 <style>
 
