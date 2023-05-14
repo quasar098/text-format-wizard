@@ -281,7 +281,7 @@ let moduleMetadata = {
                             return decodeURIComponent('%' + cleansed.match(/.{1,2}/g).join('%'));;
                         } else {
                             return Array.from(text).map(c =>
-                                c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16) :
+                                c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16).padStart(2, '0') :
                                 encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
                               ).join('');
                         }
