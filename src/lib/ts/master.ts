@@ -67,7 +67,8 @@ export enum ModuleType {
     Binary = rst(),
     Hex = rst(),
     WordlistMask = rst(),
-    Reset = rst()
+    Reset = rst(),
+    RandomLine = rst()
 }
 
 const moduleColor = {
@@ -244,6 +245,20 @@ let moduleMetadata = {
             } catch {
                 showWarning(`Unspecified error at Binary module`);
                 return text => text;
+            }
+        }
+    },
+    [ModuleType.RandomLine]: {
+        name: "Random Line",
+        color: moduleColor.misc,
+        lore: "Random line chooser",
+        description: "Simple",
+        processMaker: (args) => {
+            let { method } = args;
+            return (text) => {
+                let lines = text.split("\n");
+                let index = Math.floor(Math.random()*lines.length);
+                return lines[index];
             }
         }
     },
