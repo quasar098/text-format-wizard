@@ -24,3 +24,7 @@ some tags are global, like `%rand%`, but some are specific to modules, like the 
 ### `%choose%`
 
 - `%choose(chars)%` - choose random character from chars
+
+### `%v%`
+
+- `%v<name>%` - this tag gets replaced by the value stored in the register at `<name>`

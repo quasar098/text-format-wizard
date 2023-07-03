@@ -48,9 +48,7 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 ## module ideas:
 - execute if condition
 - fib sequence
-- register logic
 - add math modules to work with big numbers
 - CRT module
-- decimal module
+- color module (rgb, hex, hsl, etc)
 - javascript eval module (warning about it being unsafe to go with it)
-- cyclic pattern generator

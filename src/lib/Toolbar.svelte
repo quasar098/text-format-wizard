@@ -54,18 +54,18 @@
     .icon:hover {
         background-color: #00000033;
     }
-    .right * {
+    /* .right * {
         transform: translateX(2px);
     }
     span {
         display: block;
     }
-    h4 {
-        cursor: pointer;
-        user-select: none;
-    }
     a {
         color: black;
         text-decoration: none;
+    } */
+    h4 {
+        cursor: pointer;
+        user-select: none;
     }
 </style>

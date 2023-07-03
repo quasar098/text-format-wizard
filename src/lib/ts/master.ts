@@ -4,31 +4,17 @@ import { md5 } from "./md5.ts";
 import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 import { v5 as uuidv5 } from 'uuid';
-import { ModuleType, moduleColor, showWarning, WARNING_UUID } from "./modules/types.ts";
+import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag } from "./modules/types.ts";
 import { moduleMetadata as encodingModules } from './modules/encoding.ts';
 import { moduleMetadata as genericModules } from './modules/generic.ts';
+import { moduleMetadata as ctfModules } from './modules/ctf.ts';
 import { moduleMetadata as miscModules } from './modules/misc.ts';
 
 export let uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/g;
 
 
 export let loopingModuleIndexStack = [];
-
-// the best things
-function replaceTag(k,v) {
-    if (typeof v == "function") {
-        return ((text) => {
-            return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), (...result) => v(...result)).replaceAll(`\\%${k}%`, `%${k}%`);
-        })
-    }
-    return ((text) => {
-        return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), v).replaceAll(`\\%${k}%`, `%${k}%`);
-    });
-}
-
-function replaceTagWithArgs(tag, argNumber) {
-    // todo: do this maybe
-}
+let registerDB = {};
 
 let moduleMap_ = {};
 
@@ -52,95 +38,6 @@ let numLoaded = 0;
 export const moduleMap = moduleMap_;
 
 let moduleMetadata = {
-    [ModuleType.WordlistMask]: {
-        name: "Wordlist Mask",
-        color: moduleColor.pwcrack,
-        lore: "Emulate John the Ripper masks but slightly different",
-        description: "Expand different possibilities for password cracking wordlists and other utilities",
-        processMaker: (args) => {
-            let { mask } = args;
-            mask = mask ?? "?w";
-            return (text) => {
-                try {
-                    let splitted = [];
-                    mask.replaceAll(/([^?]+|\?.)/g, (m) => {
-                        splitted.push(m);
-                    });
-                    let intermediates = [];
-                    for (let newton of splitted) {
-                        if (!newton.length) {
-                            continue;
-                        }
-                        if (newton[0] == "?") {
-                            let loose = newton[1].toLowerCase() == newton[1];
-                            newton = newton[0] + newton[1].toLowerCase();
-                            // todo: switch-case instead
-                            if (newton[1] == "?") {
-                                intermediates.push({type: "questionmark", options: ["?"], count: 0});
-                            } else if (newton[1] == "w") {
-                                intermediates.push({type: "originalword", options: text.split("\n"), count: 0});
-                            } else if (newton[1] == "d") {
-                                intermediates.push({type: "digit", options: "0123456789".split(""), count: 0});
-                            } else if (newton[1] == "l") {
-                                intermediates.push({type: "lowerletter", options: "abcdefghijklmnopqrstuvwxyz".split(""), count: 0});
-                            } else if (newton[1] == "s") {
-                                intermediates.push({type: "special", options: "!@#$%^&*()[]{}<>,.?/\\|+_=-~`\"';:".split(""), count: 0});
-                            } else if (newton[1] == "u") {
-                                intermediates.push({type: "upperletter", options: "abcdefghijklmnopqrstuvwxyz".toUpperCase().split(""), count: 0});
-                            } else if (newton[1] == "a") {
-                                intermediates.push({type: "alphanum", options: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split(""), count: 0});
-                            } else {
-                                continue;
-                            }
-                            if (loose) {
-                                if (newton[1].toUpperCase() != newton[1].toLowerCase()) {
-                                    intermediates[intermediates.length-1].options.push("");
-                                }
-                            }
-                        } else {
-                            intermediates.push({type: "newton", options: [newton], count: 0});
-                        }
-                    }
-                    let possible = [];
-                    let times = 0;
-                    while (true) {
-                        let newPossible = "";
-                        for (let intermediate of intermediates) {
-                            // this should prevent numbers from showing up
-                            newPossible += (intermediate.options[intermediate.count]).toString(10);
-                        }
-                        possible.push(newPossible);
-                        for (let intermediate of intermediates) {
-                            let intermax = intermediate.options.length;
-                            if (intermediate.count++ >= intermax-1) {
-                                intermediate.count = 0;
-                                continue;
-                            }
-                            break;
-                        }
-                        winner: {
-                            for (let intermediate of intermediates) {
-                                if (intermediate.count != 0) {
-                                    break winner;
-                                }
-                            }
-                            return possible.join("\n");
-                        }
-                        // this is necessary (the number, not the restriction), trust me
-                        if (times++ > 6942069) {
-                            showWarning("Looping too long at JTR Mask Module")
-                            return text;
-                        }
-                    }
-                    showWarning("Cannot escape while loop at JTR Mask Module");
-                    return text;
-                } catch (e) {
-                    showWarning(`Evaluation error at JTR Mask Module`);
-                    return text;
-                }
-            };
-        }
-    },
     [ModuleType.Comment]: {
         name: "Comment",
         color: moduleColor.comment,
@@ -211,13 +108,33 @@ let moduleMetadata = {
         lore: "Clear the text",
         description: "Very computationally efficient way to clear the text",
         processMaker: (args) => ((text) => "")
+    },
+    [ModuleType.Store]: {
+        name: "Store",
+        color: moduleColor.logic,
+        lore: "Store current text in register",
+        description: "Can be accessed using %v<name>%",
+        processMaker:  (args) => {
+            let { name } = args;
+            if (name == undefined) {
+                showWarning("Register cannot have blank name");
+                return (text) => text;
+            }
+            return (text) => {
+                if (name.length !== 0) {
+                    registerDB[name] = text;
+                }
+                return text;
+            }
+        }
     }
 };
 
 let externalModules = [
     encodingModules,
     miscModules,
-    genericModules
+    genericModules,
+    ctfModules
 ];
 
 for (var externalModuleIndex in externalModules) {
@@ -343,6 +260,10 @@ export function calculate(text, modules=undefined) {
                 for (let obji in loopingModuleIndexStack) {
                     let obj = loopingModuleIndexStack[obji]
                     argumens[arg] = replaceTag(`i${obji}`, obj.index)(argumens[arg]);
+                }
+                for (let regn in registerDB) {
+                    let regv = registerDB[regn];
+                    argumens[arg] = replaceTag(`v${regn}`, regv)(argumens[arg]);
                 }
             }
         }

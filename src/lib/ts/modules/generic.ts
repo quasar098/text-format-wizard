@@ -1,4 +1,4 @@
-import { ModuleType, moduleColor, showWarning } from "./types.ts";
+import { ModuleType, moduleColor, showWarning, replaceTag } from "./types.ts";
 
 
 export let moduleMetadata = {

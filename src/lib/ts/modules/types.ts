@@ -3,6 +3,19 @@ import { tooltipStack } from '../stores'
 import { genTooltip } from "../tooltip.ts"
 
 
+// the best things
+export function replaceTag(k,v) {
+    if (typeof v == "function") {
+        return ((text) => {
+            return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), (...result) => v(...result)).replaceAll(`\\%${k}%`, `%${k}%`);
+        })
+    }
+    return ((text) => {
+        return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), v).replaceAll(`\\%${k}%`, `%${k}%`);
+    });
+}
+
+
 export const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
 
 
@@ -16,7 +29,7 @@ export function showWarning(message) {
 
 export const moduleColor = {
     encoding: "87abf0",
-    pwcrack: "ead637",
+    ctf: "ead637",
     comment: "757577",
     generic: "fbb761",
     logic: "f9cb40",
@@ -67,5 +80,7 @@ export enum ModuleType {
     WordlistMask = rst(),
     Reset = rst(),
     RandomLine = rst(),
-    Decimal = rst()
+    Decimal = rst(),
+    Cyclic = rst(),
+    Store = rst()
 }

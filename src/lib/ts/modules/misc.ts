@@ -27,6 +27,40 @@ export const moduleMetadata = {
             return (text) => text + append
         }
     },
+    [ModuleType.Cyclic]: {
+        name: "Cyclic",
+        color: moduleColor.misc,
+        lore: "Generate a cyclic pattern like pwntools",
+        description: "aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaa",
+        processMaker: (args) => {
+            try {
+                let { size } = args;
+                size = Math.floor(size*0.25);
+                if (isNaN(size) | size == 0) {
+                    showWarning("Invalid size for cyclic pattern");
+                    return (text) => text;
+                }
+                let total = "";
+                let registers = [0, 0, 0, 0];
+                for (var i=0; i<size; i++) {
+                    for (var i2=0; i2<4; i2++) {
+                        total += "abcdefghijklmnopqrstuvwxyz"[registers[i2]];
+                    }
+                    for (var i2=0; i2<4; i2++) {
+                        if (++registers[i2] == 26) {
+                            registers[i2] = 0;
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                return (text) => total;
+            } catch {
+                showWarning("Error while generating a cyclic pattern");
+                return (text) => "";
+            }
+        }
+    },
     [ModuleType.Insert]: {
         name: "Insert",
         color: moduleColor.misc,
