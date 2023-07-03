@@ -1,4 +1,17 @@
 import { v5 as uuidv5 } from 'uuid';
+import { tooltipStack } from '../stores'
+import { genTooltip } from "../tooltip.ts"
+
+
+export const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
+
+
+export function showWarning(message) {
+    tooltipStack.update((stack) => {
+        stack.splice(0, 0, genTooltip(message, "Warning", WARNING_UUID));
+        return stack;
+    })
+}
 
 
 export const moduleColor = {
@@ -13,7 +26,7 @@ export const moduleColor = {
 
 export const UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
 
-let rstCount = 0;
+export let rstCount = 0;
 // random string thing
 function rst(): string {
     return uuidv5("" + (rstCount++), UUID_NAMESPACE);
@@ -53,5 +66,6 @@ export enum ModuleType {
     Hex = rst(),
     WordlistMask = rst(),
     Reset = rst(),
-    RandomLine = rst()
+    RandomLine = rst(),
+    Decimal = rst()
 }

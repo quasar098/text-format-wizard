@@ -57,6 +57,7 @@
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
         position: relative;
         cursor: pointer;
+        user-select: none;
     }
     .dropdown-option {
         display: flex;

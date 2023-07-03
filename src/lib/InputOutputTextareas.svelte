@@ -32,13 +32,9 @@
         }
     }
 
-    const isSmartEditor = true;
+    const isSmartEditor = false;
 
     function textareaEventHandle(e) {
-        if (e.keyCode == 70 && e.ctrlKey) {  // ctrl f
-            e.preventDefault(true);
-            return false;
-        }
         if (isSmartEditor) {
             if (e.keyCode == 9) {  // tab
                 if (!e.shiftKey) {

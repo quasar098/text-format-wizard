@@ -7,13 +7,11 @@
 
     export let info = {};
 
-    // if using dropdown, set a default
-    // info.method = info.method ?? "decode";
+    info.method = info.method ?? "decode";
 </script>
 
-<!-- <p><something></p> -->
-<!-- <InputBox bind:value={info.<something>}/> -->
-<!-- <Dropdown bind:value={info.<something>} options={["<option1>", "<option2>"]}/> -->
+<p>Method to use</p>
+<Dropdown bind:value={info.method} options={["encode", "decode"]}/>
 
 <style>
 

@@ -140,4 +140,7 @@
         padding: 5px;
         background-color: var(--desc-color);
     }
+    .collapse,.expand,.close {
+        user-select: none;
+    }
 </style>

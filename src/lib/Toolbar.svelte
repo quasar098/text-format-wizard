@@ -24,13 +24,6 @@
     <Tooltipable text="Settings (not implemented yet)" icon="Info">
         <h4 class="icon settings"> 󰒓 </h4>
     </Tooltipable>
-    <Tooltipable text="Demonstration of Text Format Wizard" icon="Info">
-        <a href="https://github.com/quasar098/text-format-wizard#demonstration" rel="noreferrer" target="_blank">
-            <h4 class="icon demo right">
-                 <span></span>
-            </h4>
-        </a>
-    </Tooltipable>
     <Tooltipable text="Clear all Modules" icon="Info">
         <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}>  </h4>
     </Tooltipable>

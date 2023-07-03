@@ -25,10 +25,6 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 - uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css
 - uses [fuse.js](https://fusejs.io/) for quick module finder
 
-## demonstration
-
-[![Watch the demonstration on youtube](https://yt-embed.live/embed?v=A9qjGUYoL7o)](https://www.youtube.com/watch?v=A9qjGUYoL7o)
-
 ## why text format "wizard"?
 
 this is an unexpected submission for svelte hack 2023, and the theme that best fits my submission is best wizzbangery (wizard bangery ?)
@@ -53,3 +49,8 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - execute if condition
 - fib sequence
 - register logic
+- add math modules to work with big numbers
+- CRT module
+- decimal module
+- javascript eval module (warning about it being unsafe to go with it)
+- cyclic pattern generator

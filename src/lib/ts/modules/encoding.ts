@@ -1,4 +1,4 @@
-import { ModuleType, moduleColor } from "./types.ts";
+import { ModuleType, moduleColor, showWarning } from "./types.ts";
 
 
 export const moduleMetadata = {
@@ -43,6 +43,44 @@ export const moduleMetadata = {
                 }
             } catch {
                 showWarning(`Unspecified error at Binary module`);
+                return text => text;
+            }
+        }
+    },
+    [ModuleType.Decimal]: {
+        name: "Decimal",
+        color: moduleColor.encoding,
+        lore: "Convert to and from decimal",
+        description: "UTF-8 to decimal converter. Works in reverse too",
+        processMaker: (args) => {
+            let { method } = args;
+            method = method ?? "decode";
+            try {
+                return (text) => {
+                    try {
+                        if (method == "decode") {
+                            let cleansed = text.replaceAll(/[^\d]+/g, " ");
+                            let total = "";
+                            cleansed = cleansed.replaceAll(/\d{1,3}/g, (_) => {
+                                total += String.fromCharCode(parseInt(_));
+                                return "";
+                            })
+                            return total;
+                        } else {
+                            return (
+                                Array
+                                .from(text)
+                                .reduce((acc, char) => acc.concat(char.charCodeAt().toString()), [])
+                                .join(' ')
+                            );
+                        }
+                    } catch (e) {
+                        showWarning("Evaluation error at Decimal module");
+                        return text;
+                    }
+                }
+            } catch {
+                showWarning(`Unspecified error at Decimal module`);
                 return text => text;
             }
         }
