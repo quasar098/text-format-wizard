@@ -1,6 +1,7 @@
 import { writable, get } from 'svelte/store';
 import type { Writable } from "svelte/store";
-import { moduleMetadata, ModuleType } from "./master.ts";
+import { moduleMetadata } from "./master.ts";
+import { ModuleType } from "./modules/types.ts";
 import { TooltipIcon } from "./tooltip.ts";
 import type { TooltipType } from "./tooltip.ts";
 

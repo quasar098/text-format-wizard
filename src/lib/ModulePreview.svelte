@@ -2,7 +2,8 @@
 
     import { slide } from 'svelte/transition'
 
-    import { moduleMetadata, moduleMap, ModuleType } from "./ts/master";
+    import { moduleMetadata, moduleMap } from "./ts/master";
+    import { ModuleType } from "./ts/modules/types";
     import InputBox from "./InputBox.svelte";
     import { recipeModules } from "./ts/stores";
     import cssVars from 'svelte-css-vars';

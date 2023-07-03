@@ -1,7 +1,8 @@
 <script lang="ts">
     import { fade } from 'svelte/transition'
-    import { ModuleType, moduleMap,
+    import { moduleMap,
         uuidRegex, sortedModuleTypes, moduleMetadata } from "./ts/master";
+    import { ModuleType } from './ts/modules/types';
     import ModulePickerOption from "./ModulePickerOption.svelte";
 
     import { Svroller } from "svrollbar";

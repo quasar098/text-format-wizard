@@ -1,7 +1,8 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
-    import { ModuleType, moduleMetadata } from './ts/master';
+    import { moduleMetadata } from './ts/master';
+    import { ModuleType } from "./ts/modules/types.ts"
     import { sortedModuleTypes } from "./ts/master";
     import { showFindModuleModal, addModuleModalInfo, showAddModuleModal } from './ts/stores';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";

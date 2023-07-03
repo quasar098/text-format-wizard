@@ -1,6 +1,5 @@
 <script lang="ts">
     import { get } from 'svelte/store'
-    import { ModuleType } from "../ts/master";
     import { recipeModules } from '../ts/stores';
     import Dropdown from '../Dropdown.svelte';
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { ModuleType, moduleMetadata } from './ts/master.ts';
+    import { moduleMetadata } from './ts/master.ts';
+    import { ModuleType } from './ts/modules/types.ts';
     import Tooltipable from './Tooltipable.svelte';
     import { showAddModuleModal, addModuleModalInfo } from './ts/stores';
     import cssVars from 'svelte-css-vars';
