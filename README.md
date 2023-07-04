@@ -49,4 +49,3 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - execute if condition
 - fib sequence
 - CRT module
-- color module (rgb, hex, hsl, etc)
