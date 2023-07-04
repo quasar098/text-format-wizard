@@ -82,5 +82,8 @@ export enum ModuleType {
     RandomLine = rst(),
     Decimal = rst(),
     Cyclic = rst(),
-    Store = rst()
+    Store = rst(),
+    Eval = rst(),
+    HexToRGB = rst(),
+    RGBToHex = rst()
 }

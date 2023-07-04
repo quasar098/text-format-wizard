@@ -114,7 +114,7 @@ let moduleMetadata = {
         color: moduleColor.logic,
         lore: "Store current text in register",
         description: "Can be accessed using %v<name>%",
-        processMaker:  (args) => {
+        processMaker: (args) => {
             let { name } = args;
             if (name == undefined) {
                 showWarning("Register cannot have blank name");
@@ -125,6 +125,25 @@ let moduleMetadata = {
                     registerDB[name] = text;
                 }
                 return text;
+            }
+        }
+    },
+    [ModuleType.Eval]: {
+        name: "Eval",
+        color: moduleColor.logic,
+        lore: "Evaluate javascript code",
+        description: "Warning: be careful of what you execute!!!",
+        processMaker: (args) => {
+            let { code } = args;
+            return (text) => {
+                let output = "";
+                try {
+                    eval(code);
+                } catch (e) {
+                    showWarning(e);
+                    return text;
+                }
+                return output;
             }
         }
     }

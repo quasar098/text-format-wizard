@@ -27,37 +27,65 @@ export const moduleMetadata = {
             return (text) => text + append
         }
     },
-    [ModuleType.Cyclic]: {
-        name: "Cyclic",
+    [ModuleType.RGBToHex]: {
+        name: "RGB To Hex",
         color: moduleColor.misc,
-        lore: "Generate a cyclic pattern like pwntools",
-        description: "aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaa",
+        lore: "RGB color code to hex",
+        description: "Change an rgb color code to hex. Pass it in as text",
         processMaker: (args) => {
-            try {
-                let { size } = args;
-                size = Math.floor(size*0.25);
-                if (isNaN(size) | size == 0) {
-                    showWarning("Invalid size for cyclic pattern");
-                    return (text) => text;
+            function componentToHex(c) {
+                var hex = (c*1).toString(16);
+                return hex.length == 1 ? "0" + hex : hex;
+            }
+            return (text) => {
+                try {
+                    text = text.replaceAll(/[^0123456789abcdef]+/g, ",").replaceAll(/(^,|,$)/g, "");
+                    let cols = text.split(",");
+                    return "#" + cols.map(componentToHex).join("").toUpperCase();
+                } catch {
+                    showWarning("Runtime error at RGB To Hex module");
+                    return text;
                 }
-                let total = "";
-                let registers = [0, 0, 0, 0];
-                for (var i=0; i<size; i++) {
-                    for (var i2=0; i2<4; i2++) {
-                        total += "abcdefghijklmnopqrstuvwxyz"[registers[i2]];
-                    }
-                    for (var i2=0; i2<4; i2++) {
-                        if (++registers[i2] == 26) {
-                            registers[i2] = 0;
-                            continue;
-                        }
-                        break;
-                    }
+            }
+        }
+    },
+    [ModuleType.HexToRGB]: {
+        name: "Hex to RGB",
+        color: moduleColor.misc,
+        lore: "Hex color code to RGB",
+        description: "Change a hex color code to rgb. Pass it in as text",
+        processMaker: (args) => {
+            let hexToRGB = (hex) => {
+                let r = 0;
+                let g = 0;
+                let b = 0;
+                let a = 0;
+                hex = hex.toLowerCase();
+                let nmap = "0123456789abcdef";
+                r += nmap.indexOf(hex[0])*16;
+                r += nmap.indexOf(hex[1]);
+                g += nmap.indexOf(hex[2])*16;
+                g += nmap.indexOf(hex[3]);
+                b += nmap.indexOf(hex[4])*16;
+                b += nmap.indexOf(hex[5]);
+                if (hex.length == 8) {
+                    a += nmap.indexOf(hex[6])*16;
+                    a += nmap.indexOf(hex[7]);
                 }
-                return (text) => total;
-            } catch {
-                showWarning("Error while generating a cyclic pattern");
-                return (text) => "";
+                return hex.length == 8 ? [r, g, b, a] : [r, g, b];
+            }
+            return (text) => {
+                try {
+                    text = text.replaceAll(/[^abcdef0123456789]/gi, "");
+                    if ([6, 8].includes(text.length)) {
+                        return hexToRGB(text);
+                    }
+                    showWarning(`"${text}" is not a valid hex code!`)
+                    return text;
+                } catch (e) {
+                    showWarning("Runtime error at Hex to RGB module");
+                    return text;
+                }
             }
         }
     },
