@@ -1,7 +1,6 @@
 import { recipeModules, outputAsJs, tooltipStack } from './stores'
 import { get } from "svelte/store"
 import { md5 } from "./md5.ts";
-import { caesarCipher } from "./caesar.ts";
 import { sha256 } from "./sha256.ts"
 import { v5 as uuidv5 } from 'uuid';
 import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag } from "./modules/types.ts";
@@ -163,10 +162,6 @@ for (var externalModuleIndex in externalModules) {
     }
 }
 
-function isNumeric(value) {
-    return /^-?\d+$/.test(value);
-}
-
 const rgbToHSL = (r, g, b) => {
   r /= 255;
   g /= 255;
@@ -249,7 +244,7 @@ let replaceChoose = replaceTag("choose(?:\\((?:((?:(?<=\\\\)(?:.)|[^,)])+))\\))"
     return possible[Math.floor(Math.random()*possible.length)];
 })
 
-let bundledFunctions = [replaceTag, replaceRand, caesarCipher, isNumeric];
+let bundledFunctions = [replaceTag, replaceRand];
 
 export function calculate(text, modules=undefined) {
     tooltipStack.update((stack) => {
