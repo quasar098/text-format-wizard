@@ -1,16 +1,15 @@
 <script lang="ts">
     import { get } from 'svelte/store'
     import { recipeModules } from '../ts/stores';
-    import InputBox from '../InputBox.svelte';
+    import Dropdown from '../Dropdown.svelte';
 
     export let info = {};
+
+    info.algorithm = info.algorithm ?? "sha256";
 </script>
 
-<p>Valid algorithms are:<br>
-md5, sha256</p>
-<spacer/>
 <p>Which hash algorithm</p>
-<InputBox bind:value={info.algorithm}/>
+<Dropdown bind:value={info.algorithm} options={["sha256", "md5"]}/>
 
 <style>
 

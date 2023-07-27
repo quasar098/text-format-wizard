@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { outputAsJs, recipeModules, showFindModuleModal } from './ts/stores';
+    import { outputAsJs, recipeModules, showFindModuleModal, colorTheme } from './ts/stores';
     import Tooltipable from './Tooltipable.svelte';
 
     function changeJs() {
@@ -18,7 +18,6 @@
         $showFindModuleModal = true;
     }
 
-    let currentTheme = 0;
     let themes = [
         {
             name: "Dark",
@@ -45,15 +44,15 @@
     ];
 
     function changeTheme() {
-        currentTheme = (currentTheme+1) % themes.length;
+        $colorTheme = ($colorTheme+1) % themes.length;
         applyCurrentTheme();
     }
 
     function applyCurrentTheme() {
-        for (let property of Object.keys(themes[currentTheme].properties)) {
-            document.body.style.setProperty(property, themes[currentTheme].properties[property]);
+        for (let property of Object.keys(themes[$colorTheme].properties)) {
+            document.body.style.setProperty(property, themes[$colorTheme].properties[property]);
         }
-        document.body.setAttribute("theme", themes[currentTheme].name);
+        document.body.setAttribute("theme", themes[$colorTheme].name);
     }
 
     applyCurrentTheme();

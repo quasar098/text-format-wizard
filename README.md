@@ -45,7 +45,6 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - custom menu for clear all modules with keyboard shortcuts and stuff
 - change color scheme but keep frequently used modules the same color
 - be able to drag around the stuff
-- save theme state
 - better xor functionality like pwntools xor
 
 ## module ideas:
@@ -53,3 +52,4 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - fib sequence
 - CRT module
 - RSA module (given p, q, e, ct)
+- sort lines

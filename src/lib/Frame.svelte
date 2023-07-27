@@ -44,7 +44,7 @@
             {#if onclose != undefined}
                 <Tooltipable text="Close Modal (esc)" icon="Info">
                     <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
-                        <p class="close"></p>
+                        <p class="close text"></p>
                     </div>
                 </Tooltipable>
             {/if}

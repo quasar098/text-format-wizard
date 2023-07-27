@@ -3,11 +3,13 @@
     import { recipeModules } from '../ts/stores';
     import InputBox from '../InputBox.svelte';
 
-    export let info = { format: "%line%: %count%" };
+    export let info = { };
+
+    info.format = info.format ?? "%line%: %count%";
 </script>
 
 <p>Format of output text:</p>
-<InputBox bind:value={info.format}/>
+<InputBox bind:value={info.format} defaultValue="%line%: %count%"/>
 
 <style>
 

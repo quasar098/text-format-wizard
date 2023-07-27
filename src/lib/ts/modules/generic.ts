@@ -10,7 +10,7 @@ export let moduleMetadata = {
             "Count the number of occurences of each line and output it in a specific format",
         processMaker: (args) => {
             let { format } = args;
-            format = format ?? "%count% > %text%";
+            format = format ?? "%line%: %count%";
             return (text) => {
                 let counted = new Map();
                 for (let line of text.split("\n")) {
