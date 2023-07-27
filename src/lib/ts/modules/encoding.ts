@@ -136,24 +136,25 @@ export const moduleMetadata = {
             }
         }
     },
-    [ModuleType.XOREachByte]: {
-        name: "XOR Each Byte",
+    [ModuleType.XORStrings]: {
+        name: "XOR Strings",
         color: moduleColor.encoding,
-        lore: "XOR each byte",
-        description: "Take the ascii value of each byte, and then XOR it by a value between 0-255",
+        lore: "XOR String ASCII values like \"[\" ^ \"*\" -> \"p\"",
+        description: "Work the magic!!",
         processMaker: (args) => {
-            let { value } = args;
-            value = value ?? 0;
-            if (value > 255) {
-                showWarning("Too high integer at XOR Each Byte module");
-                return (text) => text;
-            }
-            if (value < 0) {
-                showWarning("Too low integer at XOR Each Byte module");
+            let { key } = args;
+            key = key ?? 0;
+            if (key.length == 0) {
                 return (text) => text;
             }
             try {
-                return (text) => text.split("").map(_ => String.fromCharCode(_.charCodeAt(0)^value)).join("");
+                return (text) => {
+                    let newv = "";
+                    for (let letterIndex in text) {
+                        newv += String.fromCharCode(text.charCodeAt(letterIndex)^(key).charCodeAt(letterIndex % key.length));
+                    }
+                    return newv;
+                }
             } catch {
                 showWarning("Invalid integer value at XOR Each Byte module");
             }

@@ -43,9 +43,7 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - module lazy loading
 - ctrl-f to find in text
 - custom menu for clear all modules with keyboard shortcuts and stuff
-- change color scheme but keep frequently used modules the same color
 - be able to drag around the stuff
-- better xor functionality like pwntools xor
 
 ## module ideas:
 - execute if condition

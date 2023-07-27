@@ -40,9 +40,6 @@
     textarea::-webkit-scrollbar {
         display: none;
     }
-    textarea.out {
-        cursor: text;
-    }
     textarea:focus {
         border: 1px solid var(--FOCUSED);
     }

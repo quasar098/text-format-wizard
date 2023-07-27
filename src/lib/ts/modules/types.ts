@@ -83,7 +83,7 @@ export enum ModuleType {
     Rotate = rst(),
     SumDigits = rst(),
     Duplicate = rst(),
-    XOREachByte = rst(),
+    XORStrings = rst(),
     Binary = rst(),
     Hex = rst(),
     WordlistMask = rst(),

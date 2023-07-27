@@ -6,8 +6,8 @@
     export let info = {};
 </script>
 
-<p>Byte value to XOR by (0-255)</p>
-<InputBox bind:value={info.value}/>
+<p>String to XOR with text (like pwntools xor)</p>
+<InputBox bind:value={info.key}/>
 
 <style>
 
