@@ -17,11 +17,20 @@ export function replaceTag(k,v) {
 
 
 export const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
+export const ERROR_UUID = "13333337-1337-1337-1337-133333333337";
 
 
 export function showWarning(message) {
     tooltipStack.update((stack) => {
         stack.splice(0, 0, genTooltip(message, "Warning", WARNING_UUID));
+        return stack;
+    })
+}
+
+
+export function showError(message) {
+    tooltipStack.update((stack) => {
+        stack.splice(0, 0, genTooltip(message, "Error", WARNING_UUID));
         return stack;
     })
 }

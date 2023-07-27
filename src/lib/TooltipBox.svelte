@@ -15,10 +15,10 @@
 <div class="outer" use:cssVars={styleVars}>
     <div class="inner">
         {#key tooltip.text}
-            <p class="icon">
+            <p class="icon text-glow">
                 {TooltipIcon[tooltip.icon].text}
             </p>
-            <p class="tooltip">
+            <p class="tooltip text-glow text">
                 {tooltip.text}
             </p>
         {/key}
@@ -49,7 +49,6 @@
         font-size: 16px;
     }
     .icon {
-        text-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.4);
         color: var(--icon-color);
         font-size: 24px;
     }

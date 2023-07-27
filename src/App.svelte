@@ -24,14 +24,17 @@
     <FindModuleModal/>
 
     <div class="top">
-        <Frame title="Recipe" width=60 height="100% + 10px">
+        <Frame title="> Recipe" width=60 height="100% + 10px">
             {#each $recipeModules as item, index}
                 <ModulePreview bind:moduleObject={item}/>
             {:else}
-                <p>No modules are in this recipe</p>
+                <div class='no-modules'>
+                    <p class="text text-glow">No modules are in this recipe</p>
+                    <br><br>
+                </div>
             {/each}
         </Frame>
-        <Frame title="Modules" width=40 height="100% + 10px">
+        <Frame title="> Modules" width=40 height="100% + 10px">
             <Svroller width="100%" height="100%" alwaysVisible="true">
                 {#each sortedModuleTypes() as value, index}
                     <ModuleSelect type={value}>
@@ -55,6 +58,14 @@
 </main>
 
 <style>
+    .no-modules {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
     .top {
         height: calc(50% - 20px);
     }

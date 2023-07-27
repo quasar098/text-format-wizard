@@ -20,7 +20,7 @@
 
     $: styleVars = {
         "title-color": `#${metadata.color}`,
-        "desc-color": `#${metadata.color}99`
+        "desc-color": `#${metadata.color}ee`
     }
 </script>
 

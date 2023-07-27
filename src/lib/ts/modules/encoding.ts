@@ -1,4 +1,6 @@
 import { ModuleType, moduleColor, showWarning } from "./types.ts";
+import { md5 } from "../md5.ts";
+import { sha256 } from "../sha256.ts"
 
 
 export const moduleMetadata = {
@@ -138,7 +140,7 @@ export const moduleMetadata = {
         name: "XOR Each Byte",
         color: moduleColor.encoding,
         lore: "XOR each byte",
-        description: "Take the ascii value of a bit, and then XOR it by a value between 0-255",
+        description: "Take the ascii value of each byte, and then XOR it by a value between 0-255",
         processMaker: (args) => {
             let { value } = args;
             value = value ?? 0;

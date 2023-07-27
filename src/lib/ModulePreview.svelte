@@ -22,7 +22,7 @@
 
     $: styleVars = metadata != undefined ? {
         "title-color": `#${metadata.color}`,
-        "desc-color": `#${metadata.color}99`,
+        "desc-color": `#${metadata.color}ee`,
         "bottom-desc-radius": closeable ? "0px" : "4px",
         "toggle-show-bg-color": `#ededed`
     } : {}
@@ -41,7 +41,7 @@
 
 <div class="module-preview" use:cssVars={styleVars}>
     <div class="big">
-        <div class="module-title{closeable ? ' ' : ' closeable'}">
+        <div class="module-title{closeable ? ' closeable' : ' '}">
             <h3>{(metadata ?? {}).name}</h3>
             {#if closeable}
                 <div class="close" on:click={removeMe} on:keydown={removeMe}>
@@ -50,7 +50,7 @@
             {/if}
         </div>
         {#if !collapsed}
-            <div class="module-description{closeable ? ' ' : ' closeable'}" transition:slide|local>
+            <div class="module-description{closeable ? ' closeable' : ' '}" transition:slide|local>
                 <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
             </div>
         {/if}
@@ -104,11 +104,8 @@
         width: calc(100% - 20px);
         display: inline-block;
     }
-    .module-title.closeable {
+    .module-title {
         border-top-left-radius: 4px;
-    }
-    .module-description.closeable {
-        border-bottom-left-radius: 4px;
     }
     .close {
         cursor: pointer;

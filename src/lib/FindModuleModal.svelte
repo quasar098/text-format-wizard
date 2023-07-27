@@ -26,6 +26,7 @@
             return;
         }
         $showFindModuleModal = true;
+        // ctrl shift p to open this menu btw
     }
 
     const fuseOptions = {
@@ -77,7 +78,13 @@
             if (betterSortedItems.length) {
                 modalClosed();
                 $addModuleModalInfo = {moduleType: betterSortedItems[0], moduleName: moduleMetadata[betterSortedItems[0]].name}
-                $showAddModuleModal = true;
+                if (!e.shiftKey) {
+                    $showAddModuleModal = true;
+                } else {
+                    setTimeout(() => {
+                        $showAddModuleModal = true;
+                    }, 10) // hacky solution
+                }
             }
         }
     }
@@ -89,11 +96,11 @@
 {#if $showFindModuleModal}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
-            <Frame title='Find module' enterTransition={discordIn} exitTransition={discordOut} onclose={modalClosed}>
+            <Frame title='> Find module' enterTransition={discordIn} exitTransition={discordOut} onclose={modalClosed}>
 
                 <div class='container'>
-                    <input type="text" name="tfw-find-module" class="search" spellcheck="false" placeholder="Search for a module..."
-                        autofocus="true" bind:value={searchTerm} on:keydown={inputKeyDown}/>
+                    <input type="text" name="tfw-find-module" class="search text" spellcheck="false"
+                    placeholder="Search for a module..." autofocus="true" bind:value={searchTerm} on:keydown={inputKeyDown}/>
 
                     <Svroller width="100%" height="calc(100% - 30px)" alwaysVisible="true">
                         {#key searchTerm}
@@ -101,10 +108,10 @@
                                 <ModuleSelect type={value} onclick={modalClosed}/>
                             {:else}
                                 {#if searchTerm.length}
-                                    <p class="nomod">No modules found :(</p>
+                                    <p class="nomod text text-glow">No modules found :(</p>
                                 {:else}
-                                    <p class="nomod">Type to search for modules</p>
-                                    <div class='powered-by'>
+                                    <p class="nomod text text-glow">Type to search for modules</p>
+                                    <div class='powered-by text text-glow'>
                                         <p>
                                             Fuzzy search powered by Fuse.js
                                             <a href="https://fusejs.io/" target="_blank" rel="noreferrer">
@@ -170,7 +177,6 @@
         margin-left: 75px;
         margin-top: 75px;
     }
-
     .search {
         border-radius: 4px;
         padding: 10px;
@@ -179,8 +185,11 @@
         width: calc(100% - 45px);
         transition: 0.2s;
         background-color: white;
-        color: black;
         border: 1px solid black;
+        background-color: var(--TEXTAREA-BOXES);
+    }
+    .search::placeholder {
+        color: white;
     }
     .search:focus {
         border: 1px solid var(--FOCUSED);

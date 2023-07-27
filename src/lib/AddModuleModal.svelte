@@ -54,13 +54,15 @@
 {#if $showAddModuleModal}
     <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
         <div class="modal">
-            <Frame title='Add "{info.moduleName}" module' onclose={hideModal}
+            <Frame title='> Add "{info.moduleName}" module' onclose={hideModal}
                 enterTransition={discordIn} exitTransition={discordOut}>
 
-                <p class="description">> {metadata.description}</p>
+                <p class="description text text-glow">> {metadata.description}</p>
 
-                <svelte:component this={moduleMap[info.moduleType]}
+                <span class="text">
+                    <svelte:component this={moduleMap[info.moduleType]}
                     bind:info={addModuleInfo}></svelte:component>
+                </span>
 
                 <button class="add-module" tabindex="0" on:click={addModule}>Add</button>
 

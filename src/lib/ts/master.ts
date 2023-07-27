@@ -1,9 +1,7 @@
 import { recipeModules, outputAsJs, tooltipStack } from './stores'
 import { get } from "svelte/store"
-import { md5 } from "./md5.ts";
-import { sha256 } from "./sha256.ts"
 import { v5 as uuidv5 } from 'uuid';
-import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag } from "./modules/types.ts";
+import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag, showError } from "./modules/types.ts";
 import { moduleMetadata as encodingModules } from './modules/encoding.ts';
 import { moduleMetadata as genericModules } from './modules/generic.ts';
 import { moduleMetadata as ctfModules } from './modules/ctf.ts';
@@ -281,9 +279,14 @@ export function calculate(text, modules=undefined) {
                 }
             }
         }
-        let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
-        recipe.push([modul.args, moduleMetadata[modul.moduleType].processMaker]);
-        text = convert(text);
+        try {
+            let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
+            recipe.push([modul.args, moduleMetadata[modul.moduleType].processMaker]);
+            text = convert(text);
+        } catch (critical) {
+            text = text;
+            showError(`Critical: ${critical}`);
+        }
     }
 
     let customJs = "";

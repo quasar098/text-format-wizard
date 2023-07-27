@@ -40,7 +40,7 @@
 <div class="outer-frame" use:cssVars={styleVars} in:enterTransition out:exitTransition>
     {#if title != undefined}
         <div class="title-sect">
-            <h2 class="title">{title}</h2>
+            <h2 class="title text text-glow">{title}</h2>
             {#if onclose != undefined}
                 <Tooltipable text="Close Modal (esc)" icon="Info">
                     <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
@@ -103,7 +103,6 @@
     .frame {
         background-color: var(--FRAME-COLOR);
         box-shadow: inset 0 0 0.6em rgba(0, 0, 0, 0.23);
-        filter: contrast(0.8);
         border-bottom-right-radius: 4px;
         border-bottom-left-radius: 4px;
         padding: 5px;

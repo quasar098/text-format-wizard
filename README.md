@@ -33,19 +33,23 @@ this is an unexpected submission for svelte hack 2023, and the theme that best f
 also, when i think of this project i think of imagemagick (the logo) but text formatting edition
 
 ## todo:
-- keyboard shortcuts
+- keyboard shortcuts for everything like vim
 - custom modules w/ github oauth integration
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - similarly to above, bundle necessary functions when custom JS
-- create docs (not fun)
+- create more docs (not fun)
 - settings page
 - module lazy loading
 - ctrl-f to find in text
+- custom menu for clear all modules with keyboard shortcuts and stuff
 - change color scheme but keep frequently used modules the same color
 - be able to drag around the stuff
+- save theme state
+- better xor functionality like pwntools xor
 
 ## module ideas:
 - execute if condition
 - fib sequence
 - CRT module
+- RSA module (given p, q, e, ct)

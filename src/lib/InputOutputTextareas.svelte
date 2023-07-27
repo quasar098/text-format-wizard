@@ -109,13 +109,13 @@
     $: outWindowX = 95-Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
 </script>
 
-<Frame title="Input" bind:width={inWindowX} overflow="hidden">
-    <textarea spellcheck="false" bind:value={inputText} on:keydown={textareaEventHandle}/>
+<Frame title="> Input" bind:width={inWindowX} overflow="hidden">
+    <textarea spellcheck="false" class="text" bind:value={inputText} on:keydown={textareaEventHandle}/>
 </Frame>
 <ResizeInOutFrames bind:xposition={bottomAreaXposition}/>
-<Frame title="Output" bind:width={outWindowX} overflow="hidden">
+<Frame title="> Output" bind:width={outWindowX} overflow="hidden">
     <div on:click={triplePower} class="fullsize">
-        <textarea spellcheck="false" class="out"
+        <textarea spellcheck="false" class="out text"
         disabled="true" bind:value={outputText}></textarea>
     </div>
 </Frame>
@@ -133,10 +133,9 @@
         border-radius: 4px;
         padding: 10px;
         outline: none;
-        transition: 0.2s;
+        transition: 0.2s border;
         font-variant-ligatures: none;
-        background-color: white;
-        color: black;
+        background-color: var(--TEXTAREA-BOXES);
         overflow-y: auto;
     }
     textarea {

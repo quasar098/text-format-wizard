@@ -11,9 +11,10 @@
     // info.method = info.method ?? "decode";
 </script>
 
-<p>var text;</p>
+<p>var text = &lt;input text&gt;</p>
+<p>var output = "";</p>
 <br>
-<textarea bind:value={info.code} spellcheck="false"></textarea>
+<textarea bind:value={info.code} class="text" spellcheck="false"></textarea>
 <br>
 <br>
 <p>return output;</p>
@@ -27,9 +28,10 @@
         border-radius: 4px;
         padding: 10px;
         outline: none;
-        transition: 0.2s;
-        background-color: white;
-        color: black;
+        transition: 0.2s border;
+        font-variant-ligatures: none;
+        background-color: var(--TEXTAREA-BOXES);
+        overflow-y: auto;
     }
     textarea {
         -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -37,6 +39,9 @@
     }
     textarea::-webkit-scrollbar {
         display: none;
+    }
+    textarea.out {
+        cursor: text;
     }
     textarea:focus {
         border: 1px solid var(--FOCUSED);
