@@ -11,9 +11,11 @@
     // info.method = info.method ?? "decode";
 </script>
 
-<!-- <p><something></p> -->
-<!-- <InputBox bind:value={info.<something>}/> -->
-<!-- <Dropdown bind:value={info.<something>} options={["<option1>", "<option2>"]}/> -->
+<p>p: </p> <InputBox bind:value={info.p}/>
+<spacer/>
+<p>q: </p> <InputBox bind:value={info.q}/>
+<spacer/>
+<p>e: </p> <InputBox bind:value={info.e}/>
 
 <style>
     p { display: inline-block; }

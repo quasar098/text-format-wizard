@@ -21,10 +21,10 @@
         if (!e.ctrlKey) {
             return;
         }
-        event.preventDefault(true);
         if (!e.shiftKey) {
             return;
         }
+        event.preventDefault(true);
         $showFindModuleModal = true;
         // ctrl shift p to open this menu btw
     }

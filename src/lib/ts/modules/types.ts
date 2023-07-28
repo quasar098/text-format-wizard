@@ -94,5 +94,7 @@ export enum ModuleType {
     Store = rst("Store"),
     Eval = rst("Eval"),
     HexToRGB = rst("HexToRGB"),
-    RGBToHex = rst("RGBToHex")
+    RGBToHex = rst("RGBToHex"),
+    RSAEncryption = rst("RSAEncryption"),
+    SortLines = rst("SortLines")
 }

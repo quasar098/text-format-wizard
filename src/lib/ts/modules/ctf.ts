@@ -1,4 +1,5 @@
 import { ModuleType, moduleColor, showWarning } from "./types.ts";
+import { BigInteger } from 'jsbn';
 
 
 export let moduleMetadata = {
@@ -123,6 +124,38 @@ export let moduleMetadata = {
                     return text;
                 }
             };
+        }
+    },
+    [ModuleType.RSAEncryption]: {
+        name: "RSA",
+        color: moduleColor.ctf,
+        lore: "Decrypt RSA given p, q, e, ct, where ct is passed in as input text.",
+        description: "Decrypt RSA given p, q, e. Decrypts the input text number",
+        processMaker: (args) => {
+            let { p, q, e } = args;
+            if (p.length == 0 || q.length == 0 || e.length == 0) {
+                return (text) => text;
+            }
+            try {
+                p = new BigInteger(p);
+                q = new BigInteger(q);
+                e = new BigInteger(e);
+                let n = p.multiply(q);
+                let phi = p.subtract(new BigInteger('1')).multiply(q.subtract(new BigInteger('1')));
+                let d = e.modInverse(phi);
+                return (text) => {
+                    try {
+                        return new BigInteger(text).modPow(d, n).toString();
+                    } catch {
+                        showWarning('RSA unable to decrypt given ciphertext');
+                        return text;
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+                showWarning("RSA module parameters faulty (check p, q, e)");
+                return (text) => text;
+            }
         }
     }
 };

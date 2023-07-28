@@ -6,7 +6,7 @@ export const moduleMetadata = {
         name: "Random Line",
         color: moduleColor.misc,
         lore: "Random line chooser",
-        description: "Simple",
+        description: "Simple random line chooser",
         processMaker: (args) => {
             let { method } = args;
             return (text) => {
@@ -16,6 +16,22 @@ export const moduleMetadata = {
                 }
                 let index = Math.floor(Math.random()*lines.length);
                 return lines[index];
+            }
+        }
+    },
+    [ModuleType.SortLines]: {
+        name: "Sort Lines",
+        color: moduleColor.misc,
+        lore: "Sort lines alphabetically",
+        description: "Self explanatory",
+        processMaker: (args) => {
+            return (text) => {
+                try {
+                    return text.split("\n").sort().join("\n");
+                } catch {
+                    showWarning("Sort Lines Module failed");
+                    return text;
+                }
             }
         }
     },

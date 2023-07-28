@@ -22,8 +22,9 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 
 - uses [svelte](https://svelte.dev/), a front-end component framework
 - uses [svrollbar](https://github.com/daylilyfield/svrollbar), a scrollbar component for svelte
-- uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css
+- uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css in svelte
 - uses [fuse.js](https://fusejs.io/) for quick module finder
+- uses [jsbn](https://github.com/andyperlitch/jsbn) for RSA Module's big numbers
 
 ## why text format "wizard"?
 
@@ -37,16 +38,17 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - similarly to above, bundle necessary functions when custom JS
 - create more docs (not fun)
 - settings page
-- module lazy loading
 - ctrl-f to find in text
-- custom menu for clear all modules with keyboard shortcuts and stuff
+- custom menu for clear all modules are you sure
 - be able to drag around the stuff
 - ability to pause the thing and have a run button to do it manually
+- selectors/filters for module frame (e.g. popular, misc, ctf)
 
 ## module ideas:
 - execute if condition
 - fib sequence
+- keep nth line
+- prepend line number to each line
 - CRT module
-- RSA module (given p, q, e, ct)
 - sort lines
 - hexdump module

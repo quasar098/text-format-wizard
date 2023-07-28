@@ -9,7 +9,7 @@
 
     function clearModules() {
         // todo: change from confirm to custom component
-        if (confirm("Are you sure you want to do this?")) {
+        if (confirm("Are you sure you want to clear all modules?")) {
             recipeModules.set([]);
         }
     }
@@ -65,8 +65,28 @@
         alert("Copied to clipboard!");
     }
 
+    function keydownHandler(e) {
+        if (!e.shiftKey) {
+            return;
+        }
+        if (!e.ctrlKey) {
+            return;
+        }
+        if (e.keyCode == 76) {  // copy recipe URL
+            exportURL();
+            e.preventDefault(true);
+        }
+        if (e.keyCode == 68) {  // clear all modules
+            clearModules();
+            e.preventDefault(true);
+        }
+        return false;
+    }
+
     applyCurrentTheme();
 </script>
+
+<svelte:body on:keydown={keydownHandler}/>
 
 <div class="toolbar">
     <!-- todo: implement settings -->
@@ -76,16 +96,16 @@
     <Tooltipable text="Settings (not implemented yet)" icon="Info">
         <h4 class="icon settings"> 󰒓 </h4>
     </Tooltipable>
-    <Tooltipable text="Copy Recipe URL to Clipboard" icon="Info">
+    <Tooltipable text="Copy Recipe URL (Ctrl-Shift-L)" icon="Info">
         <h4 class="icon code" on:click={exportURL} on:keydown={exportURL}> <div class="r2">󰮓</div> </h4>
     </Tooltipable>
-    <Tooltipable text="Clear All Modules" icon="Info">
+    <Tooltipable text="Clear All Modules (Ctrl-Shift-D)" icon="Info">
         <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}> <div class="r1"></div> </h4>
     </Tooltipable>
     <Tooltipable text="Module Quick Finder (Ctrl-Shift-P)" icon="Info">
         <h4 class="icon search" on:click={openSearchMenu}> <div class="l1"></div> </h4>
     </Tooltipable>
-    <Tooltipable text="Toggle Custom JS Output (may or may not work yet)" icon="Info">
+    <Tooltipable text="Toggle Custom JS Output (janky for me but YMMV)" icon="Info">
         <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}> <div class="l1">󰘦</div> </h4>
     </Tooltipable>
 </div>
@@ -111,16 +131,16 @@
     }
     .r1 { transform: translateX(1px) }
     .r2 { transform: translateX(2px) }
-    .r3 { transform: translateX(3px) }
-    .r4 { transform: translateX(4px) }
-    .r5 { transform: translateX(5px) }
-    .r6 { transform: translateX(6px) }
+    /* .r3 { transform: translateX(3px) } */
+    /* .r4 { transform: translateX(4px) } */
+    /* .r5 { transform: translateX(5px) } */
+    /* .r6 { transform: translateX(6px) } */
     .l1 { transform: translateX(-1px) }
     .l2 { transform: translateX(-2px) }
-    .l3 { transform: translateX(-3px) }
-    .l4 { transform: translateX(-4px) }
-    .l5 { transform: translateX(-5px) }
-    .l6 { transform: translateX(-6px) }
+    /* .l3 { transform: translateX(-3px) } */
+    /* .l4 { transform: translateX(-4px) } */
+    /* .l5 { transform: translateX(-5px) } */
+    /* .l6 { transform: translateX(-6px) } */
     /* .right * {
         transform: translateX(2px);
     }

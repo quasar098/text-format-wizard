@@ -10,6 +10,7 @@ export default defineConfig({
             if (warning.code === 'a11y-autofocus') return
             if (warning.code === "unused-export-let") return
             if (warning.code === "a11y-click-events-have-key-events") return
+            if (warning.code === "vite-plugin-svelte-css-no-scopable-elements") return
 
             handler(warning)
           }

@@ -11,7 +11,7 @@
     // info.method = info.method ?? "decode";
 </script>
 
-<!-- <p><something></p> -->
+<p>Sort the lines alphabetically</p>
 <!-- <InputBox bind:value={info.<something>}/> -->
 <!-- <Dropdown bind:value={info.<something>} options={["<option1>", "<option2>"]}/> -->
 

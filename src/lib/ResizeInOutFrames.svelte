@@ -22,7 +22,7 @@
 
     function updatePosition(e) {
         if (grabbing) {
-            xposition = clamp(e.clientX, 30, Math.floor(window.innerWidth/20*19)-30);
+            xposition = clamp(e.clientX, 200, Math.floor(window.innerWidth/20*19)-200);
         }
     }
 

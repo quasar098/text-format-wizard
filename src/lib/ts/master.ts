@@ -286,6 +286,7 @@ export function calculate(text, modules=undefined) {
         } catch (critical) {
             text = text;
             showError(`Critical: ${critical}`);
+            console.log(critical);
         }
     }
 
