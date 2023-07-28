@@ -7,7 +7,7 @@
     export let info = {};
 </script>
 
-<p>No arguments required here</p>
+<p>Replaces \n+ with one \n</p>
 
 <style>
 

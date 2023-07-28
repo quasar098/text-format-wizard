@@ -1,6 +1,6 @@
 # text format wizard
 
-*this project is under construction*
+*this project is under construction, feel free to use at [quasar.name](https://quasar.name/text-format-wizard)*
 
 ## what this
 
@@ -27,10 +27,7 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 
 ## why text format "wizard"?
 
-this is an unexpected submission for svelte hack 2023, and the theme that best fits my submission is best wizzbangery (wizard bangery ?)
-![Screenshot 2023-03-12 175740](https://user-images.githubusercontent.com/70716985/224576150-6f115b38-b836-4137-9941-baecfbf885f4.png)
-
-also, when i think of this project i think of imagemagick (the logo) but text formatting edition
+when i think of this project i think of imagemagick (the logo of it) but text formatting edition
 
 ## todo:
 - keyboard shortcuts for everything like vim
@@ -51,3 +48,4 @@ also, when i think of this project i think of imagemagick (the logo) but text fo
 - CRT module
 - RSA module (given p, q, e, ct)
 - sort lines
+- hexdump module

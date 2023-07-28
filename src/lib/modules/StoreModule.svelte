@@ -8,9 +8,8 @@
     export let info = {};
 </script>
 
-<p>Register name</p>
-<InputBox bind:value={info.name}/>
+<p>Register name (reference with %v&lt;name&gt;%): </p> <InputBox bind:value={info.name}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

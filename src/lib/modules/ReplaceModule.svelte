@@ -7,12 +7,10 @@
     export let info = {};
 </script>
 
-<p>Regex to replace</p>
-<InputBox bind:value={info.remove}/>
+<p>Regex to replace: </p> <InputBox bind:value={info.remove}/>
 <spacer/>
-<p>Replacement format</p>
-<InputBox bind:value={info.format}/>
+<p>Replacement format: </p> <InputBox bind:value={info.format}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

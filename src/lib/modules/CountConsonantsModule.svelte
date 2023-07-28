@@ -6,7 +6,7 @@
     export let info = { };
 </script>
 
-<p>No arguments needed here</p>
+<p>Case Insensitive. Includes bcdfghjklmnpqrstvwxyz</p>
 
 <style>
 

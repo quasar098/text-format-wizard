@@ -6,8 +6,6 @@
     export let info = { };
 </script>
 
-<p>No arguments needed here</p>
-<spacer/>
 <p>Beware of trailing newlines!</p>
 
 <style>

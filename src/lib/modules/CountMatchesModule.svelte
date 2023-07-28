@@ -6,9 +6,8 @@
     export let info = { };
 </script>
 
-<p>Regex to match</p>
-<InputBox bind:value={info.regex}/>
+<p>Regex to match:</p> <InputBox bind:value={info.regex}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

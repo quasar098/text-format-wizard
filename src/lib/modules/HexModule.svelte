@@ -8,5 +8,4 @@
     info.method = info.method ?? "decode (ascii)";
 </script>
 
-<p>What to do</p>
 <Dropdown bind:value={info.method} options={["encode", "decode (ascii)", "decode (utf-8)"]}/>

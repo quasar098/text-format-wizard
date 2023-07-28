@@ -6,7 +6,7 @@
     export let info = { };
 </script>
 
-<p>No arguments needed here</p>
+<p>Includes aeiou. Does not include "y"</p>
 
 <style>
 

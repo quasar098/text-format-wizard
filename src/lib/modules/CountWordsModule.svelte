@@ -6,7 +6,7 @@
     export let info = { };
 </script>
 
-<p>No arguments needed here</p>
+<p>Word is defined as meeting regex /\w+(?:'\w+)?/g</p>
 
 <style>
 

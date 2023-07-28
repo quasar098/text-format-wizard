@@ -17,6 +17,12 @@
         uuidRegex, sortedModuleTypes } from './lib/ts/master';
     import { ModuleType } from "./lib/ts/modules/types.ts";
 
+    function removeModuleCallback(moduleObject) {
+        recipeModules.update((old) => {
+            return old.filter(_ => _ != moduleObject);
+        });
+    }
+
 </script>
 
 <main>
@@ -26,7 +32,9 @@
     <div class="top">
         <Frame title="> Recipe" width=60 height="100% + 10px">
             {#each $recipeModules as item, index}
-                <ModulePreview bind:moduleObject={item}/>
+                {#if $recipeModules.includes(item)}
+                    <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
+                {/if}
             {:else}
                 <div class='no-modules'>
                     <p class="text text-glow">No modules are in this recipe</p>

@@ -6,12 +6,10 @@
     export let info = {};
 </script>
 
-<p>String to insert</p>
-<InputBox bind:value={info.insert}/>
+<p>String to insert: </p> <InputBox bind:value={info.insert}/>
 <spacer/>
-<p>Index to insert at</p>
-<InputBox bind:value={info.index}/>
+<p>Index to insert at: </p> <InputBox bind:value={info.index}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

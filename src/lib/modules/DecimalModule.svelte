@@ -10,7 +10,6 @@
     info.method = info.method ?? "decode";
 </script>
 
-<p>Method to use</p>
 <Dropdown bind:value={info.method} options={["encode", "decode"]}/>
 
 <style>

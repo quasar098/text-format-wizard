@@ -7,9 +7,8 @@
     export let info = {};
 </script>
 
-<p>String to append</p>
-<InputBox bind:value={info.append}/>
+<p>String to append:</p> <InputBox bind:value={info.append}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

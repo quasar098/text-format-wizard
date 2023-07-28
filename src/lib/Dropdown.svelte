@@ -54,6 +54,7 @@
         height: 32px;
         width: 200px;
         background-color: #EEE;
+        color: black;
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
         position: relative;
         cursor: pointer;

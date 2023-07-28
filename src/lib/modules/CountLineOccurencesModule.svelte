@@ -8,9 +8,8 @@
     info.format = info.format ?? "%line%: %count%";
 </script>
 
-<p>Format of output text:</p>
-<InputBox bind:value={info.format} defaultValue="%line%: %count%"/>
+<p>Format of output text:</p> <InputBox bind:value={info.format} defaultValue="%line%: %count%"/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

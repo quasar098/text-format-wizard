@@ -6,10 +6,7 @@
     export let info = { };
 </script>
 
-<p>Excluded chars:</p>
-<InputBox bind:value={info.excluded}/>
-<spacer/>
-<p>Keep in mind that \n is a newline character and isn't excluded by default</p>
+<p>Quick reminder that \n, \t and space are characters too</p>
 
 <style>
 

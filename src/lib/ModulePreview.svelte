@@ -7,35 +7,32 @@
     import InputBox from "./InputBox.svelte";
     import { recipeModules } from "./ts/stores";
     import cssVars from 'svelte-css-vars';
+    import {get_current_component} from 'svelte/internal'
+    const selfcomp = get_current_component()
+    import { get } from "svelte/store"
 
     export let moduleObject;
 
     export let closeable = true;
 
+    export let removeCallback = () => {};
+
     $: metadata = moduleMetadata[moduleObject.moduleType];
 
     function removeMe() {
-        recipeModules.update((old) => {
-            return old.filter(_ => _ != moduleObject);
-        });
+        removeCallback(moduleObject);
     }
 
     $: styleVars = metadata != undefined ? {
         "title-color": `#${metadata.color}`,
         "desc-color": `#${metadata.color}ee`,
-        "bottom-desc-radius": closeable ? "0px" : "4px",
+        "bottom-desc-radius": "4px",
         "toggle-show-bg-color": `#ededed`
     } : {}
-
-    let collapsed = false;
 
     let titleHasLength;
     if (moduleObject.args.title != undefined) {
         titleHasLength = moduleObject.args.title.length != 0
-    }
-
-    function toggleCollapsed() {
-        collapsed = !collapsed;
     }
 </script>
 
@@ -49,43 +46,13 @@
                 </div>
             {/if}
         </div>
-        {#if !collapsed}
-            <div class="module-description{closeable ? ' closeable' : ' '}" transition:slide|local>
-                <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
-            </div>
-        {/if}
-        {#if closeable}
-            {#if collapsed}
-                <div class='expand' on:click={toggleCollapsed}>
-                    
-                </div>
-            {:else}
-                <div class='collapse' on:click={toggleCollapsed}>
-                    
-                </div>
-            {/if}
-        {/if}
+        <div class="module-description">
+            <svelte:component this={moduleMap[moduleObject.moduleType]} bind:info={moduleObject.args}/>
+        </div>
     </div>
 </div>
 
 <style>
-    .expand,.collapse {
-        width: 100%;
-        height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        cursor: pointer;
-        border-bottom-right-radius: 4px;
-        border-bottom-left-radius: 4px;
-        box-shadow: inset 0 0 0.2rem rgba(0, 0, 0, 0.2);
-        background-color: #F7F7F7;
-        transition-duration: 0.2s;
-    }
-    .expand:hover,.collapse:hover {
-        background-color: var(--FOCUSED);
-    }
     h3 {
         font-size: 18px;
         padding: 5px;
@@ -137,7 +104,7 @@
         padding: 5px;
         background-color: var(--desc-color);
     }
-    .collapse,.expand,.close {
+    .close {
         user-select: none;
     }
 </style>

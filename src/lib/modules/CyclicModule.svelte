@@ -8,9 +8,8 @@
     export let info = {};
 </script>
 
-<p>Size in bytes</p>
-<InputBox bind:value={info.size}/>
+<p>Size in bytes: </p> <InputBox bind:value={info.size}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

@@ -6,9 +6,8 @@
     export let info = {};
 </script>
 
-<p>String to XOR with text (like pwntools xor)</p>
-<InputBox bind:value={info.key}/>
+<p>String to XOR with text (like pwntools xor): </p> <InputBox bind:value={info.key}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

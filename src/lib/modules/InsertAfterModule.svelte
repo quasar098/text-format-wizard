@@ -6,12 +6,10 @@
     export let info = {};
 </script>
 
-<p>Regex present before the insert</p>
-<InputBox bind:value={info.before}/>
+<p>Regex present before each insert: </p> <InputBox bind:value={info.before}/>
 <spacer/>
-<p>String to insert</p>
-<InputBox bind:value={info.insert}/>
+<p>String to insert: </p> <InputBox bind:value={info.insert}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

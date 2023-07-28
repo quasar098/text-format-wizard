@@ -7,9 +7,8 @@
     export let info = {};
 </script>
 
-<p>Regex search to remove</p>
-<InputBox bind:value={info.remove}/>
+<p>Regex search to remove: </p> <InputBox bind:value={info.remove}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

@@ -49,11 +49,9 @@ export let moduleMetadata = {
         name: "Count Chars",
         color: moduleColor.generic,
         lore: "Count number of chars",
-        description: "Count number of chars. Option to exclude chars",
+        description: "Counts newlines too!",
         processMaker: (args) => {
-            let { excluded } = args;
-            excluded = excluded ?? "";
-            return (text) => text.split("").filter(_ => !excluded.includes(_)).join("").length + "";
+            return (text) => text.length + "";
         }
     },
     [ModuleType.KeepRegex]: {
@@ -119,7 +117,7 @@ export let moduleMetadata = {
         lore: "Count number of consonants",
         description: "Count the number of vowels (any that aren't a,e,i,o,u)",
         processMaker: (args) => {
-            return text => (text.match(/[^aeiou]/gi) ?? "").length;
+            return text => (text.match(/[bcdfghjklmnpqrstvwxyz]/gi) ?? "").length;
         }
     },
     [ModuleType.CountWords]: {

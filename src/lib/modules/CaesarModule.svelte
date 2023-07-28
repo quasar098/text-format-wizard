@@ -6,5 +6,8 @@
     export let info = {};
 </script>
 
-<p>Shift amount</p>
-<InputBox bind:value={info.shift}/>
+<p>Shift amount: </p> <InputBox bind:value={info.shift}/>
+
+<style>
+    p { display: inline-block; }
+</style>

@@ -7,9 +7,8 @@
     export let info = {};
 </script>
 
-<p>Amount to rotate</p>
-<InputBox bind:value={info.rotate}/>
+<p>Amount to rotate: </p> <InputBox bind:value={info.rotate}/>
 
 <style>
-
+    p { display: inline-block; }
 </style>

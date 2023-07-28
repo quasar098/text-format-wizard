@@ -11,6 +11,9 @@ export const moduleMetadata = {
             let { method } = args;
             return (text) => {
                 let lines = text.split("\n");
+                if (lines.length == 1) {
+                    return lines[0];
+                }
                 let index = Math.floor(Math.random()*lines.length);
                 return lines[index];
             }
