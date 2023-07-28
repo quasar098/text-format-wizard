@@ -5,7 +5,22 @@ import { ModuleType } from "./modules/types.ts";
 import { TooltipIcon } from "./tooltip.ts";
 import type { TooltipType } from "./tooltip.ts";
 
-export const recipeModules = writable([]);
+
+function loadModulesFromFragment() {
+    let encodedFragment = window.location.hash.substr(1);
+    if (encodedFragment.length == 0) {
+        return [];
+    }
+    try {
+        let decodedFragment = JSON.parse(atob(encodedFragment));
+        return decodedFragment;
+    } catch {
+        return [];
+    }
+}
+
+
+export const recipeModules = writable(loadModulesFromFragment());
 export const outputAsJs: Writable<boolean> = writable(false);
 
 export const showFindModuleModal: Writable<boolean> = writable(false);

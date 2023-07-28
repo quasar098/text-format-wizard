@@ -41,6 +41,7 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - ctrl-f to find in text
 - custom menu for clear all modules with keyboard shortcuts and stuff
 - be able to drag around the stuff
+- ability to pause the thing and have a run button to do it manually
 
 ## module ideas:
 - execute if condition

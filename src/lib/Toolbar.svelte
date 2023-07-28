@@ -55,25 +55,38 @@
         document.body.setAttribute("theme", themes[$colorTheme].name);
     }
 
+    function exportURL() {
+        if ($recipeModules.length != 0) {
+            window.location.hash = btoa(JSON.stringify($recipeModules));
+        } else {
+            window.location.hash = '';
+        }
+        window.navigator.clipboard.writeText(window.location);
+        alert("Copied to clipboard!");
+    }
+
     applyCurrentTheme();
 </script>
 
 <div class="toolbar">
     <!-- todo: implement settings -->
     <Tooltipable text="Switch Themes" icon="Info">
-        <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> 󰃝 </h4>
+        <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> <div class="l2">󰃝</div> </h4>
     </Tooltipable>
     <Tooltipable text="Settings (not implemented yet)" icon="Info">
         <h4 class="icon settings"> 󰒓 </h4>
     </Tooltipable>
+    <Tooltipable text="Copy Recipe URL to Clipboard" icon="Info">
+        <h4 class="icon code" on:click={exportURL} on:keydown={exportURL}> <div class="r2">󰮓</div> </h4>
+    </Tooltipable>
     <Tooltipable text="Clear All Modules" icon="Info">
-        <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}>  </h4>
+        <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}> <div class="r1"></div> </h4>
     </Tooltipable>
     <Tooltipable text="Module Quick Finder (Ctrl-Shift-P)" icon="Info">
-        <h4 class="icon search" on:click={openSearchMenu}>  </h4>
+        <h4 class="icon search" on:click={openSearchMenu}> <div class="l1"></div> </h4>
     </Tooltipable>
     <Tooltipable text="Toggle Custom JS Output (may or may not work yet)" icon="Info">
-        <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}>  </h4>
+        <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}> <div class="l1">󰘦</div> </h4>
     </Tooltipable>
 </div>
 
@@ -96,6 +109,18 @@
     .icon:hover {
         background-color: #00000033;
     }
+    .r1 { transform: translateX(1px) }
+    .r2 { transform: translateX(2px) }
+    .r3 { transform: translateX(3px) }
+    .r4 { transform: translateX(4px) }
+    .r5 { transform: translateX(5px) }
+    .r6 { transform: translateX(6px) }
+    .l1 { transform: translateX(-1px) }
+    .l2 { transform: translateX(-2px) }
+    .l3 { transform: translateX(-3px) }
+    .l4 { transform: translateX(-4px) }
+    .l5 { transform: translateX(-5px) }
+    .l6 { transform: translateX(-6px) }
     /* .right * {
         transform: translateX(2px);
     }

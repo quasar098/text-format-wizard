@@ -6,7 +6,7 @@
     export let info = { };
 </script>
 
-<p>Number of times to duplicate: </p> <InputBox bind:value={info.amount}/>
+<p>Number of copies, including original: </p> <InputBox bind:value={info.amount}/>
 
 <style>
     p { display: inline-block; }
