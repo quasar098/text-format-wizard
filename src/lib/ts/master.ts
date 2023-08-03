@@ -1,4 +1,4 @@
-import { recipeModules, outputAsJs, tooltipStack } from './stores'
+import { recipeModules, outputAsJs, tooltipStack, hasLoadedAllModules } from './stores'
 import { get } from "svelte/store"
 import { v5 as uuidv5 } from 'uuid';
 import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag, showError } from "./modules/types.ts";
@@ -26,6 +26,7 @@ let numLoaded = 0;
                 numLoaded += 1;
                 if (numLoaded == Object.keys(moduleMap_).length) {
                     console.log("Finished loading all modules");
+                    hasLoadedAllModules.update(() => true);
                 }
             })
         }

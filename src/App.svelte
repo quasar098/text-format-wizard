@@ -12,7 +12,7 @@
 
     import InputOutputTextareas from "./lib/InputOutputTextareas.svelte";
 
-    import { recipeModules, addModuleModalInfo } from "./lib/ts/stores";
+    import { recipeModules, addModuleModalInfo, hasLoadedAllModules } from "./lib/ts/stores";
     import { calculate, moduleMetadata,
         uuidRegex, sortedModuleTypes } from './lib/ts/master';
     import { ModuleType } from "./lib/ts/modules/types.ts";
@@ -31,16 +31,18 @@
 
     <div class="top">
         <Frame title="> Recipe" width=60 height="100% + 10px">
-            {#each $recipeModules as item, index}
-                {#if $recipeModules.includes(item)}
-                    <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
-                {/if}
-            {:else}
-                <div class='no-modules'>
-                    <p class="text text-glow">No modules are in this recipe</p>
-                    <br><br>
-                </div>
-            {/each}
+            {#key $hasLoadedAllModules}
+                {#each $recipeModules as item, index}
+                    {#if $recipeModules.includes(item)}
+                        <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
+                    {/if}
+                {:else}
+                    <div class='no-modules'>
+                        <p class="text text-glow">No modules are in this recipe</p>
+                        <br><br>
+                    </div>
+                {/each}
+            {/key}
         </Frame>
         <Frame title="> Modules" width=40 height="100% + 10px">
             <Svroller width="100%" height="100%" alwaysVisible="true">

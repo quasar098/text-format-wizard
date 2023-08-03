@@ -28,6 +28,8 @@ export const showFindModuleModal: Writable<boolean> = writable(false);
 export const showAddModuleModal: Writable<boolean> = writable(false);
 export const addModuleModalInfo = writable(undefined);
 
+export const hasLoadedAllModules: Writeable<boolean> = writable(false);
+
 export const tooltipStack: Writable<Array<TooltipType>> = writable([]);
 
 export const colorTheme: Writable<number> = writable(1*(localStorage.getItem("tfwColorTheme") ?? 0));
