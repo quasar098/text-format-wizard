@@ -97,5 +97,6 @@ export enum ModuleType {
     RGBToHex = rst("RGBToHex"),
     RSAEncryption = rst("RSAEncryption"),
     SortLines = rst("SortLines"),
-    HexDump = rst("HexDump")
+    HexDump = rst("HexDump"),
+    PrependLineNumber = rst("PrependLineNumber")
 }

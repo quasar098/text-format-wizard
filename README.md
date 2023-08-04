@@ -49,5 +49,4 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - execute if condition
 - fib sequence
 - keep nth line
-- prepend line number to each line
 - CRT module

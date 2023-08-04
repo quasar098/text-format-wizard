@@ -1,7 +1,31 @@
-import { ModuleType, moduleColor, showWarning } from "./types.ts";
+import { ModuleType, moduleColor, showWarning, replaceTag } from "./types.ts";
 
 
 export const moduleMetadata = {
+    [ModuleType.PrependLineNumber]: {
+        name: "Prepend Line Number",
+        color: moduleColor.misc,
+        lore: "Prepend the number of the line",
+        description: "Prepend the number of the line in a specific format",
+        processMaker: (args) => {
+            let { format } = args;
+            format = format ?? "%number%.\t%line%";
+            return (text) => {
+                try {
+                    let lines = text.split("\n");
+                    let newLines = [];
+                    for (let lineIndex in lines) {
+                        let line = lines[lineIndex];
+                        newLines.push(replaceTag("line", line)(replaceTag("number", `${(lineIndex*1)+1}`)(format)));
+                    }
+                    return newLines.join("\n");
+                } catch (e) {
+                    showWarning("Prepend Line Number Module Error");
+                    return text;
+                }
+            }
+        }
+    },
     [ModuleType.RandomLine]: {
         name: "Random Line",
         color: moduleColor.misc,
