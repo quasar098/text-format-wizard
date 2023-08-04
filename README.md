@@ -51,4 +51,3 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - keep nth line
 - prepend line number to each line
 - CRT module
-- hexdump module
