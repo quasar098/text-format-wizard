@@ -1,8 +1,20 @@
 import { ModuleType, moduleColor, showWarning } from "./types.ts";
 import { BigInteger } from 'jsbn';
+import { hexy } from 'hexy';
 
 
 export let moduleMetadata = {
+    [ModuleType.HexDump]: {
+        name: "Hex Dump",
+        color: moduleColor.ctf,
+        lore: "Generate a hex dump from the input text",
+        description: "Self explanatory",
+        processMaker: (args) => {
+            return (text) => {
+                return hexy(text);
+            }
+        }
+    },
     [ModuleType.Cyclic]: {
         name: "Cyclic",
         color: moduleColor.ctf,

@@ -36,6 +36,7 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - similarly to above, bundle necessary functions when custom JS
+- better type checking because this uses typescript
 - create more docs (not fun)
 - settings page
 - ctrl-f to find in text
@@ -50,5 +51,4 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - keep nth line
 - prepend line number to each line
 - CRT module
-- sort lines
 - hexdump module
