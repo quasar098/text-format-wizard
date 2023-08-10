@@ -7,8 +7,6 @@
     import InputBox from "./InputBox.svelte";
     import { recipeModules } from "./ts/stores";
     import cssVars from 'svelte-css-vars';
-    import {get_current_component} from 'svelte/internal'
-    const selfcomp = get_current_component()
     import { get } from "svelte/store"
 
     export let moduleObject;

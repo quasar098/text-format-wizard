@@ -108,7 +108,7 @@ export let moduleMetadata = {
         lore: "Count number of vowels",
         description: "Count the number of vowels (a,e,i,o,u)",
         processMaker: (args) => {
-            return text => (text.match(/[aeiou]/gi) ?? "").length;
+            return text => ((text ?? "").match(/[aeiou]/gi) ?? "").length;
         }
     },
     [ModuleType.CountConsonants]: {
@@ -117,7 +117,7 @@ export let moduleMetadata = {
         lore: "Count number of consonants",
         description: "Count the number of vowels (any that aren't a,e,i,o,u)",
         processMaker: (args) => {
-            return text => (text.match(/[bcdfghjklmnpqrstvwxyz]/gi) ?? "").length;
+            return text => ((text ?? "").match(/[bcdfghjklmnpqrstvwxyz]/gi) ?? "").length;
         }
     },
     [ModuleType.CountWords]: {
@@ -126,7 +126,7 @@ export let moduleMetadata = {
         lore: "Count number of words",
         description: "Count the number of words in the text",
         processMaker: (args) => {
-            return text => (text.match(/\w+(?:'\w+)?/g) ?? "").length;
+            return text => ((text ?? "").match(/\w+(?:'\w+)?/g) ?? "").length;
         }
     },
     [ModuleType.Remove]: {
