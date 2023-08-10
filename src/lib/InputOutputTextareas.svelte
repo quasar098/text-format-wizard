@@ -137,6 +137,7 @@
         font-variant-ligatures: none;
         background-color: var(--TEXTAREA-BOXES);
         overflow-y: auto;
+        word-break: break-all;
     }
     textarea {
         -ms-overflow-style: none;  /* Internet Explorer 10+ */

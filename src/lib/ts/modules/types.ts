@@ -99,5 +99,6 @@ export enum ModuleType {
     SortLines = rst("SortLines"),
     HexDump = rst("HexDump"),
     PrependLineNumber = rst("PrependLineNumber"),
-    XORHex = rst("XORHex")
+    XORHex = rst("XORHex"),
+    FibonacciSequence = rst("FibonacciSequence")
 }

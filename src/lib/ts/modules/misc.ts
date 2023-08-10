@@ -26,6 +26,30 @@ export const moduleMetadata = {
             }
         }
     },
+    [ModuleType.FibonacciSequence]: {
+        name: "Fibonacci Sequence",
+        color: moduleColor.misc,
+        lore: "Generate numbers in the fibonacci sequence",
+        description: "First two integers are 1, by the way",
+        processMaker: (args) => {
+            let { amount } = args;
+            amount = amount ?? 0;
+            return (text) => {
+                if (amount == 0) {
+                    return text;
+                }
+                let integers = [];
+                for (let i=0; i<amount; i++) {
+                    if (i < 2) {
+                        integers.push(1n);
+                        continue;
+                    }
+                    integers.push(integers[integers.length-2]+integers[integers.length-1]);
+                }
+                return integers.join(", ")
+            }
+        }
+    },
     [ModuleType.RandomLine]: {
         name: "Random Line",
         color: moduleColor.misc,
