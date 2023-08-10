@@ -283,7 +283,7 @@ export function calculate(text, modules=undefined) {
         try {
             let convert = moduleMetadata[modul.moduleType].processMaker(argumens);
             recipe.push([modul.args, moduleMetadata[modul.moduleType].processMaker]);
-            text = convert(text);
+            text = convert(text)+[];  // adding a list is really cursed ngl
         } catch (critical) {
             text = text;
             showError(`Critical: ${critical}`);

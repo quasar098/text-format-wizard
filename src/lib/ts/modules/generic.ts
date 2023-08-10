@@ -51,7 +51,9 @@ export let moduleMetadata = {
         lore: "Count number of chars",
         description: "Counts newlines too!",
         processMaker: (args) => {
-            return (text) => text.length + "";
+            return (text) => {
+                return text.length + "";
+            };
         }
     },
     [ModuleType.KeepRegex]: {
