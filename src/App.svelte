@@ -31,18 +31,20 @@
 
     <div class="top">
         <Frame title="> Recipe" width=60 height="100% + 10px">
-            {#key $hasLoadedAllModules}
-                {#each $recipeModules as item, index}
-                    {#if $recipeModules.includes(item)}
-                        <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
-                    {/if}
-                {:else}
-                    <div class='no-modules'>
-                        <p class="text text-glow">No modules are in this recipe</p>
-                        <br><br>
-                    </div>
-                {/each}
-            {/key}
+            <Svroller width="100%" height="100%" alwaysVisible="true">
+                {#key $hasLoadedAllModules}
+                    {#each $recipeModules as item, index}
+                        {#if $recipeModules.includes(item)}
+                            <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
+                        {/if}
+                    {:else}
+                        <div class='no-modules'>
+                            <p class="text text-glow">No modules are in this recipe</p>
+                            <br><br>
+                        </div>
+                    {/each}
+                {/key}
+            </Svroller>
         </Frame>
         <Frame title="> Modules" width=40 height="100% + 10px">
             <Svroller width="100%" height="100%" alwaysVisible="true">

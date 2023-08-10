@@ -11,13 +11,13 @@
 
     let metadata = moduleMetadata[type];
     function doStuff(e) {
+        onclick();
         if (e.keyCode == 32 || e.keyCode == undefined) {
             openModal(2, {
                 moduleType: type,
                 moduleName: metadata.name
             });
         }
-        onclick();
     }
 
     $: styleVars = {
