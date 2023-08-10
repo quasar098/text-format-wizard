@@ -189,7 +189,7 @@
         background-color: var(--TEXTAREA-BOXES);
     }
     .search::placeholder {
-        color: white;
+        color: var(--TEXT-COLOR);
     }
     .search:focus {
         border: 1px solid var(--FOCUSED);

@@ -39,14 +39,13 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - better type checking because this uses typescript
 - create more docs (not fun)
 - settings page
-- ctrl-f to find in text
 - custom menu for clear all modules are you sure
 - be able to drag around the stuff
 - ability to pause the thing and have a run button to do it manually
 - selectors/filters for module frame (e.g. popular, misc, ctf)
+- unit tests ughhhh
 
 ## module ideas:
 - execute if condition
-- fib sequence
 - keep nth line
 - CRT module
