@@ -2,55 +2,66 @@ import { writable, get } from 'svelte/store';
 import type { Writable } from "svelte/store";
 
 
-type WindowType = {
-    id: number;
+enum ModalId {
+    FindModuleModal = 1,
+    AddModuleModal = 2,
+}
+
+
+type ModalType = {
+    id: ModalId;
     info: any;
 }
 
 
-export function openWindow(wid: number, info?: any): boolean {
-    /* opens a window if it's not already open */
-    let windowIsOpenedAlready: boolean = false;
-    get(windowStack).forEach((windowObject) => {
+export function openModal(wid: ModalId, info?: any): boolean {
+    /*
+    if window is not open already:
+        opens a window with the window id we specify, ret true
+    else:
+        do nothing, ret false
+    */
+    let modalIsOpenedAlready: boolean = false;
+    get(modalStack).forEach((windowObject) => {
         if (windowObject.id == wid) {
-            windowIsOpenedAlready = true;
+            modalIsOpenedAlready = true;
         }
     });
-    if (windowIsOpenedAlready) {
-        console.warn(`Window of id ${wid} is open already!!`);
+    if (modalIsOpenedAlready) {
+        console.warn(`Modal of id ${wid} is open already!!`);
         return false;
     }
-    windowStack.push({id: wid, info: info ?? {}});
+    modalStack.update(modalStackUpdated => {
+        modalStackUpdated.push({id: wid, info: info ?? {}});
+        return modalStackUpdated;
+    });
+    modalStackInstanceId.update(_ => _+1);
     return true;
 }
 
 
-export function closeWindow(wid: number): boolean {
-    /* closes all topmost windows until the window we want is closed */
-    let retValue: boolean = false;
-    windowStack.update((windowStackBefore) => {
-        while (true) {
-            if (windowStackBefore.pop().id == wid) {
-                retValue = true;
-                return windowStackBefore;
-            }
-        }
-        return [];
-    });
-    return retValue;
+export function closeAllModals(): void {
+    modalStack.update(_ => []);
+    modalStackInstanceId.update(_ => _+1);
 }
 
 
-export function getWindowIsOpen(wid: number): boolean {
-    /* gets whether a window with a specific window id is open */
-    let retValue = false;
-    get(windowStack).forEach(windowObj => {
-        if (windowObj.id == wid) {
-            return true;
+export function getOpenModal(wid: ModalId): any {
+    /*
+    if window is open:
+        ret window.info
+    else:
+        ret undefined
+    */
+    let retValue = undefined;
+    get(modalStack).forEach(modalObj => {
+        if (modalObj.id == wid) {
+            retValue = modalObj.info;
         }
     });
     return retValue;
 }
 
 
-export const windowStack: Writable<Array<WindowType>> = writable([]);
+const modalStack: Writable<Array<ModalType>> = writable([]);
+export const modalStackInstanceId: Writable<number> = writable(0);

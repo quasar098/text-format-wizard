@@ -2,18 +2,18 @@
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
     import { moduleMap, moduleMetadata } from './ts/master';
-    import { recipeModules, addModuleModalInfo, showAddModuleModal } from "./ts/stores";
+    import { recipeModules } from "./ts/stores";
+    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
 
     function hideModal() {
         addModuleInfo = {};
-        $addModuleModalInfo = undefined;
-        $showAddModuleModal = false;
+        closeAllModals();
     }
 
-    $: info = [$addModuleModalInfo ?? {}][0];
+    $: info = $modalStackInstanceId && (getOpenModal(2) ?? {});
 
-    $: metadata = moduleMetadata[info.moduleType];
+    $: metadata = moduleMetadata[info.moduleType] ?? {};
 
     let addModuleInfo = {};
 
@@ -23,15 +23,14 @@
             document.activeElement.blur();
         }
 
-        if ($showAddModuleModal) {
+        if (getOpenModal(2)) {
             if (e.keyCode == 13) {
                 addModule();
             }
         }
 
         if (e.keyCode == 80 && e.shiftKey && e.ctrlKey) {
-            $addModuleModalInfo = undefined;
-            $showAddModuleModal = false;
+            closeAllModals();
         }
     }
 
@@ -40,8 +39,7 @@
             old.push({moduleType: info.moduleType, args: {...addModuleInfo}});
             return old;
         })
-        $addModuleModalInfo = undefined;
-        $showAddModuleModal = false;
+        closeAllModals();
         addModuleInfo = {};
         setTimeout(() => {
             addModuleInfo = {};
@@ -51,25 +49,27 @@
 
 <svelte:body on:keydown={keyDownHandler}/>
 
-{#if $showAddModuleModal}
-    <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
-        <div class="modal">
-            <Frame title='> Add "{info.moduleName}" module' onclose={hideModal}
-                enterTransition={discordIn} exitTransition={discordOut}>
+{#key $modalStackInstanceId}
+    {#if getOpenModal(2)}
+        <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
+            <div class="modal">
+                <Frame title='> Add "{info.moduleName}" module' onclose={hideModal}
+                    enterTransition={discordIn} exitTransition={discordOut}>
 
-                <p class="description text text-glow">> {metadata.description}</p>
+                    <p class="description text text-glow">> {metadata.description}</p>
 
-                <span class="text">
-                    <svelte:component this={moduleMap[info.moduleType]}
-                    bind:info={addModuleInfo}></svelte:component>
-                </span>
+                    <span class="text">
+                        <svelte:component this={moduleMap[info.moduleType]}
+                        bind:info={addModuleInfo}></svelte:component>
+                    </span>
 
-                <button class="add-module" tabindex="0" on:click={addModule}>Add</button>
+                    <button class="add-module" tabindex="0" on:click={addModule}>Add</button>
 
-            </Frame>
+                </Frame>
+            </div>
         </div>
-    </div>
-{/if}
+    {/if}
+{/key}
 
 <style>
     .outer-modal {

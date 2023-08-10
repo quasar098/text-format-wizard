@@ -1,8 +1,8 @@
 <script lang="ts">
+    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
     import { moduleMetadata } from './ts/master.ts';
     import { ModuleType } from './ts/modules/types.ts';
     import Tooltipable from './Tooltipable.svelte';
-    import { showAddModuleModal, addModuleModalInfo } from './ts/stores';
     import cssVars from 'svelte-css-vars';
 
     export let type: ModuleType;
@@ -12,8 +12,10 @@
     let metadata = moduleMetadata[type];
     function doStuff(e) {
         if (e.keyCode == 32 || e.keyCode == undefined) {
-            $addModuleModalInfo = {moduleType: type, moduleName: metadata.name};
-            $showAddModuleModal = true;
+            openModal(2, {
+                moduleType: type,
+                moduleName: metadata.name
+            });
         }
         onclick();
     }

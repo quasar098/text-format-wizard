@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { outputAsJs, recipeModules, showFindModuleModal, colorTheme } from './ts/stores';
+    import { outputAsJs, recipeModules, colorTheme } from './ts/stores';
     import Tooltipable from './Tooltipable.svelte';
+    import { openModal } from './ts/modal';
 
     function changeJs() {
         outputAsJs.update(_ => !_);
@@ -15,7 +16,7 @@
     }
 
     function openSearchMenu() {
-        $showFindModuleModal = true;
+        openModal(1);
     }
 
     let themes = [

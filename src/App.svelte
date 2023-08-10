@@ -12,7 +12,7 @@
 
     import InputOutputTextareas from "./lib/InputOutputTextareas.svelte";
 
-    import { recipeModules, addModuleModalInfo, hasLoadedAllModules } from "./lib/ts/stores";
+    import { recipeModules, hasLoadedAllModules } from "./lib/ts/stores";
     import { calculate, moduleMetadata,
         uuidRegex, sortedModuleTypes } from './lib/ts/master';
     import { ModuleType } from "./lib/ts/modules/types.ts";

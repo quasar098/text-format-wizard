@@ -44,6 +44,7 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - ability to pause the thing and have a run button to do it manually
 - selectors/filters for module frame (e.g. popular, misc, ctf)
 - unit tests ughhhh
+- preset selecter (e.g. encrypt hex, instead of just "hex module")
 
 ## module ideas:
 - execute if condition

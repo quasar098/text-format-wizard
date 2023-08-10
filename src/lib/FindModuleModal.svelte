@@ -2,9 +2,9 @@
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
     import { moduleMetadata } from './ts/master';
-    import { ModuleType } from "./ts/modules/types.ts"
+    import { ModuleType } from "./ts/modules/types"
     import { sortedModuleTypes } from "./ts/master";
-    import { showFindModuleModal, addModuleModalInfo, showAddModuleModal } from './ts/stores';
+    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
     import { Svroller } from "svrollbar";
     import ModuleSelect from "./ModuleSelect.svelte";
@@ -13,7 +13,7 @@
 
     function keydownHandle(e) {
         if (e.keyCode == 27) {
-            modalClosed();
+            closeFindModuleModal();
         }
         if (e.keyCode != 80) {
             return;
@@ -24,8 +24,11 @@
         if (!e.shiftKey) {
             return;
         }
+        closeAllModals();
+        setTimeout(() => {
+            openModal(1);
+        }, 20);
         event.preventDefault(true);
-        $showFindModuleModal = true;
         // ctrl shift p to open this menu btw
     }
 
@@ -67,23 +70,28 @@
 
     $: searchTerm = "";
 
-    function modalClosed() {
-        $showFindModuleModal = false;
+    function closeFindModuleModal() {
         searchTerm = "";
+        closeAllModals();
     }
 
     function inputKeyDown(e) {
         let betterSortedItems = betterSorted();
         if (e.keyCode == 13) {
             if (betterSortedItems.length) {
-                modalClosed();
-                $addModuleModalInfo = {moduleType: betterSortedItems[0], moduleName: moduleMetadata[betterSortedItems[0]].name}
+                closeFindModuleModal();
                 if (!e.shiftKey) {
-                    $showAddModuleModal = true;
+                    let addModuleModalInfo = openModal(2, {
+                        moduleType: betterSortedItems[0],
+                        moduleName: moduleMetadata[betterSortedItems[0]].name,
+                    });
                 } else {
                     setTimeout(() => {
-                        $showAddModuleModal = true;
-                    }, 10) // hacky solution
+                        let addModuleModalInfo = openModal(2, {
+                            moduleType: betterSortedItems[0],
+                            moduleName: moduleMetadata[betterSortedItems[0]].name,
+                        });
+                    }, 40);
                 }
             }
         }
@@ -93,42 +101,44 @@
 
 <svelte:body on:keydown={keydownHandle}/>
 
-{#if $showFindModuleModal}
-    <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
-        <div class="modal">
-            <Frame title='> Find module' enterTransition={discordIn} exitTransition={discordOut} onclose={modalClosed}>
+{#key $modalStackInstanceId}
+    {#if getOpenModal(1)}
+        <div class="outer-modal" in:fadeBgIn out:fadeBgOut>
+            <div class="modal">
+                <Frame title='> Find module' enterTransition={discordIn} exitTransition={discordOut} onclose={closeFindModuleModal}>
 
-                <div class='container'>
-                    <input type="text" name="tfw-find-module" class="search text" spellcheck="false"
-                    placeholder="Search for a module..." autofocus="true" bind:value={searchTerm} on:keydown={inputKeyDown}/>
+                    <div class='container'>
+                        <input type="text" name="tfw-find-module" class="search text" spellcheck="false"
+                        placeholder="Search for a module..." autofocus="true" bind:value={searchTerm} on:keydown={inputKeyDown}/>
 
-                    <Svroller width="100%" height="calc(100% - 30px)" alwaysVisible="true">
-                        {#key searchTerm}
-                            {#each betterSorted() as value, index}
-                                <ModuleSelect type={value} onclick={modalClosed}/>
-                            {:else}
-                                {#if searchTerm.length}
-                                    <p class="nomod text text-glow">No modules found :(</p>
+                        <Svroller width="100%" height="calc(100% - 30px)" alwaysVisible="true">
+                            {#key searchTerm}
+                                {#each betterSorted() as value, index}
+                                    <ModuleSelect type={value} onclick={closeFindModuleModal}/>
                                 {:else}
-                                    <p class="nomod text text-glow">Type to search for modules</p>
-                                    <div class='powered-by text text-glow'>
-                                        <p>
-                                            Fuzzy search powered by Fuse.js
-                                            <a href="https://fusejs.io/" target="_blank" rel="noreferrer">
-                                                <img class="fuse" src="https://fusejs.io/assets/img/logo.png" alt="logo here"/>
-                                            </a>
-                                        </p>
-                                    </div>
-                                {/if}
-                            {/each}
-                        {/key}
-                    </Svroller>
-                </div>
+                                    {#if searchTerm.length}
+                                        <p class="nomod text text-glow">No modules found :(</p>
+                                    {:else}
+                                        <p class="nomod text text-glow">Type to search for modules</p>
+                                        <div class='powered-by text text-glow'>
+                                            <p>
+                                                Fuzzy search powered by Fuse.js
+                                                <a href="https://fusejs.io/" target="_blank" rel="noreferrer">
+                                                    <img class="fuse" src="https://fusejs.io/assets/img/logo.png" alt="logo here"/>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    {/if}
+                                {/each}
+                            {/key}
+                        </Svroller>
+                    </div>
 
-            </Frame>
+                </Frame>
+            </div>
         </div>
-    </div>
-{/if}
+    {/if}
+{/key}
 
 <style>
     .fuse {
