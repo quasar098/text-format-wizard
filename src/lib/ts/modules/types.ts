@@ -98,5 +98,6 @@ export enum ModuleType {
     RSAEncryption = rst("RSAEncryption"),
     SortLines = rst("SortLines"),
     HexDump = rst("HexDump"),
-    PrependLineNumber = rst("PrependLineNumber")
+    PrependLineNumber = rst("PrependLineNumber"),
+    XORHex = rst("XORHex")
 }

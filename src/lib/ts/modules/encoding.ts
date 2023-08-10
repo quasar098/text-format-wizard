@@ -160,6 +160,37 @@ export const moduleMetadata = {
             }
         }
     },
+    [ModuleType.XORHex]: {
+        name: "XOR Hex",
+        color: moduleColor.encoding,
+        lore: "XOR Hex values like \"69\" ^ \"2f\" -> \"46\"",
+        description: "Work the magic harder!!!",
+        processMaker: (args) => {
+            let { key } = args;
+            key = key ?? "";
+            if (key.length % 2) {
+                showWarning("XOR Hex module key invalid length");
+                return text => text;
+            }
+            if (key.length == 0) {
+                return text => text;
+            }
+            key = key.match(/.{2}/g);
+            return (text) => {
+                try {
+                    let newText = '';
+                    for (let charIndex in text) {
+                        newText += String.fromCharCode(text.charCodeAt(charIndex) ^ (+('0x'+key[charIndex % key.length])));
+                    }
+                    return newText;
+                } catch (e) {
+                    console.log(e);
+                    showWarning("XOR Hex error!");
+                    return text;
+                }
+            }
+        }
+    },
     [ModuleType.Hash]: {
         name: "Hash Algorithm",
         color: moduleColor.encoding,
@@ -168,11 +199,17 @@ export const moduleMetadata = {
         processMaker: (args) => {
             let { algorithm } = args;
             algorithm = algorithm ?? "";
+            var crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;
+                for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}
+                for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];
+                return((-1^n)>>>0).toString(16).padStart(8, '0')};
             switch (algorithm.toLowerCase().replaceAll("-", "")) {
                 case "md5":
                     return text => md5(text);
                 case "sha256":
                     return text => sha256(text);
+                case "crc32":
+                    return text => crc32(text);
                 default:
                     return text => text;
             }

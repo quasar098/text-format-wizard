@@ -8,7 +8,7 @@
     info.algorithm = info.algorithm ?? "sha256";
 </script>
 
-<Dropdown bind:value={info.algorithm} options={["sha256", "md5"]}/>
+<Dropdown bind:value={info.algorithm} options={["sha256", "md5", 'crc32']}/>
 
 <style>
 
