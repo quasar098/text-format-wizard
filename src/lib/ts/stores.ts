@@ -2,8 +2,6 @@ import { writable, get } from 'svelte/store';
 import type { Writable } from "svelte/store";
 import { moduleMetadata } from "./master.ts";
 import { ModuleType } from "./modules/types.ts";
-import { TooltipIcon } from "./tooltip.ts";
-import type { TooltipType } from "./tooltip.ts";
 
 
 function loadModulesFromFragment() {
@@ -20,14 +18,12 @@ function loadModulesFromFragment() {
 }
 
 
-export const recipeModules = writable(loadModulesFromFragment());
+export const recipeModules: Writable<Array<any>> = writable(loadModulesFromFragment());
 export const outputAsJs: Writable<boolean> = writable(false);
 
 export const hasLoadedAllModules: Writeable<boolean> = writable(false);
 
-export const tooltipStack: Writable<Array<TooltipType>> = writable([]);
-
 export const colorTheme: Writable<number> = writable(1*(localStorage.getItem("tfwColorTheme") ?? 0));
 colorTheme.subscribe(newColorTheme => {
     localStorage.setItem("tfwColorTheme", newColorTheme ?? 0);
-})
+});

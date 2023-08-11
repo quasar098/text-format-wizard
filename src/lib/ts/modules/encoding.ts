@@ -1,4 +1,5 @@
-import { ModuleType, moduleColor, showWarning } from "./types.ts";
+import { ModuleType, moduleColor } from "./types.ts";
+import { showWarning } from "../tooltip.ts"
 import { md5 } from "../md5.ts";
 import { sha256 } from "../sha256.ts"
 

@@ -1,7 +1,8 @@
-import { recipeModules, outputAsJs, tooltipStack, hasLoadedAllModules } from './stores'
+import { recipeModules, outputAsJs, hasLoadedAllModules } from './stores'
 import { get } from "svelte/store"
 import { v5 as uuidv5 } from 'uuid';
-import { ModuleType, moduleColor, showWarning, WARNING_UUID, replaceTag, showError } from "./modules/types.ts";
+import { ModuleType, moduleColor, replaceTag } from "./modules/types.ts";
+import { showWarning, showError, filterTooltipStack, WARNING_UUID } from './tooltip.ts';
 import { moduleMetadata as encodingModules } from './modules/encoding.ts';
 import { moduleMetadata as genericModules } from './modules/generic.ts';
 import { moduleMetadata as ctfModules } from './modules/ctf.ts';
@@ -246,11 +247,7 @@ let replaceChoose = replaceTag("choose(?:\\((?:((?:(?<=\\\\)(?:.)|[^,)])+))\\))"
 let bundledFunctions = [replaceTag, replaceRand];
 
 export function calculate(text, modules=undefined) {
-    tooltipStack.update((stack) => {
-        // interesting...
-        stack = stack.filter(_ => _.uuid != WARNING_UUID);
-        return stack;
-    })
+    filterTooltipStack(_ => _.uuid != WARNING_UUID);
 
     if (modules == undefined) {
         loopingModuleIndexStack = [];

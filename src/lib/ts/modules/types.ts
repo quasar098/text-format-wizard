@@ -1,6 +1,4 @@
 import { v5 as uuidv5 } from 'uuid';
-import { tooltipStack } from '../stores'
-import { genTooltip } from "../tooltip.ts"
 
 
 // the best things
@@ -16,26 +14,6 @@ export function replaceTag(k,v) {
 }
 
 
-export const WARNING_UUID = "01234567-0123-0123-1337-694204206969";
-export const ERROR_UUID = "13333337-1337-1337-1337-133333333337";
-
-
-export function showWarning(message) {
-    tooltipStack.update((stack) => {
-        stack.splice(0, 0, genTooltip(message, "Warning", WARNING_UUID));
-        return stack;
-    })
-}
-
-
-export function showError(message) {
-    tooltipStack.update((stack) => {
-        stack.splice(0, 0, genTooltip(message, "Error", WARNING_UUID));
-        return stack;
-    })
-}
-
-
 export const moduleColor = {
     encoding: "87abf0",
     ctf: "ead637",
@@ -48,7 +26,6 @@ export const moduleColor = {
 
 export const UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
 
-export let rstCount = 0;
 // random string thing
 function rst(input): string {
     return uuidv5(input, UUID_NAMESPACE);

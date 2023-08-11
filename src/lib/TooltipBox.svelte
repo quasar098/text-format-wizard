@@ -1,19 +1,16 @@
 <script lang="ts">
     import VisibilityChange from "svelte-visibility-change";
-    import { tooltipStack } from "./ts/stores";
     import cssVars from "svelte-css-vars";
-    import { TooltipIcon } from "./ts/tooltip";
+    import { TooltipIcon, getTopmostTooltip, filterTooltipStack, tooltipStackInstanceId } from "./ts/tooltip";
 
-    $: theStack = $tooltipStack;
-
-    $: tooltip = theStack[theStack.length-1] ?? { text: "", icon: TooltipIcon[TooltipIcon.None], uuid: "placeholder here" };
+    $: tooltip = $tooltipStackInstanceId && getTopmostTooltip();
 
     $: styleVars = {
         "icon-color": TooltipIcon[tooltip.icon].color ?? "#000000"
     };
 
     function removeAllTooltips() {
-        tooltipStack.update(_ => []);
+        filterTooltipStack((tooltip) => false);
     }
 
 </script>

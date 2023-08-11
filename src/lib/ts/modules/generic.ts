@@ -1,4 +1,5 @@
-import { ModuleType, moduleColor, showWarning, replaceTag } from "./types.ts";
+import { ModuleType, moduleColor, replaceTag } from "./types.ts";
+import { showWarning } from "../tooltip.ts"
 
 
 export let moduleMetadata = {
