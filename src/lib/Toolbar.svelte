@@ -86,7 +86,6 @@
 <svelte:body on:keydown={keydownHandler}/>
 
 <div class="toolbar">
-    <!-- todo: implement settings -->
     <Tooltipable text="Switch Themes" icon="Info">
         <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> <div class="l2">󰃝</div> </h4>
     </Tooltipable>

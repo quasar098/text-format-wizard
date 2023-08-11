@@ -34,10 +34,10 @@
         <p class="mfilter-icon" style="transform: translateX(-4px)"></p>
     </div>
     <div class='mfilter mfilter-misc' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('misc')}>
-        <p class="mfilter-icon" style="transform: translateX(-4px)">󱌣</p>
+        <p class="mfilter-icon" style="transform: translateX(-3px)">󱌣</p>
     </div>
     <div class='mfilter mfilter-encoding' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('encoding')}>
-        <p class="mfilter-icon" style="transform: translateX(-4px)">󰣧</p>
+        <p class="mfilter-icon" style="transform: translateX(-2px)">󰣧</p>
     </div>
 </div>
 
@@ -83,9 +83,6 @@
     }
     .mfilter-ctf {
         background-color: var(--ctf-bg);
-    }
-    .mfilter-comment {
-        background-color: #757577;
     }
     .mfilter-generic {
         background-color: var(--generic-bg);

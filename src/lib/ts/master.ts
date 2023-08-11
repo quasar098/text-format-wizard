@@ -126,25 +126,6 @@ let moduleMetadata = {
                 return text;
             }
         }
-    },
-    [ModuleType.Eval]: {
-        name: "Eval",
-        color: moduleColor.logic,
-        lore: "Evaluate javascript code",
-        description: "Warning: be careful of what you execute!!!",
-        processMaker: (args) => {
-            let { code } = args;
-            return (text) => {
-                let output = "";
-                try {
-                    eval(code);
-                } catch (e) {
-                    showWarning(e);
-                    return text;
-                }
-                return output;
-            }
-        }
     }
 };
 

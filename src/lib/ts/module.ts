@@ -69,7 +69,6 @@ export enum ModuleType {
     Decimal = rst("Decimal"),
     Cyclic = rst("Cyclic"),
     Store = rst("Store"),
-    Eval = rst("Eval"),
     HexToRGB = rst("HexToRGB"),
     RGBToHex = rst("RGBToHex"),
     RSAEncryption = rst("RSAEncryption"),

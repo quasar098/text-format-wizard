@@ -1,8 +1,12 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
-    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
-    import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
+    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal.ts';
+    import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions.ts";
+
+    import { getSetting, setSetting } from './ts/settings.ts';
+
+    import ToggleSetting from "./settings/ToggleSetting.svelte";
 
     function keyDownHandler(e) {
         if (e.keyCode == 27) {
