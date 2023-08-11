@@ -4,6 +4,7 @@
     import ModulePreview from "./lib/ModulePreview.svelte";
     import AddModuleModal from "./lib/AddModuleModal.svelte";
     import FindModuleModal from "./lib/FindModuleModal.svelte";
+    import SettingsModal from "./lib/SettingsModal.svelte";
     import Toolbar from "./lib/Toolbar.svelte";
     import cssVars from 'svelte-css-vars';
 
@@ -28,23 +29,26 @@
 <main>
     <AddModuleModal/>
     <FindModuleModal/>
+    <SettingsModal/>
 
     <div class="top">
         <Frame title="> Recipe" width=60 height="100% + 10px">
-            <Svroller width="100%" height="100%" alwaysVisible="true">
-                {#key $hasLoadedAllModules}
-                    {#each $recipeModules as item, index}
-                        {#if $recipeModules.includes(item)}
-                            <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
-                        {/if}
-                    {:else}
-                        <div class='no-modules'>
-                            <p class="text text-glow">No modules are in this recipe</p>
-                            <br><br>
-                        </div>
-                    {/each}
-                {/key}
-            </Svroller>
+            {#if Object.keys($recipeModules).length === 0}
+                <div class='no-modules'>
+                    <p class="text text-glow">No modules are in this recipe</p>
+                    <br><br>
+                </div>
+            {:else}
+                <Svroller width="100%" height="100%" alwaysVisible="true">
+                    {#key $hasLoadedAllModules}
+                        {#each $recipeModules as item, index}
+                            {#if $recipeModules.includes(item)}
+                                <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
+                            {/if}
+                        {/each}
+                    {/key}
+                </Svroller>
+            {/if}
         </Frame>
         <Frame title="> Modules" width=40 height="100% + 10px">
             <Svroller width="100%" height="100%" alwaysVisible="true">

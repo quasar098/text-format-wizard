@@ -23,6 +23,7 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 - uses [svelte](https://svelte.dev/), a front-end component framework
 - uses [svrollbar](https://github.com/daylilyfield/svrollbar), a scrollbar component for svelte
 - uses [svelte-css-vars](https://github.com/kaisermann/svelte-css-vars) for dynamic css in svelte
+- uses [svelte-visibility-change](https://github.com/metonym/svelte-visibility-change) to detect visibility changes
 - uses [fuse.js](https://fusejs.io/) for quick module finder
 - uses [jsbn](https://github.com/andyperlitch/jsbn) for RSA Module's big numbers
 

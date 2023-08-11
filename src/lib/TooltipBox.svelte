@@ -1,4 +1,5 @@
 <script lang="ts">
+    import VisibilityChange from "svelte-visibility-change";
     import { tooltipStack } from "./ts/stores";
     import cssVars from "svelte-css-vars";
     import { TooltipIcon } from "./ts/tooltip";
@@ -10,7 +11,14 @@
     $: styleVars = {
         "icon-color": TooltipIcon[tooltip.icon].color ?? "#000000"
     };
+
+    function removeAllTooltips() {
+        tooltipStack.update(_ => []);
+    }
+
 </script>
+
+<VisibilityChange on:change={removeAllTooltips}/>
 
 <div class="outer" use:cssVars={styleVars}>
     <div class="inner">

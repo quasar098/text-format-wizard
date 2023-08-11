@@ -28,10 +28,6 @@
                 addModule();
             }
         }
-
-        if (e.keyCode == 80 && e.shiftKey && e.ctrlKey) {
-            closeAllModals();
-        }
     }
 
     function addModule() {

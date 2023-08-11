@@ -15,37 +15,14 @@
         if (e.keyCode == 27) {
             closeFindModuleModal();
         }
-        if (e.keyCode != 80) {
-            return;
-        }
-        if (!e.ctrlKey) {
-            return;
-        }
-        if (!e.shiftKey) {
-            return;
-        }
-        closeAllModals();
-        setTimeout(() => {
+        if (e.keyCode == 80 && e.ctrlKey && e.shiftKey) {
+            closeAllModals();
             openModal(1);
-        }, 20);
-        event.preventDefault(true);
-        // ctrl shift p to open this menu btw
+            event.preventDefault(true);
+        }
     }
 
     const fuseOptions = {
-        // isCaseSensitive: false,
-        // includeScore: false,
-        // shouldSort: true,
-        // includeMatches: false,
-        // findAllMatches: false,
-        // minMatchCharLength: 1,
-        // location: 0,
-        // threshold: 0.6,
-        // distance: 100,
-        // useExtendedSearch: false,
-        // ignoreLocation: false,
-        // ignoreFieldNorm: false,
-        // fieldNormWeight: 1,
         keys: [
             "metadata.name",
             "metadata.lore",

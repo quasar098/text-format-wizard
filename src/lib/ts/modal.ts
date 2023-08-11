@@ -5,6 +5,7 @@ import type { Writable } from "svelte/store";
 enum ModalId {
     FindModuleModal = 1,
     AddModuleModal = 2,
+    SettingsModal = 3,
 }
 
 

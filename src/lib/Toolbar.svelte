@@ -15,10 +15,6 @@
         }
     }
 
-    function openSearchMenu() {
-        openModal(1);
-    }
-
     let themes = [
         {
             name: "Dark",
@@ -94,8 +90,8 @@
     <Tooltipable text="Switch Themes" icon="Info">
         <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> <div class="l2">󰃝</div> </h4>
     </Tooltipable>
-    <Tooltipable text="Settings (not implemented yet)" icon="Info">
-        <h4 class="icon settings"> 󰒓 </h4>
+    <Tooltipable text="Settings (wip)" icon="Info">
+        <h4 class="icon settings" on:click={() => openModal(3)}> 󰒓 </h4>
     </Tooltipable>
     <Tooltipable text="Copy Recipe URL (Ctrl-Shift-L)" icon="Info">
         <h4 class="icon code" on:click={exportURL} on:keydown={exportURL}> <div class="r2">󰮓</div> </h4>
@@ -104,7 +100,7 @@
         <h4 class="icon clear" on:click={clearModules} on:keydown={clearModules}> <div class="r1"></div> </h4>
     </Tooltipable>
     <Tooltipable text="Module Quick Finder (Ctrl-Shift-P)" icon="Info">
-        <h4 class="icon search" on:click={openSearchMenu}> <div class="l1"></div> </h4>
+        <h4 class="icon search" on:click={() => openModal(1)}> <div class="l1"></div> </h4>
     </Tooltipable>
     <Tooltipable text="Toggle Custom JS Output (janky for me but YMMV)" icon="Info">
         <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}> <div class="l1">󰘦</div> </h4>
