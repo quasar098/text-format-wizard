@@ -24,11 +24,11 @@ export const moduleColor = {
 }
 
 
-export const UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
+export const MODULE_UUID_NAMESPACE = "b8f1195e-3214-472a-b2cd-cc7d1d329ba2";
 
 // random string thing
 function rst(input): string {
-    return uuidv5(input, UUID_NAMESPACE);
+    return uuidv5(input, MODULE_UUID_NAMESPACE);
 }
 
 

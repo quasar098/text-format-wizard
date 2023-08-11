@@ -18,7 +18,7 @@ let moduleMap_ = {};
 
 let numLoaded = 0;
 
-(() => {
+(async () => {
     for (let mType_ of Object.keys(ModuleType)) {
         if (!uuidRegex.test(ModuleType[mType_])) {
             moduleMap_[mType_] = undefined;
