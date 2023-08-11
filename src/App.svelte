@@ -16,7 +16,7 @@
     import { recipeModules, hasLoadedAllModules } from "./lib/ts/stores";
     import { calculate, moduleMetadata,
         uuidRegex, sortedModuleTypes } from './lib/ts/master';
-    import { ModuleType } from "./lib/ts/modules/types.ts";
+    import { ModuleType } from "./lib/ts/module.ts";
 
     function removeModuleCallback(moduleObject) {
         recipeModules.update((old) => {

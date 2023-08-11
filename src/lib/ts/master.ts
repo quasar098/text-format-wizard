@@ -1,7 +1,7 @@
-import { recipeModules, outputAsJs, hasLoadedAllModules } from './stores'
+import { recipeModules, outputAsJs, hasLoadedAllModules } from './stores.ts'
 import { get } from "svelte/store"
 import { v5 as uuidv5 } from 'uuid';
-import { ModuleType, moduleColor, replaceTag } from "./modules/types.ts";
+import { ModuleType, moduleColor, replaceTag } from "./module.ts";
 import { showWarning, showError, filterTooltipStack, WARNING_UUID } from './tooltip.ts';
 import { moduleMetadata as encodingModules } from './modules/encoding.ts';
 import { moduleMetadata as genericModules } from './modules/generic.ts';
@@ -16,16 +16,16 @@ let registerDB = {};
 
 let moduleMap_ = {};
 
-let numLoaded = 0;
-
+// load all module components
+let numModuleComponentsLoaded = 0;
 (async () => {
     for (let mType_ of Object.keys(ModuleType)) {
         if (!uuidRegex.test(ModuleType[mType_])) {
             moduleMap_[mType_] = undefined;
             import(`../modules/${ModuleType[mType_]}Module.svelte`).then(mod => {
                 moduleMap_[mType_] = mod.default;
-                numLoaded += 1;
-                if (numLoaded == Object.keys(moduleMap_).length) {
+                numModuleComponentsLoaded += 1;
+                if (numModuleComponentsLoaded == Object.keys(moduleMap_).length) {
                     console.log("Finished loading all modules");
                     hasLoadedAllModules.update(() => true);
                 }
@@ -163,23 +163,17 @@ for (var externalModuleIndex in externalModules) {
 }
 
 const rgbToHSL = (r, g, b) => {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  const l = Math.max(r, g, b);
-  const s = l - Math.min(r, g, b);
-  const h = s
-    ? l === r
-      ? (g - b) / s
-      : l === g
-      ? 2 + (b - r) / s
-      : 4 + (r - g) / s
-    : 0;
-  return [
-    60 * h < 0 ? 60 * h + 360 : 60 * h,
-    100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
-    (100 * (2 * l - s)) / 2,
-  ];
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    const l = Math.max(r, g, b);
+    const s = l - Math.min(r, g, b);
+    const h = s ? l === r ? (g - b) / s : l === g ? 2 + (b - r) / s : 4 + (r - g) / s : 0;
+    return [
+        60 * h < 0 ? 60 * h + 360 : 60 * h,
+        100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
+        (100 * (2 * l - s)) / 2,
+    ];
 };
 
 const hexToRGB = (hex) => {

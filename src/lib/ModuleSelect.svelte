@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
     import { moduleMetadata } from './ts/master.ts';
-    import { ModuleType } from './ts/modules/types.ts';
+    import { ModuleType } from './ts/module.ts';
     import Tooltipable from './Tooltipable.svelte';
     import cssVars from 'svelte-css-vars';
 

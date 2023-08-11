@@ -1,7 +1,7 @@
 import { writable, get } from 'svelte/store';
 import type { Writable } from "svelte/store";
 import { moduleMetadata } from "./master.ts";
-import { ModuleType } from "./modules/types.ts";
+import { ModuleType } from "./module.ts";
 
 
 function loadModulesFromFragment() {

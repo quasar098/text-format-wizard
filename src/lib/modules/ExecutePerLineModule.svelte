@@ -1,7 +1,7 @@
 <script lang="ts">
     import { get } from 'svelte/store'
-    import { ModuleType } from "../ts/modules/types";
-    import { recipeModules } from '../ts/stores';
+    import { ModuleType } from "../ts/module.ts";
+    import { recipeModules } from '../ts/stores.ts';
     import InputBox from '../InputBox.svelte';
 
     import ModulePreview from '../ModulePreview.svelte';

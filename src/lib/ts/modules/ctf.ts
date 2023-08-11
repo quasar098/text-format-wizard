@@ -1,4 +1,4 @@
-import { ModuleType, moduleColor } from "./types.ts";
+import { ModuleType, moduleColor } from "../module.ts";
 import { showWarning } from "../tooltip.ts"
 import { BigInteger } from 'jsbn';
 import { hexy } from 'hexy';

@@ -1,11 +1,11 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import Frame from "./Frame.svelte";
-    import { moduleMetadata } from './ts/master';
-    import { ModuleType } from "./ts/modules/types"
-    import { sortedModuleTypes } from "./ts/master";
-    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal';
-    import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions";
+    import { moduleMetadata } from './ts/master.ts';
+    import { ModuleType } from "./ts/module.ts"
+    import { sortedModuleTypes } from "./ts/master.ts";
+    import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal.ts';
+    import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions.ts";
     import { Svroller } from "svrollbar";
     import ModuleSelect from "./ModuleSelect.svelte";
 

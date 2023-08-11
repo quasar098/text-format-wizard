@@ -1,4 +1,4 @@
-import { ModuleType, moduleColor, replaceTag } from "./types.ts";
+import { ModuleType, moduleColor, replaceTag } from "../module.ts";
 import { showWarning } from "../tooltip.ts"
 
 

@@ -2,7 +2,7 @@ import { v5 as uuidv5 } from 'uuid';
 
 
 // the best things
-export function replaceTag(k,v) {
+export function replaceTag(k, v) {
     if (typeof v == "function") {
         return ((text) => {
             return text.replaceAll(new RegExp(`(?<!\\\\)%${k}%`,'g'), (...result) => v(...result)).replaceAll(`\\%${k}%`, `%${k}%`);
