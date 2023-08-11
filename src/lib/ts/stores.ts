@@ -18,6 +18,9 @@ function loadModulesFromFragment() {
 }
 
 
+
+export const moduleFrameFilter: Writable<string> = writable("");
+
 export const recipeModules: Writable<Array<any>> = writable(loadModulesFromFragment());
 export const outputAsJs: Writable<boolean> = writable(false);
 
