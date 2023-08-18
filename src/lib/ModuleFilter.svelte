@@ -1,6 +1,7 @@
 <script lang="ts">
     import { moduleFrameFilter } from "./ts/stores.ts";
     import { moduleColor } from "./ts/module.ts";
+    import Tooltipable from "./Tooltipable.svelte";
     import cssVars from 'svelte-css-vars';
 
     function setModuleFrameFilter(categoryName) {
@@ -23,23 +24,26 @@
     }
 </script>
 
-<div class="modules-frame-filters">
-    <div class='mfilter mfilter-generic' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('generic')}>
-        <p class="mfilter-icon" style="transform: translateX(-4px)">󱍓</p>
+<Tooltipable text="Filter by category (e.g. generic, encoding, ctf)" icon="Info">
+    <div class="modules-frame-filters">
+
+        <div class='mfilter mfilter-generic' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('generic')}>
+            <p class="mfilter-icon" style="transform: translateX(-4px)">󱍓</p>
+        </div>
+        <div class='mfilter mfilter-logic' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('logic')}>
+            <p class="mfilter-icon" style="transform: translateX(-6px)"></p>
+        </div>
+        <div class='mfilter mfilter-ctf' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('ctf')}>
+            <p class="mfilter-icon" style="transform: translateX(-4px)"></p>
+        </div>
+        <div class='mfilter mfilter-misc' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('misc')}>
+            <p class="mfilter-icon" style="transform: translateX(-3px)">󱌣</p>
+        </div>
+        <div class='mfilter mfilter-encoding' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('encoding')}>
+            <p class="mfilter-icon" style="transform: translateX(-2px)">󰣧</p>
+        </div>
     </div>
-    <div class='mfilter mfilter-logic' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('logic')}>
-        <p class="mfilter-icon" style="transform: translateX(-6px)"></p>
-    </div>
-    <div class='mfilter mfilter-ctf' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('ctf')}>
-        <p class="mfilter-icon" style="transform: translateX(-4px)"></p>
-    </div>
-    <div class='mfilter mfilter-misc' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('misc')}>
-        <p class="mfilter-icon" style="transform: translateX(-3px)">󱌣</p>
-    </div>
-    <div class='mfilter mfilter-encoding' use:cssVars="{mfilterCss}" on:click={() => setModuleFrameFilter('encoding')}>
-        <p class="mfilter-icon" style="transform: translateX(-2px)">󰣧</p>
-    </div>
-</div>
+</Tooltipable>
 
 <style>
     .modules-frame-filters {

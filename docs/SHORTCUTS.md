@@ -8,6 +8,7 @@ text format wizard is meant to be used similar to vim, where you can get stuff d
 
 - `Alt-Shift-0` - open settings page
 - `Ctrl-Shift-P` - open module quick finder
+- `Ctrl-Shift-U` - open programmer calculator
 - `Ctrl-Shift-L` - copy recipe url
 - `Ctrl-Shift-D` - clear all modules
 
@@ -25,3 +26,7 @@ text format wizard is meant to be used similar to vim, where you can get stuff d
 ## settings page
 
 - `Escape` - close the settings page
+
+## calculator page
+
+- `Escape` - close the programmer calculator

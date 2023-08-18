@@ -50,4 +50,7 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 ## module ideas:
 - execute if condition
 - keep nth line
+- keep line if condition
 - CRT module
+- ascii caesar shift
+- substitution cipher

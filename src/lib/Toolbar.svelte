@@ -86,6 +86,9 @@
 <svelte:body on:keydown={keydownHandler}/>
 
 <div class="toolbar">
+    <Tooltipable text="Programmer Calculator (Ctrl-Shift-U) (WIP)" icon="Info">
+        <h4 class="icon code" on:click={() => openModal(4)}> <div>󰪚</div> </h4>
+    </Tooltipable>
     <Tooltipable text="Switch Themes" icon="Info">
         <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> <div class="l2">󰃝</div> </h4>
     </Tooltipable>

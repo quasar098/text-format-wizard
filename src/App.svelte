@@ -6,6 +6,7 @@
     import AddModuleModal from "./lib/AddModuleModal.svelte";
     import FindModuleModal from "./lib/FindModuleModal.svelte";
     import SettingsModal from "./lib/SettingsModal.svelte";
+    import CalculatorModal from "./lib/CalculatorModal.svelte";
     import Toolbar from "./lib/Toolbar.svelte";
     import cssVars from 'svelte-css-vars';
 
@@ -39,6 +40,7 @@
     <AddModuleModal/>
     <FindModuleModal/>
     <SettingsModal/>
+    <CalculatorModal/>
 
     <div class="top">
         <Frame title="> Recipe" width=60 height="100% + 10px">
