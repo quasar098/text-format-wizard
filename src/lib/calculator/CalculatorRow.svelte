@@ -6,7 +6,7 @@
 </script>
 
 <div class='calc-row'>
-    <p class="row-text text text-glow">{repr.binary} | {repr.hex} | {repr.octal}</p>
+    <p class="row-text text">{repr.binary} | {repr.hex} | {repr.octal}</p>
 </div>
 
 <style>

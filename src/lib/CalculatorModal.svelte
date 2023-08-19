@@ -4,7 +4,11 @@
     import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal.ts';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions.ts";
     import { calculatorRows, newCalculatorRow, calculatorRowInstanceId } from "./ts/calculator.ts";
+    import { calculatorSize, calculatorSigning, calculatorRepr } from "./ts/calculator.ts";
+    import { CalculatorSize, CalculatorSigning, CalculatorRepr } from "./ts/calculator.ts";
     import CalculatorRowComponent from "./calculator/CalculatorRow.svelte";
+    import Tooltipable from "./Tooltipable.svelte";
+    import cssVars from 'svelte-css-vars';
 
     function keyDownHandler(e): void {
         if (e.keyCode == 27) {
@@ -27,11 +31,14 @@
     let newRowInput: string;
     $: newRowInput = "";
 
+    let isValidNewRowInput: boolean;
+    $: isValidNewRowInput = /^([0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput);
+
     function clickOnAddRowButton(e): void {
         if (newRowInput.length == 0) {
             return;
         }
-        if (!/^([0-9]+|(?:0b)?[01]+|(?:0x)?[0-9a-f]+|(?:0o)?[0-7]+)$/.test(newRowInput)) {
+        if (!/^([0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput)) {
             alert("Does not match!");
             return;
         }
@@ -41,6 +48,38 @@
             newRowInput = "";
         }
     }
+
+    function clearNewRowText(): void {
+        if (!isValidNewRowInput) {
+            newRowInput = "";
+        }
+    }
+
+    function classForCalculatorRepr(reprType: string): boolean {
+        return CalculatorRepr[reprType] == $calculatorRepr ? 'active' : 'inactive';
+    }
+
+    function classForCalculatorMode(signed: boolean, size: string): string {
+        return (CalculatorSize[size] == $calculatorSize && $calculatorSigning == +signed) ? 'active' : 'inactive';
+    }
+
+    function getNumberTypeGuess(inp: string): string {
+        if (/^0b[01]+$/.test(inp)) {
+            return "binary";
+        }
+        if (/^0x[0-9a-f]+$/.test(inp)) {
+            return "hex";
+        }
+        if (/^0o[0-7]+$/.test(inp)) {
+            return "octal";
+        }
+        return "decimal";
+    }
+
+    $: numberTypeGuess = getNumberTypeGuess(newRowInput);
+
+    let validNumberTooltip: string;
+    $: validNumberTooltip = isValidNewRowInput ? `Valid ${numberTypeGuess} number` : 'Invalid number';
 </script>
 
 <svelte:body on:keydown={keyDownHandler}/>
@@ -61,17 +100,71 @@
                     </div>
 
                     <div class='controls'>
+
                         <div class="add-row">
                             <div class="add-row-button" on:click={clickOnAddRowButton}>
                                 <p class="plus">
                                     +
                                 </p>
                             </div>
-                            <div class="add-row-parent">
-                                <input type="text" name="tfw-add-calc-row" bind:value={newRowInput}
+                            <div class="add-row-input-parent">
+                                <input type="text" name="tfw-add-calc-row" bind:value={newRowInput} spellcheck="false"
                                        on:keydown={keyDownInAddRowInput} placeholder="Add number" class="text add-row-input"/>
+                               <Tooltipable text="{validNumberTooltip}" icon="Info">
+                                   <p class="{isValidNewRowInput ? 'valid' : 'invalid'} validation" on:click={clearNewRowText}>
+                                       {isValidNewRowInput ? '' : ''}
+                                   </p>
+                               </Tooltipable>
                             </div>
                         </div>
+
+                        <div class="choose-modes box">
+                            <div class="choose-repr box">
+                                <div class='choose-repr-option {classForCalculatorRepr('Hex')}'>
+                                    <p class="text">Hex</p>
+                                </div>
+                                <div class='choose-repr-option {classForCalculatorRepr('Decimal')}'>
+                                    <p class="text">Decimal</p>
+                                </div>
+                                <div class='choose-repr-option {classForCalculatorRepr('Octal')}'>
+                                    <p class="text">Octal</p>
+                                </div>
+                                <div class='choose-repr-option {classForCalculatorRepr('Binary')}'>
+                                    <p class="text">Binary</p>
+                                </div>
+                            </div>
+                            <div class="choose-size box">
+                                <div class='uint-sizes'>
+                                    <div class='choose-size-option {classForCalculatorMode(false, 'QWord')}'>
+                                        <p class="text">uint64</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(false, 'DWord')}'>
+                                        <p class="text">uint32</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(false, 'Word')}'>
+                                        <p class="text">uint16</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(false, 'Byte')}'>
+                                        <p class="text">uint8</p>
+                                    </div>
+                                </div>
+                                <div class='int-sizes'>
+                                    <div class='choose-size-option {classForCalculatorMode(true, 'QWord')}'>
+                                        <p class="text">int64</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(true, 'DWord')}'>
+                                        <p class="text">int32</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(true, 'Word')}'>
+                                        <p class="text">int16</p>
+                                    </div>
+                                    <div class='choose-size-option {classForCalculatorMode(true, 'Byte')}'>
+                                        <p class="text">int8</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                 </Frame>
@@ -81,6 +174,38 @@
 {/key}
 
 <style>
+    .active {
+        background-color: var(--FOCUSED);
+    }
+    .inactive {
+        background-color: #dddddd;
+    }
+    .validation {
+        position: absolute;
+        top: -11px;
+        right: 0px;
+        font-size: 24px;
+        user-select: none;
+        cursor: help;
+        width: 38px;
+        height: 38px;
+        text-align: center;
+        line-height: 38px;
+    }
+    .valid {
+        color: #b0dfa1;
+    }
+    .invalid {
+        color: #db162f;
+    }
+    .text {
+        display: inline-block;
+    }
+    .box {
+        background-color: #00000011;
+        border-radius: 4px;
+        border: 1px solid black;
+    }
     .outer-modal {
         position: absolute;
         top: 0px;
@@ -109,21 +234,22 @@
         margin-left: 75px;
         margin-top: 75px;
     }
-    .add-row-parent {
+    .add-row-input-parent {
         display: inline;
+        position: relative;
     }
     .add-row-input {
         border-radius: 4px;
         padding: 10px;
+        padding-right: 35px;
         margin-left: -10px;
         margin-top: -5px;
         outline: none;
         display: inline;
-        width: calc(25% - 45px);
+        width: calc(25% - 70px);
         transition: 0.2s;
         transition-property: border;
         border: 1px solid black;
-        border-left: 0px solid;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
         background-color: var(--TEXTAREA-BOXES);
@@ -134,7 +260,6 @@
     }
     .add-row-input:focus {
         border: 1px solid var(--FOCUSED);
-        border-left: 0px solid;
     }
     .add-row-button:hover {
         background-color: var(--FOCUSED);
@@ -149,7 +274,7 @@
         background-color: white;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
-        box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.14);
         border-right: none;
         cursor: pointer;
         user-select: none;
@@ -157,5 +282,106 @@
     }
     .plus {
         font-size: 24px;
+    }
+    .choose-modes {
+        width: calc(25% + 5px);
+        height: calc(100% - 48px);
+        margin-top: 5px;
+    }
+    .choose-repr-option {
+        height: 100%;
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        transition-duration: 0.2s;
+        box-shadow: inset 0px 0px 0.9rem rgba(0, 0, 0, 0.2);
+        transition-property: background-color;
+    }
+    .choose-repr-option:first-of-type {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+    .choose-repr-option:last-of-type {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .choose-repr-option:not(:last-of-type) {
+        border-bottom: 1px solid black;
+    }
+    .choose-repr-option:hover {
+        background-color: var(--FOCUSED);
+        cursor: pointer;
+    }
+    .choose-repr-option p.text {
+        color: black;
+    }
+    .choose-repr {
+        width: calc(35% - 22px);
+        height: calc(100% - 22px);
+        margin: 10px;
+        margin-right: 0px;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: center;
+    }
+    .choose-size {
+        width: calc(65% - 12px);
+        height: calc(100% - 22px);
+        margin: 10px;
+        margin-left: 0px;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .uint-sizes,.int-sizes {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .choose-size-option:hover {
+        background-color: var(--FOCUSED);
+    }
+    .choose-size-option {
+        box-shadow: inset 0px 0px 0.9rem rgba(0, 0, 0, 0.2);
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        transition-duration: 0.2s;
+        transition-property: background-color;
+    }
+    .choose-size-option p.text {
+        color: black;
+    }
+    .uint-sizes .choose-size-option {
+        border-right: 1px solid black;
+        z-index: 1;
+        border-left: 1px solid black;
+    }
+    .uint-sizes .choose-size-option:first-of-type {
+        border-top-left-radius: 4px;
+    }
+    .uint-sizes .choose-size-option:last-of-type {
+        border-bottom-left-radius: 4px;
+    }
+    .int-sizes .choose-size-option:first-of-type {
+        border-top-right-radius: 4px;
+    }
+    .int-sizes .choose-size-option:last-of-type {
+        border-bottom-right-radius: 4px;
+    }
+    .uint-sizes .choose-size-option:not(:last-of-type),
+    .int-sizes .choose-size-option:not(:last-of-type) {
+        border-bottom: 1px solid black;
     }
 </style>

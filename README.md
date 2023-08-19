@@ -48,9 +48,9 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - preset selecter (e.g. encrypt hex, instead of just "hex module")
 
 ## module ideas:
-- execute if condition
 - keep nth line
-- keep line if condition
 - CRT module
 - ascii caesar shift
 - substitution cipher
+- long to bytes
+- bytes to long

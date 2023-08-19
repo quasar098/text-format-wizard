@@ -6,7 +6,26 @@ type CalculatorNumber = {
     arr: Array<number>
 }
 
-enum CalculatorOperation {
+export enum CalculatorSize {
+    Byte,
+    Word,
+    DWord,
+    QWord
+}
+
+export enum CalculatorRepr {
+    Hex,
+    Decimal,
+    Octal,
+    Binary
+}
+
+export enum CalculatorSigning {
+    Unsigned,
+    Signed
+}
+
+enum CalculatorOperationType {
     Add = "+",
     Subtract = "-",
     Multiply = "*",
@@ -24,7 +43,7 @@ enum CalculatorOperation {
 
 type CalculatorOperation = {
     operand: CalculatorNumber,
-    operation: CalculatorOperation
+    operation: CalculatorOperationType
 }
 
 export type CalculatorRow = {
@@ -33,11 +52,74 @@ export type CalculatorRow = {
     historyIndex: number
 }
 
+function fixOverflow(arr: Array<number>): Array<number> {
+    let i: number = 0;
+    if (arr.length == 0) {
+        return [];
+    }
+    while (true) {
+        i += 1;
+        let index: number = arr.length-i;
+        let carry: number = Math.floor(arr[index]/2);
+        let remainder: number = arr[index] % 2;
+        // console.log(arr, index, carry, remainder);
+        arr[index] = remainder;
+        if (index == 0) {
+            if (carry == 0) {
+                break;
+            }
+            arr.splice(0, 0, 0);
+            index += 1;
+        }
+        arr[index-1] += carry;
+    }
+    while (arr[0] == 0) {
+        arr = arr.slice(1);
+    }
+    return arr;
+}
+
+function performOperation(calcNum1: CalculatorNumber, operation: CalculatorOperationType, calcNum2: CalculatorNumber): CalculatorNumber {
+    let a1: Array<number> = [...calcNum1.arr];
+    let a2: Array<number> = [...calcNum2.arr];
+    while (a1.length > a2.length) {
+        a2.splice(0, 0, 0);
+    }
+    while (a2.length > a1.length) {
+        a1.splice(0, 0, 0);
+    }
+    if (operation == CalculatorOperationType.Add) {
+        let newArr: Array<number> = [];
+        for (let i=0; i<Math.max(a1.length, a2.length); i++) {
+            let n1: number = a1[i] ?? 0;
+            let n2: number = a2[i] ?? 0;
+            newArr.push(n1+n2);
+        }
+        return { arr: fixOverflow(newArr) };
+    }
+    if (operation == CalculatorOperationType.Multiply) {
+        let newArr: Array<number> = [0];
+        let i: number = 0;
+        while (i < a1.length) {
+            i += 1;
+            if ((a1[a1.length-i] ?? 0) == 1) {
+                newArr = performOperation({ arr: newArr }, CalculatorOperationType.Add, { arr: a2 }).arr;
+            }
+            a2.push(0);
+        }
+        return { arr: newArr };
+    }
+    throw new Error(`unknown operation: ${operation}`);
+}
+
+export let calculatorSigning: Writable<CalculatorSigning> = writable(CalculatorSigning.Unsigned);
+export let calculatorSize: Writable<CalculatorSize> = writable(CalculatorSize.QWord);
+export let calculatorRepr: Writable<CalculatorRepr> = writable(CalculatorRepr.Hex);
 export let calculatorRows: Writable<Array<CalculatorRow>> = writable([]);
 export let calculatorRowInstanceId: Writable<number> = writable(0);
 
 function stringNumberToCalculatorNumber(stringNumber: string): CalculatorNumber {
-    if (/^((0b)|[01]{8})[01]+$/.test(stringNumber)) {
+    if (/^0b[01]+$/.test(stringNumber)) {
         if (stringNumber.length > 2 && stringNumber[1] == 'b') {
             stringNumber = stringNumber.slice(2);
         }
@@ -50,7 +132,6 @@ function stringNumberToCalculatorNumber(stringNumber: string): CalculatorNumber 
         let arr = [];
         while (stringNumber.length) {
             arr.push(...parseInt(stringNumber[0], 16).toString(2).padStart(4, '0').split("").map(_=>_*1));
-            console.log(arr);
             stringNumber = stringNumber.slice(1);
         }
         return { arr: arr };
@@ -64,7 +145,17 @@ function stringNumberToCalculatorNumber(stringNumber: string): CalculatorNumber 
         }
         return { arr: arr };
     }
-
+    let binOfDigits = stringNumber.split("").map(n => n*1).map(n => {
+        return n.toString(2).padStart(4, "0").split("").map(q=>q*1)
+    }).map(n => fixOverflow(n));
+    let mulBy = [1];
+    let total = [0];
+    for (let i=binOfDigits.length-1; i>=0; i--) {
+        let addNum = performOperation({ arr: mulBy }, CalculatorOperationType.Multiply, { arr: binOfDigits[i] }).arr;
+        total = performOperation({ arr: total }, CalculatorOperationType.Add, { arr: addNum }).arr;
+        mulBy = performOperation({ arr: mulBy }, CalculatorOperationType.Multiply, { arr: [1, 0, 1, 0] }).arr;
+    }
+    return { arr: total };
 }
 
 export function reprCalculatorNumber(calcNumber: CalculatorNumber): {[string]: string} {
