@@ -52,7 +52,9 @@ export type CalculatorRow = {
     historyIndex: number
 }
 
-function fixOverflow(arr: Array<number>): Array<number> {
+let numberRepresentationsMemo = {};
+
+function fixOverflow(arr: Array<number>, base?: number = 2): Array<number> {
     let i: number = 0;
     if (arr.length == 0) {
         return [];
@@ -60,9 +62,8 @@ function fixOverflow(arr: Array<number>): Array<number> {
     while (true) {
         i += 1;
         let index: number = arr.length-i;
-        let carry: number = Math.floor(arr[index]/2);
-        let remainder: number = arr[index] % 2;
-        // console.log(arr, index, carry, remainder);
+        let carry: number = Math.floor(arr[index]/base);
+        let remainder: number = arr[index] % base;
         arr[index] = remainder;
         if (index == 0) {
             if (carry == 0) {
@@ -79,7 +80,7 @@ function fixOverflow(arr: Array<number>): Array<number> {
     return arr;
 }
 
-function performOperation(calcNum1: CalculatorNumber, operation: CalculatorOperationType, calcNum2: CalculatorNumber): CalculatorNumber {
+function performOperation(calcNum1: CalculatorNumber, operation: CalculatorOperationType, calcNum2: CalculatorNumber, base?: number = 2): CalculatorNumber {
     let a1: Array<number> = [...calcNum1.arr];
     let a2: Array<number> = [...calcNum2.arr];
     while (a1.length > a2.length) {
@@ -95,15 +96,15 @@ function performOperation(calcNum1: CalculatorNumber, operation: CalculatorOpera
             let n2: number = a2[i] ?? 0;
             newArr.push(n1+n2);
         }
-        return { arr: fixOverflow(newArr) };
+        return { arr: fixOverflow(newArr, base) };
     }
     if (operation == CalculatorOperationType.Multiply) {
         let newArr: Array<number> = [0];
         let i: number = 0;
         while (i < a1.length) {
             i += 1;
-            if ((a1[a1.length-i] ?? 0) == 1) {
-                newArr = performOperation({ arr: newArr }, CalculatorOperationType.Add, { arr: a2 }).arr;
+            for (let q=0; q<(a1[a1.length-i] ?? 0); q++) {
+                newArr = performOperation({ arr: newArr }, CalculatorOperationType.Add, { arr: a2 }, base).arr;
             }
             a2.push(0);
         }
@@ -145,6 +146,9 @@ function stringNumberToCalculatorNumber(stringNumber: string): CalculatorNumber 
         }
         return { arr: arr };
     }
+    if (stringNumber.length > 2 && stringNumber[1] == "d") {
+        stringNumber = stringNumber.slice(2);
+    }
     let binOfDigits = stringNumber.split("").map(n => n*1).map(n => {
         return n.toString(2).padStart(4, "0").split("").map(q=>q*1)
     }).map(n => fixOverflow(n));
@@ -160,19 +164,37 @@ function stringNumberToCalculatorNumber(stringNumber: string): CalculatorNumber 
 
 export function reprCalculatorNumber(calcNumber: CalculatorNumber): {[string]: string} {
     let binaryRepr: string = calcNumber.arr.map(_=>_+[]).join("");
+    if (numberRepresentationsMemo[binaryRepr] !== undefined) {
+        return numberRepresentationsMemo[binaryRepr];
+    }
+
     let hexRepr: string = '';
-    let octalRepr: string = '';
     binaryRepr.split('').reverse().join("").replaceAll(/[01]{1,4}/gi, (m) => {
         hexRepr = (parseInt(m.split('').reverse().join("").padStart(4, '0'), 2).toString(16) + (hexRepr+[]))+[];
     });
+
+    let octalRepr: string = '';
     binaryRepr.split('').reverse().join("").replaceAll(/[01]{1,3}/gi, (m) => {
         octalRepr = (parseInt(m.split('').reverse().join("").padStart(3, '0'), 2).toString(8) + (octalRepr+[]))+[];
     });
+
+    let decimalArray: Array<number> = [0];
+    let currentValue = [1];
+    let revBinary: string = binaryRepr.split("").reverse().join("");
+    for (let char of revBinary) {
+        if (char*1 == 1) {
+            decimalArray = performOperation({ arr: decimalArray }, CalculatorOperationType.Add, { arr: currentValue }, 10).arr;
+        }
+        currentValue = performOperation({ arr: currentValue }, CalculatorOperationType.Multiply, { arr: [2] }, 10).arr;
+    }
+
     let numberRepresentations = {
         binary: '0b' + binaryRepr.replace(/^0+/, ''),
         hex: '0x' + hexRepr.replace(/^0+/, ''),
-        octal: '0o' + octalRepr.replace(/^0+/, '')
+        octal: '0o' + octalRepr.replace(/^0+/, ''),
+        decimal: decimalArray.map(_ => _+[]).join("")
     };
+    numberRepresentationsMemo[binaryRepr] = numberRepresentations;
     return numberRepresentations;
 }
 

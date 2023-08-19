@@ -32,13 +32,13 @@
     $: newRowInput = "";
 
     let isValidNewRowInput: boolean;
-    $: isValidNewRowInput = /^([0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput);
+    $: isValidNewRowInput = /^((?:0d)?[0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput);
 
     function clickOnAddRowButton(e): void {
         if (newRowInput.length == 0) {
             return;
         }
-        if (!/^([0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput)) {
+        if (!/^((?:0d)?[0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput)) {
             alert("Does not match!");
             return;
         }
@@ -74,6 +74,15 @@
             return "octal";
         }
         return "decimal";
+    }
+
+    function setCalculatorSizeAndSigning(signed: boolean, size: string): void {
+        $calculatorSigning = +signed;
+        $calculatorSize = CalculatorSize[size];
+    }
+
+    function setCalculatorRepr(reprType: string): boolean {
+        $calculatorRepr = CalculatorRepr[reprType];
     }
 
     $: numberTypeGuess = getNumberTypeGuess(newRowInput);
@@ -119,50 +128,68 @@
                         </div>
 
                         <div class="choose-modes box">
-                            <div class="choose-repr box">
-                                <div class='choose-repr-option {classForCalculatorRepr('Hex')}'>
-                                    <p class="text">Hex</p>
-                                </div>
-                                <div class='choose-repr-option {classForCalculatorRepr('Decimal')}'>
-                                    <p class="text">Decimal</p>
-                                </div>
-                                <div class='choose-repr-option {classForCalculatorRepr('Octal')}'>
-                                    <p class="text">Octal</p>
-                                </div>
-                                <div class='choose-repr-option {classForCalculatorRepr('Binary')}'>
-                                    <p class="text">Binary</p>
-                                </div>
-                            </div>
-                            <div class="choose-size box">
-                                <div class='uint-sizes'>
-                                    <div class='choose-size-option {classForCalculatorMode(false, 'QWord')}'>
-                                        <p class="text">uint64</p>
+                            {#key $calculatorRepr}
+                                <div class="choose-repr box">
+                                    <div class='choose-repr-option {classForCalculatorRepr('Hex')}'
+                                         on:click={() => setCalculatorRepr('Hex')}>
+                                        <p class="text">Hex</p>
                                     </div>
-                                    <div class='choose-size-option {classForCalculatorMode(false, 'DWord')}'>
-                                        <p class="text">uint32</p>
+                                    <div class='choose-repr-option {classForCalculatorRepr('Decimal')}'
+                                         on:click={() => setCalculatorRepr('Decimal')}>
+                                        <p class="text">Decimal</p>
                                     </div>
-                                    <div class='choose-size-option {classForCalculatorMode(false, 'Word')}'>
-                                        <p class="text">uint16</p>
+                                    <div class='choose-repr-option {classForCalculatorRepr('Octal')}'
+                                         on:click={() => setCalculatorRepr('Octal')}>
+                                        <p class="text">Octal</p>
                                     </div>
-                                    <div class='choose-size-option {classForCalculatorMode(false, 'Byte')}'>
-                                        <p class="text">uint8</p>
+                                    <div class='choose-repr-option {classForCalculatorRepr('Binary')}'
+                                         on:click={() => setCalculatorRepr('Binary')}>
+                                        <p class="text">Binary</p>
                                     </div>
                                 </div>
-                                <div class='int-sizes'>
-                                    <div class='choose-size-option {classForCalculatorMode(true, 'QWord')}'>
-                                        <p class="text">int64</p>
+                            {/key}
+                            {#key $calculatorSize}
+                                {#key $calculatorSigning}
+                                    <div class="choose-size box">
+                                        <div class='uint-sizes'>
+                                            <div class='choose-size-option {classForCalculatorMode(false, 'QWord')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(false, 'QWord')}>
+                                                <p class="text">uint64</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(false, 'DWord')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(false, 'DWord')}>
+                                                <p class="text">uint32</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(false, 'Word')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(false, 'Word')}>
+                                                <p class="text">uint16</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(false, 'Byte')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(false, 'Byte')}>
+                                                <p class="text">uint8</p>
+                                            </div>
+                                        </div>
+                                        <div class='int-sizes'>
+                                            <div class='choose-size-option {classForCalculatorMode(true, 'QWord')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(true, 'QWord')}>
+                                                <p class="text">int64</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(true, 'DWord')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(true, 'DWord')}>
+                                                <p class="text">int32</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(true, 'Word')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(true, 'Word')}>
+                                                <p class="text">int16</p>
+                                            </div>
+                                            <div class='choose-size-option {classForCalculatorMode(true, 'Byte')}'
+                                                 on:click={() => setCalculatorSizeAndSigning(true, 'Byte')}>
+                                                <p class="text">int8</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class='choose-size-option {classForCalculatorMode(true, 'DWord')}'>
-                                        <p class="text">int32</p>
-                                    </div>
-                                    <div class='choose-size-option {classForCalculatorMode(true, 'Word')}'>
-                                        <p class="text">int16</p>
-                                    </div>
-                                    <div class='choose-size-option {classForCalculatorMode(true, 'Byte')}'>
-                                        <p class="text">int8</p>
-                                    </div>
-                                </div>
-                            </div>
+                                {/key}
+                            {/key}
                         </div>
 
                     </div>
@@ -217,7 +244,7 @@
     }
     .rows {
         background-color: #00000011;
-        width: calc(100% - 20px);
+        width: calc(100% - 22px);
         height: calc(100% - 320px);
         margin: 10px;
         border: 1px solid black;
