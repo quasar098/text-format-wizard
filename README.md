@@ -48,7 +48,6 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - preset selecter (e.g. encrypt hex, instead of just "hex module")
 
 ## module ideas:
-- keep nth line
 - CRT module
 - octal encoding
 - ascii caesar shift

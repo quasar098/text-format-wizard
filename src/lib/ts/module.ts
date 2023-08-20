@@ -78,5 +78,6 @@ export enum ModuleType {
     XORHex = rst("XORHex"),
     FibonacciSequence = rst("FibonacciSequence"),
     LongToBytes = rst("LongToBytes"),
-    BytesToLong = rst("BytesToLong")
+    BytesToLong = rst("BytesToLong"),
+    KeepNthLine = rst("KeepNthLine")
 }

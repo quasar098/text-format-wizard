@@ -3,6 +3,28 @@ import { showWarning } from "../tooltip.ts"
 
 
 export const moduleMetadata = {
+    [ModuleType.KeepNthLine]: {
+        name: "Keep Nth Line",
+        color: moduleColor.misc,
+        lore: "Keep the Nth line of the input text",
+        description: "Zero indexed. Also, if the line number is invalid, it returns the entire text",
+        processMaker: (args) => {
+            let { keep } = args;
+            if (keep == undefined) {
+                showWarning("Invalid line to keep");
+                return text => text;
+            }
+            if (isNaN(parseInt(keep)) || !isFinite(keep)) {
+                showWarning("Non-integer line to keep");
+                return text => text;
+            }
+            let lineToKeep = keep*1;
+            return (text) => {
+                let texts: Array<string> = text.split("\n");
+                return texts[lineToKeep] ?? text;
+            }
+        }
+    },
     [ModuleType.PrependLineNumber]: {
         name: "Prepend Line Number",
         color: moduleColor.misc,

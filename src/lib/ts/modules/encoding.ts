@@ -91,15 +91,15 @@ export const moduleMetadata = {
     [ModuleType.Hex]: {
         name: "Hexadecimal",
         color: moduleColor.encoding,
-        lore: "Convert UTF-8 to hexadecimal and vice versa",
-        description: "Convert UTF-8 to hexadecimal and other way too. Choose UTF-8 if unsure which to choose",
+        lore: "Convert ASCII to hexadecimal and vice versa",
+        description: "Convert ASCII to hexadecimal and other way too",
         processMaker: (args) => {
             let { method } = args;
-            method = method ?? "decode (ascii)";
+            method = method ?? "decode";
             try {
                 return (text) => {
                     try {
-                        if (method == "decode (ascii)") {
+                        if (method == "decode") {
                             text = text.replace(/^0x/, '');
                             let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
                             if (cleansed.length % 2) {
@@ -114,14 +114,6 @@ export const moduleMetadata = {
                                 })
                             }
                             return total;
-                        } else if (method == "decode (utf-8)") {
-                            text = text.replace(/^0x/, '');
-                            let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
-                            if (cleansed.length % 2) {
-                                showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
-                                return text;
-                            }
-                            return decodeURIComponent('%' + cleansed.match(/.{1,2}/g).join('%'));;
                         } else {
                             return Array.from(text).map(c =>
                                 c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16).padStart(2, '0') :
