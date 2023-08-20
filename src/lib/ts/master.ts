@@ -188,6 +188,12 @@ export function sortedModuleTypes() {
         }
     }
     return final.sort((a, b) => {
+        if (moduleMetadata[a] === undefined) {
+            throw new Error(`module is undefined: ${a}`);
+        }
+        if (moduleMetadata[b] === undefined) {
+            throw new Error(`module is undefined: ${b}`);
+        }
         let acolor = moduleMetadata[a].color;
         let aname = moduleMetadata[a].name;
         let bcolor = moduleMetadata[b].color;

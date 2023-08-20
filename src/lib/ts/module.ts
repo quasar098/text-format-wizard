@@ -76,5 +76,7 @@ export enum ModuleType {
     HexDump = rst("HexDump"),
     PrependLineNumber = rst("PrependLineNumber"),
     XORHex = rst("XORHex"),
-    FibonacciSequence = rst("FibonacciSequence")
+    FibonacciSequence = rst("FibonacciSequence"),
+    LongToBytes = rst("LongToBytes"),
+    BytesToLong = rst("BytesToLong")
 }

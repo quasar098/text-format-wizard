@@ -100,6 +100,7 @@ export const moduleMetadata = {
                 return (text) => {
                     try {
                         if (method == "decode (ascii)") {
+                            text = text.replace(/^0x/, '');
                             let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
                             if (cleansed.length % 2) {
                                 showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
@@ -114,6 +115,7 @@ export const moduleMetadata = {
                             }
                             return total;
                         } else if (method == "decode (utf-8)") {
+                            text = text.replace(/^0x/, '');
                             let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
                             if (cleansed.length % 2) {
                                 showWarning("Hexadecimal module takes groups of 2 hex digits at a time");

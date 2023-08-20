@@ -50,7 +50,6 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 ## module ideas:
 - keep nth line
 - CRT module
+- octal encoding
 - ascii caesar shift
 - substitution cipher
-- long to bytes
-- bytes to long

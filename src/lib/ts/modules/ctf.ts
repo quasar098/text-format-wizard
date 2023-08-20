@@ -5,6 +5,53 @@ import { hexy } from 'hexy';
 
 
 export let moduleMetadata = {
+    [ModuleType.LongToBytes]: {
+        name: "Long To Bytes",
+        color: moduleColor.ctf,
+        lore: "1633837924 -> abcd",
+        description: "Convert each line (1 long per line) to bytes",
+        processMaker: (args) => {
+            let { endian } = args;
+            endian = endian ?? "big";
+            return (text) => {
+                let texts: Array<string> = text.split("\n").filter((line) => !isNaN(parseInt(line)));
+                let longs: Array<bigint> = texts.map(line => BigInt(line));
+                let totals: Array<string> = [];
+                for (let long of longs) {
+                    let total: string = "";
+                    while (long != 0) {
+                        total += String.fromCharCode((long & 255n).toString()*1);
+                        long /= 256n;
+                    }
+                    if (endian == "big") {
+                        total = total.split("").reverse().join("");
+                    }
+                    totals.push(total);
+                }
+                return totals.join("\n");
+            }
+        }
+    },
+    [ModuleType.BytesToLong]: {
+        name: "Bytes To Long",
+        color: moduleColor.ctf,
+        lore: "abcd -> 1633837924",
+        description: "Convert each line (1 long per line) to bytes",
+        processMaker: (args) => {
+            let { endian } = args;
+            endian = endian ?? "big";
+            return (text) => {
+                let total = 0n;
+                if (endian === "big") {
+                    text = text.split("").reverse().join("");
+                }
+                for (let index in text) {
+                    total += BigInt(text.charCodeAt(index)) * (256n ** BigInt(index));
+                }
+                return total+[];
+            }
+        }
+    },
     [ModuleType.HexDump]: {
         name: "Hex Dump",
         color: moduleColor.ctf,

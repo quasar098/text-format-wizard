@@ -39,7 +39,7 @@
             return;
         }
         if (!/^((?:0d)?[0-9]+|0b[01]+|0x[0-9a-f]+|0o[0-7]+)$/.test(newRowInput)) {
-            alert("Does not match!");
+            alert("Invalid number!");
             return;
         }
         $calculatorRows.push(newCalculatorRow(newRowInput));
