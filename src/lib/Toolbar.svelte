@@ -92,7 +92,7 @@
     <Tooltipable text="Switch Themes" icon="Info">
         <h4 class="icon code" on:click={changeTheme} on:keydown={changeTheme}> <div class="l2">󰃝</div> </h4>
     </Tooltipable>
-    <Tooltipable text="Settings (wip)" icon="Info">
+    <Tooltipable text="Settings (Alt-Shift-0)" icon="Info">
         <h4 class="icon settings" on:click={() => openModal(3)}> 󰒓 </h4>
     </Tooltipable>
     <Tooltipable text="Copy Recipe URL (Ctrl-Shift-L)" icon="Info">

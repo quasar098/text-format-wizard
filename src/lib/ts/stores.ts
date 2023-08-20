@@ -27,6 +27,6 @@ export const outputAsJs: Writable<boolean> = writable(false);
 export const hasLoadedAllModules: Writeable<boolean> = writable(false);
 
 export const colorTheme: Writable<number> = writable(1*(localStorage.getItem("tfwColorTheme") ?? 0));
-colorTheme.subscribe(newColorTheme => {
+colorTheme.subscribe((newColorTheme) => {
     localStorage.setItem("tfwColorTheme", newColorTheme ?? 0);
 });

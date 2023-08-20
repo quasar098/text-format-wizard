@@ -17,6 +17,7 @@
 
     import { recipeModules, hasLoadedAllModules, moduleFrameFilter } from "./lib/ts/stores.ts";
     import { calculate, moduleMetadata, uuidRegex, sortedModuleTypes } from './lib/ts/master.ts';
+    import { getSetting, Setting } from './lib/ts/settings.ts';
     import { ModuleType } from "./lib/ts/module.ts";
 
     function removeModuleCallback(moduleObject) {
@@ -34,7 +35,20 @@
 
     $: filteredAndSortedModuleTypes = ($moduleFrameFilter || true) && filterModuleTypes(sortedModuleTypes());
 
+    function beforeUnload() {
+        if (getSetting(Setting.ShowLeaveWarning, true)) {
+            console.log($recipeModules.length);
+            if ($recipeModules.length) {
+                event.preventDefault();
+                event.returnValue = '';
+                return '';
+            }
+        }
+    }
+
 </script>
+
+<svelte:window on:beforeunload={beforeUnload}/>
 
 <main>
     <AddModuleModal/>

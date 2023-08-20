@@ -39,13 +39,13 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - similarly to above, bundle necessary functions when custom JS
 - better type checking because this uses typescript
 - create more docs (not fun)
-- settings page
 - custom menu for clear all modules are you sure
 - be able to drag around the stuff
 - ability to pause the thing and have a run button to do it manually
-- selectors/filters for module frame (e.g. popular, misc, ctf)
 - unit tests ughhhh
 - preset selecter (e.g. encrypt hex, instead of just "hex module")
+- change url fragment linking to work with other things like settings page, input text, etc
+- second keybinding for module quick finder for firefox users
 
 ## module ideas:
 - CRT module

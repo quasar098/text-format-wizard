@@ -1,17 +1,34 @@
 import type { Writable } from "svelte/store";
 import { writable, get } from 'svelte/store';
 
-const settings: Writable<{[key: string]: any}> = writable({});
 
-
-export function setSetting(name: string, value: any): void {
-    settings[name] = value;
+export enum Setting {
+    ShowLeaveWarning
 }
 
 
-export function getSetting(name: string, defaultValue: any): any {
-    if (!Object.keys(get(settings)).includes(name)) {
-        settings[name] = defaultValue;
+let parsedSettings: {[key: Setting]: any} = {};
+try {
+    parsedSettings = JSON.parse(localStorage.getItem("tfwSettings"));
+} catch {}
+
+const settings: Writable<{[key: Setting]: any}> = writable(parsedSettings ?? {});
+settings.subscribe((newSettings) => {
+    localStorage.setItem("tfwSettings", JSON.stringify(newSettings));
+})
+
+
+export function setSetting(name: Setting, value: any): void {
+    settings.update((settedSettings) => {
+        settedSettings[Setting[name]] = value;
+        return settedSettings;
+    });
+}
+
+
+export function getSetting(name: Setting, defaultValue: any): any {
+    if (!Object.keys(get(settings)).includes(Setting[name])) {
+        setSetting(name, defaultValue);
     }
-    return settings[name];
+    return get(settings)[Setting[name]];
 }

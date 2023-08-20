@@ -4,9 +4,10 @@
     import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal.ts';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions.ts";
 
-    import { getSetting, setSetting } from './ts/settings.ts';
+    import { getSetting, setSetting, Setting } from './ts/settings.ts';
 
     import ToggleSetting from "./settings/ToggleSetting.svelte";
+    import SettingsSection from "./settings/SettingsSection.svelte";
 
     function keyDownHandler(e) {
         if (e.keyCode == 27) {
@@ -30,9 +31,12 @@
                 <Frame title='> Settings' onclose={closeAllModals}
                     enterTransition={discordIn} exitTransition={discordOut}>
 
-                    <div class="coming-soon">
-                        <p class="text text-glow">Coming soon!</p>
-                    </div>
+                    <SettingsSection title="General">
+                        <div class='row'>
+                            <p class="text">Show warning when trying to close the tab with modules in the recipe</p>
+                            <ToggleSetting name={Setting.ShowLeaveWarning} defaultValue="true"/>
+                        </div>
+                    </SettingsSection>
 
                 </Frame>
             </div>
@@ -50,12 +54,10 @@
         z-index: 100;
         background-color: #00000044;
     }
-    .coming-soon {
-        width: 100%;
-        height: 100%;
+    .row {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
     }
     .modal {
@@ -63,5 +65,9 @@
         height: calc(100% - 150px);
         margin-left: 75px;
         margin-top: 75px;
+    }
+    p.text {
+        display: inline-block;
+        margin: 0;
     }
 </style>
