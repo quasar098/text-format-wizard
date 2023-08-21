@@ -2,6 +2,8 @@
 
 text format wizard is meant to be used similar to vim, where you can get stuff done and there is keyboard shortcut for most things. these shortcuts should be pretty intuitive if you use them enough.
 
+in the settings page, you can rebind some of the shortcuts if you want (looking at you, firefox users)
+
 ## list of shortcuts
 
 ## global

@@ -1,6 +1,6 @@
 # text format wizard
 
-*this project is under construction, feel free to use at [quasar.name](https://quasar.name/text-format-wizard)*
+*this project is under construction (feels like it always will be), but feel free to use at [quasar.name](https://quasar.name/text-format-wizard)*
 
 ## what this
 
@@ -10,7 +10,7 @@ gone are the days of ad-ridden poor-quality online tools! now you can do it in o
 ## what about cyberchef?
 
 i had no idea that cyberchef existed before making this<br>
-this is not a replacement for cyberchef nor a competitor
+this is not a replacement for cyberchef
 
 ## try now
 
@@ -32,7 +32,6 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 when i think of this project i think of imagemagick (the logo of it) but text formatting edition
 
 ## todo:
-- keyboard shortcuts for everything like vim
 - custom modules w/ github oauth integration
 - save recipe in localstorage
 - fix calculate being not defined in custom JS function (by nonobvious method)
@@ -42,10 +41,9 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - custom menu for clear all modules are you sure
 - be able to drag around the stuff
 - ability to pause the thing and have a run button to do it manually
-- unit tests ughhhh
-- preset selecter (e.g. encrypt hex, instead of just "hex module")
+- unit tests ughhhhghhhh dont want to do it (boring)
 - change url fragment linking to work with other things like settings page, input text, etc
-- second keybinding for module quick finder for firefox users
+- changelog for users to know what changes
 
 ## module ideas:
 - CRT module

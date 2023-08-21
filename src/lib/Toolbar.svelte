@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { outputAsJs, recipeModules, colorTheme } from './ts/stores';
+    import { outputAsJs, recipeModules, colorTheme, lastInputText } from './ts/stores';
     import Tooltipable from './Tooltipable.svelte';
     import { openModal } from './ts/modal';
+    import { checkKeybind, Setting, getSetting } from "./ts/settings.ts";
 
     function changeJs() {
         outputAsJs.update(_ => !_);
@@ -53,8 +54,15 @@
     }
 
     function exportURL() {
-        if ($recipeModules.length != 0) {
-            window.location.hash = btoa(JSON.stringify($recipeModules));
+        let toCopy = {}
+        if ($recipeModules.length) {
+            toCopy.recipe = $recipeModules;
+        }
+        if (getSetting(Setting.IncludeInputOnCopyRecipeUrl) && $lastInputText.length) {
+            toCopy.input = $lastInputText;
+        }
+        if (Object.keys(toCopy).length) {
+            window.location.hash = btoa(JSON.stringify(toCopy));
         } else {
             window.location.hash = '';
         }
@@ -63,17 +71,11 @@
     }
 
     function keydownHandler(e) {
-        if (!e.shiftKey) {
-            return;
-        }
-        if (!e.ctrlKey) {
-            return;
-        }
-        if (e.keyCode == 76) {  // copy recipe URL
+        if (checkKeybind(e, Setting.CopyRecipeURLKeybind)) {
             exportURL();
             e.preventDefault(true);
         }
-        if (e.keyCode == 68) {  // clear all modules
+        if (checkKeybind(e, Setting.ClearAllModulesKeybind)) {  // clear all modules
             clearModules();
             e.preventDefault(true);
         }

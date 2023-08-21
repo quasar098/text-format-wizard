@@ -3,7 +3,13 @@ import { writable, get } from 'svelte/store';
 
 
 export enum Setting {
-    ShowLeaveWarning
+    ShowLeaveWarning,
+    ModuleQuickFinderKeybind,
+    CalculatorKeybind,
+    CopyRecipeURLKeybind,
+    ClearAllModulesKeybind,
+    SettingsKeybind,
+    IncludeInputOnCopyRecipeUrl
 }
 
 
@@ -17,6 +23,26 @@ settings.subscribe((newSettings) => {
     localStorage.setItem("tfwSettings", JSON.stringify(newSettings));
 })
 
+export let settingDefaults: {[key: Setting]: {[key: string]: string | boolean} | boolean} = {
+    [Setting.SettingsKeybind]: {
+        ctrl: false, alt: true, shift: true, code: "Digit0"
+    },
+    [Setting.ModuleQuickFinderKeybind]: {
+        ctrl: true, alt: false, shift: true, code: "KeyP"
+    },
+    [Setting.CalculatorKeybind]: {
+        ctrl: true, alt: false, shift: true, code: "KeyU"
+    },
+    [Setting.CopyRecipeURLKeybind]: {
+        ctrl: true, alt: false, shift: true, code: "KeyL"
+    },
+    [Setting.ClearAllModulesKeybind]: {
+        ctrl: true, alt: false, shift: true, code: "KeyD"
+    },
+    [Setting.ShowLeaveWarning]: true,
+    [Setting.IncludeInputOnCopyRecipeUrl]: true
+}
+
 
 export function setSetting(name: Setting, value: any): void {
     settings.update((settedSettings) => {
@@ -26,9 +52,27 @@ export function setSetting(name: Setting, value: any): void {
 }
 
 
-export function getSetting(name: Setting, defaultValue: any): any {
+export function getSetting(name: Setting): any {
     if (!Object.keys(get(settings)).includes(Setting[name])) {
-        setSetting(name, defaultValue);
+        setSetting(name, settingDefaults[name]);
     }
     return get(settings)[Setting[name]];
+}
+
+
+export function checkKeybind(event: any, keybindSetting: Setting): any {
+    let keybind: {[key: string]: string | boolean} | undefined = getSetting(keybindSetting);
+    if (keybind === undefined) {
+        return false;
+    }
+    if (keybind.ctrl !== event.ctrlKey) {
+        return false;
+    }
+    if (keybind.shift !== event.shiftKey) {
+        return false;
+    }
+    if (keybind.alt !== event.altKey) {
+        return false;
+    }
+    return keybind.code === event.code;
 }

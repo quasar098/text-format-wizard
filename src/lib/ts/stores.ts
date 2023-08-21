@@ -11,14 +11,22 @@ function loadModulesFromFragment() {
     }
     try {
         let decodedFragment = JSON.parse(atob(encodedFragment));
-        return decodedFragment;
+        if (Array.isArray(decodedFragment)) {
+            return decodedFragment;
+        } else {
+            if (Array.isArray(decodedFragment.recipe)) {
+                console.log(decodedFragment);
+                return decodedFragment.recipe;
+            }
+            return [];
+        }
     } catch {
         return [];
     }
 }
 
 
-
+export const lastInputText: Writable<string> = writable("");
 export const moduleFrameFilter: Writable<string> = writable("");
 
 export const recipeModules: Writable<Array<any>> = writable(loadModulesFromFragment());

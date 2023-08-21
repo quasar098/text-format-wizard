@@ -1,10 +1,27 @@
 <script lang="ts">
-    import { recipeModules } from "./ts/stores";
+    import { recipeModules, lastInputText } from "./ts/stores";
     import { calculate } from "./ts/master";
     import Frame from "./Frame.svelte";
     import ResizeInOutFrames from "./ResizeInOutFrames.svelte";
 
     $: inputText = "";
+
+    $: {
+        $lastInputText = inputText;
+    }
+
+    try {
+        let decodedFragment = JSON.parse(atob(window.location.hash.slice(1)));
+        if (!Array.isArray(decodedFragment)) {
+            if (typeof decodedFragment.input === "string") {
+                inputText = decodedFragment.input;
+                setTimeout(() => {
+                    inputText = decodedFragment.input;
+                }, 30);
+            }
+        }
+    } catch {}
+
     $: outputText = calculate(inputText, undefined);
 
     recipeModules.subscribe(() => {

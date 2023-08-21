@@ -6,19 +6,26 @@
     import { calculatorRows, newCalculatorRow, calculatorRowInstanceId } from "./ts/calculator.ts";
     import { calculatorSize, calculatorSigning, calculatorRepr } from "./ts/calculator.ts";
     import { CalculatorSize, CalculatorSigning, CalculatorRepr } from "./ts/calculator.ts";
+    import { checkKeybind, Setting } from "./ts/settings.ts";
     import CalculatorRowComponent from "./calculator/CalculatorRow.svelte";
     import Tooltipable from "./Tooltipable.svelte";
     import cssVars from 'svelte-css-vars';
 
     function keyDownHandler(e): void {
-        if (e.keyCode == 27) {
-            closeAllModals();
-            document.activeElement.blur();
-        }
-        if (e.keyCode == 85 && e.shiftKey && e.ctrlKey) {
-            closeAllModals();
-            openModal(4);
-            e.preventDefault(true);
+        if (getOpenModal(4)) {
+            if (e.keyCode == 27) {
+                closeAllModals();
+                document.activeElement.blur();
+            }
+            if (checkKeybind(e, Setting.CalculatorKeybind)) {
+                e.preventDefault(true);
+            }
+        } else {
+            if (checkKeybind(e, Setting.CalculatorKeybind)) {
+                closeAllModals();
+                openModal(4);
+                e.preventDefault(true);
+            }
         }
     }
 

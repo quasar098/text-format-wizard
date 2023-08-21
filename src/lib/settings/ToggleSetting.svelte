@@ -1,14 +1,13 @@
 <script lang="ts">
     import { getSetting, setSetting } from "../ts/settings.ts";
 
-    export let defaultValue: "true" | "false" = "false";
     export let name: string;
 
     if (name === undefined) {
         throw new Error("name for togglesetting undefined");
     }
 
-    let active: boolean = getSetting(name, defaultValue === "true" ? true : false);
+    let active: boolean = getSetting(name);
 
     $: {
         setSetting(name, active);

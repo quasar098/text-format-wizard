@@ -18,9 +18,11 @@
     let addModuleInfo = {};
 
     function keyDownHandler(e) {
-        if (e.keyCode == 27) {
-            hideModal();
-            document.activeElement.blur();
+        if (getOpenModal(2)) {
+            if (e.keyCode == 27) {
+                hideModal();
+                document.activeElement.blur();
+            }
         }
 
         if (getOpenModal(2)) {

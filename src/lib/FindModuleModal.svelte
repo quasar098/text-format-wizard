@@ -6,19 +6,26 @@
     import { sortedModuleTypes } from "./ts/master.ts";
     import { getOpenModal, closeAllModals, openModal, modalStackInstanceId } from './ts/modal.ts';
     import { fadeBgIn, fadeBgOut, discordIn, discordOut } from "./ts/transitions.ts";
+    import { checkKeybind, Setting } from "./ts/settings.ts";
     import { Svroller } from "svrollbar";
     import ModuleSelect from "./ModuleSelect.svelte";
 
     import Fuse from 'fuse.js';
 
     function keydownHandle(e) {
-        if (e.keyCode == 27) {
-            closeFindModuleModal();
-        }
-        if (e.keyCode == 80 && e.ctrlKey && e.shiftKey) {
-            closeAllModals();
-            openModal(1);
-            event.preventDefault(true);
+        if (getOpenModal(1)) {
+            if (e.keyCode == 27) {
+                closeFindModuleModal();
+            }
+            if (checkKeybind(e, Setting.ModuleQuickFinderKeybind)) {
+                event.preventDefault(true);
+            }
+        } else {
+            if (checkKeybind(e, Setting.ModuleQuickFinderKeybind)) {
+                closeAllModals();
+                openModal(1);
+                event.preventDefault(true);
+            }
         }
     }
 

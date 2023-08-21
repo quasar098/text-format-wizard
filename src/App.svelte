@@ -36,8 +36,7 @@
     $: filteredAndSortedModuleTypes = ($moduleFrameFilter || true) && filterModuleTypes(sortedModuleTypes());
 
     function beforeUnload() {
-        if (getSetting(Setting.ShowLeaveWarning, true)) {
-            console.log($recipeModules.length);
+        if (getSetting(Setting.ShowLeaveWarning)) {
             if ($recipeModules.length) {
                 event.preventDefault();
                 event.returnValue = '';
