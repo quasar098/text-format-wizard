@@ -131,6 +131,39 @@ export const moduleMetadata = {
             }
         }
     },
+    [ModuleType.Octal]: {
+        name: "Octal",
+        color: moduleColor.encoding,
+        lore: "Convert ASCII to octal and back too",
+        description: "Convert ASCII to octal and other way too",
+        processMaker: (args) => {
+            let { method } = args;
+            method = method ?? "decode";
+            try {
+                return (text) => {
+                    try {
+                        if (method == "decode") {
+                            let cleansed = text.replaceAll(/0o/g, "").replaceAll(/[^\d]+/g, " ");
+                            let total = "";
+                            cleansed = cleansed.replaceAll(/(?:0)?\d{1,3}/g, (_) => {
+                                total += String.fromCharCode(parseInt(_, 8));
+                                return "";
+                            })
+                            return total;
+                        } else {
+                            return Array.from(text).map(c => c.charCodeAt(0).toString(8)).join(' ');
+                        }
+                    } catch {
+                        showWarning(`Evaluation error at Octal module`);
+                        return text;
+                    }
+                }
+            } catch {
+                showWarning(`Unspecified error at Octal module`);
+                return text => text;
+            }
+        }
+    },
     [ModuleType.XORStrings]: {
         name: "XOR Strings",
         color: moduleColor.encoding,

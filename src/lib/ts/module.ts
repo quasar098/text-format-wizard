@@ -79,5 +79,6 @@ export enum ModuleType {
     FibonacciSequence = rst("FibonacciSequence"),
     LongToBytes = rst("LongToBytes"),
     BytesToLong = rst("BytesToLong"),
-    KeepNthLine = rst("KeepNthLine")
+    KeepNthLine = rst("KeepNthLine"),
+    Octal = rst("Octal"),
 }
