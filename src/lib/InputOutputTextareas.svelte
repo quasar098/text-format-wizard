@@ -152,6 +152,7 @@
         outline: none;
         transition: 0.2s border;
         font-variant-ligatures: none;
+        font-size: 13.33333px;
         background-color: var(--TEXTAREA-BOXES);
         overflow-y: auto;
         word-break: break-all;
