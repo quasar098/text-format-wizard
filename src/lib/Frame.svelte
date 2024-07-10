@@ -8,6 +8,9 @@
     export let overflow = "auto";
     export let enterTransition = () => {};
     export let exitTransition = () => {};
+    export let cornerCallback = undefined;
+    export let cornerIcon = undefined;
+    export let cornerIconOffset = undefined;
 
     import Tooltipable from "./Tooltipable.svelte";
 
@@ -41,6 +44,13 @@
     {#if title != undefined}
         <div class="title-sect">
             <h2 class="title text text-glow">{title}</h2>
+            {#if cornerIcon != undefined}
+                <Tooltipable text="Copy output" icon="Info">
+                    <div on:click={cornerCallback ?? (() => {})} on:keydown={ () => {} } class='corner-outer'>
+                        <p class="corner text" style="margin-right: {cornerIconOffset ?? 0}px;">{cornerIcon}</p>
+                    </div>
+                </Tooltipable>
+            {/if}
             {#if onclose != undefined}
                 <Tooltipable text="Close Modal (esc)" icon="Info">
                     <div on:click={onclose} on:keydown={ () => {} } class='close-outer'>
@@ -132,13 +142,32 @@
         border-top-right-radius: 4px;
         cursor: pointer;
     }
+    .corner-outer {
+        position: absolute;
+        float: right;
+        height: 43px;
+        width: 43px;
+        right: 0px;
+        top: 0px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        border-top-right-radius: 4px;
+        cursor: pointer;
+    }
     .close {
         font-size: 24px;
     }
-    .close-outer:hover {
+    .corner {
+        font-size: 24px;
+    }
+    .close-outer:hover,.corner-outer:hover {
         background-color: #FFFFFF11;
     }
-    .close-outer:focus-visible {
+    .corner-outer:hover {
+        text-shadow: 0px 0px 0.4rem var(--TEXT-COLOR);
+    }
+    .close-outer:focus-visible,.corner-outer:focus-visible {
         outline: none;
         background-color: #ffffff11;
     }

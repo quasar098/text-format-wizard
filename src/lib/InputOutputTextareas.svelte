@@ -120,6 +120,10 @@
         }
     }
 
+    function copyOutputTextareaContent(e) {
+        navigator.clipboard.writeText(outputText);
+    }
+
     let bottomAreaXposition = Math.floor(window.innerWidth/2);
 
     $: inWindowX = Math.floor((bottomAreaXposition)/window.innerWidth*1000)/10;
@@ -130,7 +134,7 @@
     <textarea spellcheck="false" class="text" bind:value={inputText} on:keydown={textareaEventHandle}/>
 </Frame>
 <ResizeInOutFrames bind:xposition={bottomAreaXposition}/>
-<Frame title="> Output" bind:width={outWindowX} overflow="hidden">
+<Frame title="> Output" bind:width={outWindowX} overflow="hidden" cornerIcon="󰆏" cornerIconOffset=5 cornerCallback={copyOutputTextareaContent}>
     <div on:click={triplePower} class="fullsize">
         <textarea spellcheck="false" class="out text"
         disabled="true" bind:value={outputText}></textarea>
