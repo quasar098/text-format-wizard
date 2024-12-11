@@ -81,4 +81,6 @@ export enum ModuleType {
     BytesToLong = rst("BytesToLong"),
     KeepNthLine = rst("KeepNthLine"),
     Octal = rst("Octal"),
+    URLEncode = rst("URLEncode"),
+    URLDecode = rst("URLDecode"),
 }

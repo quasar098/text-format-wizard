@@ -311,4 +311,59 @@ export const moduleMetadata = {
             }
         }
     },
+    [ModuleType.URLEncode]: {
+        name: "URL Encode",
+        color: moduleColor.encoding,
+        lore: "Like CyberChef's URL Encode",
+        description: "Encode URLs/URIs to have percent codes in place of some special chars",
+        processMaker: (args) => {
+            let { encAll } = args;
+            encAll = encAll ?? true;
+            return (text) => {
+                try {
+                    if (encAll) {
+                        return encodeURIComponent(text)
+                            .replace(/!/g, "%21")
+                            .replace(/#/g, "%23")
+                            .replace(/'/g, "%27")
+                            .replace(/\(/g, "%28")
+                            .replace(/\)/g, "%29")
+                            .replace(/\*/g, "%2A")
+                            .replace(/-/g, "%2D")
+                            .replace(/\./g, "%2E")
+                            .replace(/_/g, "%5F")
+                            .replace(/~/g, "%7E");
+                    } else {
+                        return encodeURI(text);
+                    }
+                } catch (e) {
+                    console.log(e);
+                    showWarning("Error with the URL Encode Module");
+                    return text;
+                }
+            }
+        }
+    },
+    [ModuleType.URLDecode]: {
+        name: "URL Decode",
+        color: moduleColor.encoding,
+        lore: "Decode the percent codes in URLs/URIs",
+        description: "Decode the percent codes in URLs/URIs",
+        processMaker: (args) => {
+            return (text) => {
+                try {
+                    let data = text.replace(/\+/g, "%20");
+                    try {
+                        return decodeURIComponent(data);
+                    } catch (err) {
+                        return unescape(data);
+                    }
+                } catch (e) {
+                    console.log(e)
+                    showWarning("Error with the URL Decode Module")
+                    return text;
+                }
+            }
+        }
+    }
 }
