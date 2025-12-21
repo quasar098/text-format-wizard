@@ -26,6 +26,14 @@
         });
     }
 
+    function displaceModuleCallback(moduleObject, offset) {
+        recipeModules.update((old) => {
+            let index = old.indexOf(moduleObject);
+            old.splice(index + offset, 0, old.splice(index, 1)[0]);
+            return old;
+        });
+    }
+
     function filterModuleTypes(inputModuleTypes) {
         if ($moduleFrameFilter.length == 0) {
             return inputModuleTypes;
@@ -67,7 +75,11 @@
                     {#key $hasLoadedAllModules}
                         {#each $recipeModules as item, index}
                             {#if $recipeModules.includes(item)}
-                                <ModulePreview bind:moduleObject={item} removeCallback={removeModuleCallback}/>
+                                <ModulePreview bind:moduleObject={item}
+                                  removeCallback={removeModuleCallback}
+                                  displaceCallback={displaceModuleCallback}
+                                  showUp={index != 0}
+                                  showDown={index != $recipeModules.length-1}/>
                             {/if}
                         {/each}
                     {/key}

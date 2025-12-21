@@ -14,11 +14,23 @@
     export let closeable = true;
 
     export let removeCallback = () => {};
+    export let displaceCallback = () => {};
+
+    export let showUp = true;
+    export let showDown = true;
 
     $: metadata = moduleMetadata[moduleObject.moduleType];
 
     function removeMe() {
         removeCallback(moduleObject);
+    }
+
+    function upMe() {
+        displaceCallback(moduleObject, -1);
+    }
+
+    function downMe() {
+        displaceCallback(moduleObject, 1);
     }
 
     $: styleVars = metadata != undefined ? {
@@ -39,8 +51,18 @@
         <div class="module-title{closeable ? ' closeable' : ' '}">
             <h3>{(metadata ?? {}).name}</h3>
             {#if closeable}
-                <div class="close" on:click={removeMe} on:keydown={removeMe}>
-                    <p></p>
+                <div class="titlebuttons-container">
+                    <div class="titlebutton titlebutton-up{!showUp ? ' titlebutton-disabled' : ''}"
+                      on:click={upMe} on:keydown={upMe}>
+                        <p></p>
+                    </div>
+                    <div class="titlebutton titlebutton-down{!showDown ? ' titlebutton-disabled' : ''}"
+                      on:click={downMe} on:keydown={downMe}>
+                        <p></p>
+                    </div>
+                    <div class="titlebutton titlebutton-close" on:click={removeMe} on:keydown={removeMe}>
+                        <p></p>
+                    </div>
                 </div>
             {/if}
         </div>
@@ -72,7 +94,11 @@
     .module-title {
         border-top-left-radius: 4px;
     }
-    .close {
+    .titlebuttons-container {
+        display: flex;
+    }
+    .titlebutton {
+        user-select: none;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
@@ -80,8 +106,23 @@
         width: 28px;
         height: 28px;
     }
-    .close:hover {
+    .titlebutton-disabled > p {
+        opacity: 0;
+    }
+    .titlebutton-disabled {
+        pointer-events: none;
+    }
+    .titlebutton:not(.titlebutton-disabled):hover {
         background-color: #FFFFFF22;
+    }
+    .titlebutton-close {
+        border-top-right-radius: 4px;
+    }
+    .titlebutton-close > p {
+        transform: translate(-1px, 0px);
+    }
+    .titlebutton-up > p,.titlebutton-down > p {
+        transform: translate(-3px, -2px);
     }
     ::selection {
         color: white;
@@ -101,8 +142,5 @@
         border-bottom-left-radius: var(--bottom-desc-radius);
         padding: 5px;
         background-color: var(--desc-color);
-    }
-    .close {
-        user-select: none;
     }
 </style>
