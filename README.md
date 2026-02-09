@@ -1,6 +1,8 @@
 # text format wizard
 
-*this project is under construction (feels like it always will be), but feel free to use at [quasar.name](https://quasar.name/text-format-wizard)*
+![liccap2](https://github.com/user-attachments/assets/90fd4055-bedb-4537-afe8-432c56d6c46f)
+
+*this project is under construction (feels like it always will be), but feel free to use at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard)*
 
 ## what this
 
@@ -15,7 +17,7 @@ this is not a replacement for cyberchef
 ## try now
 
 it can be found at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard/)<br>
-if it's not working, it's because my server crashed probably<br>
+if it's not working, it's because my server crashed somehow<br>
 you can try cloning, running `npm i`, and then `npm run dev` and going to `http://localhost:5173` instead
 
 ## cool packages that i used
