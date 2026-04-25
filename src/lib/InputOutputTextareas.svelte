@@ -10,17 +10,41 @@
         $lastInputText = inputText;
     }
 
-    try {
-        let decodedFragment = JSON.parse(atob(window.location.hash.slice(1)));
-        if (!Array.isArray(decodedFragment)) {
-            if (typeof decodedFragment.input === "string") {
-                inputText = decodedFragment.input;
-                setTimeout(() => {
-                    inputText = decodedFragment.input;
-                }, 30);
+    // probably a better way to do this in svelte but im tired and its 3am
+    (async () => {
+        if (window.location.hash.length != 0) {
+            try {
+                let atobed = atob(window.location.hash.slice(1));
+                let bytes = new Uint8Array(Array.from(atobed).map(c => c.charCodeAt(0)));
+                let blob = new Blob([bytes], { type: "application/octet-stream" });
+                let decompressedStream = blob.stream().pipeThrough(new DecompressionStream("deflate-raw"));
+                let decompressed = await (await new Response(decompressedStream).blob()).text();
+                let decodedFragment = JSON.parse(decompressed);
+                if (!Array.isArray(decodedFragment)) {
+                    if (typeof decodedFragment.input === "string") {
+                        inputText = decodedFragment.input;
+                        setTimeout(() => {
+                            inputText = decodedFragment.input;
+                        }, 30);
+                    }
+                }
+            } catch {
+                try {
+                    let decodedFragment = JSON.parse(atob(window.location.hash.slice(1)));
+                    if (!Array.isArray(decodedFragment)) {
+                        if (typeof decodedFragment.input === "string") {
+                            inputText = decodedFragment.input;
+                            setTimeout(() => {
+                                inputText = decodedFragment.input;
+                            }, 30);
+                        }
+                    }
+                } catch {
+                    alert("Failed to decode URL hash");
+                }
             }
         }
-    } catch {}
+    })();
 
     $: outputText = calculate(inputText, undefined);
 

@@ -53,7 +53,7 @@
         document.body.setAttribute("theme", themes[$colorTheme].name);
     }
 
-    function exportURL() {
+    async function exportURL() {
         let toCopy = {}
         if ($recipeModules.length) {
             toCopy.recipe = $recipeModules;
@@ -62,7 +62,18 @@
             toCopy.input = $lastInputText;
         }
         if (Object.keys(toCopy).length) {
-            window.location.hash = btoa(JSON.stringify(toCopy));
+            let stringified = JSON.stringify(toCopy);
+            let hashText = '';
+            try {
+                let jsonBlob = new Blob([stringified], { type: "application/json" })
+                let compressedStream = jsonBlob.stream().pipeThrough(new CompressionStream("deflate-raw"));
+                let compressedArrayBuffer = await new Response(compressedStream).arrayBuffer();
+                let compressedBytes = new Uint8Array(compressedArrayBuffer);
+                hashText = btoa(Array.from(compressedBytes).map(byte => String.fromCharCode(byte)).join(''));
+            } catch {
+                hashText = btoa(stringified);
+            }
+            window.location.hash = hashText;
         } else {
             window.location.hash = '';
         }
