@@ -4,6 +4,8 @@
 
 *this project is under construction (feels like it always will be), but feel free to use at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard)*
 
+**IMPORTANT: NO SLOPPING POLICY.** i do not accept pull requests that used agentic slopping.
+
 ## what this
 
 text format issues begone!
@@ -34,21 +36,14 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 when i think of this project i think of imagemagick (the logo of it) but text formatting edition
 
 ## todo:
-- custom modules w/ github oauth integration
-- save recipe in localstorage
+- save custom modules to a remote server
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - similarly to above, bundle necessary functions when custom JS
 - better type checking because this uses typescript
 - create more docs (not fun)
-- custom menu for clear all modules are you sure
-- be able to drag around the stuff
 - ability to pause the thing and have a run button to do it manually
 - unit tests ughhhhghhhh dont want to do it (boring)
-- change url fragment linking to work with other things like settings page, input text, etc
 - changelog for users to know what changes
 
 ## module ideas:
 - CRT module
-- octal encoding
-- ascii caesar shift
-- substitution cipher
