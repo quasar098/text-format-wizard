@@ -25,5 +25,10 @@ export default defineConfig({
   build:   {
     outDir: '/home/ubuntu/Desktop/quasar.name/public/tfw'
   },
+  esbuild: {
+    supported: {
+      'top-level-await': true //browsers can handle top-level-await features
+    },
+  },
   base: ''
 })
