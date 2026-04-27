@@ -85,22 +85,45 @@ export const moduleMetadata = {
                 return (text) => {
                     try {
                         if (method == "decode") {
-                            let cleansed = text.replaceAll(/[^\d]+/g, " ");
-                            let total = "";
-                            cleansed = cleansed.replaceAll(/\d{1,3}/g, (_) => {
-                                total += String.fromCharCode(parseInt(_));
-                                return "";
-                            })
-                            return total;
-                        } else {
-                            return (
-                                Array
-                                .from(text)
-                                .reduce((acc, char) => acc.concat(char.charCodeAt().toString()), [])
-                                .join(' ')
-                            );
+                            if (encoding == "latin1") {
+                                let cleansed = text.replaceAll(/[^\d]+/g, " ");
+                                let total = "";
+                                cleansed = cleansed.replaceAll(/\d{1,3}/g, (_) => {
+                                    total += String.fromCharCode(parseInt(_));
+                                    return "";
+                                })
+                                return total;
+                            } else if (encoding == "unicode code points") {
+                                let cleansed = text.replaceAll(/[^\d]+/g, " ");
+                                let total = "";
+                                cleansed = cleansed.replaceAll(/\d{1,6}/g, (_) => {
+                                    total += String.fromCharCode(parseInt(_));
+                                    return "";
+                                })
+                                return total;
+                            } else {  // utf8
+                                let cleansed = text.replaceAll(/[^\d]+/g, " ");
+                                let matches = cleansed.match(/\d{1,3}/g) ?? [];
+                                let total = new Uint8Array(matches.length);
+                                for (let i = 0; i < matches.length; i++) {
+                                    total[i] = parseInt(matches[i], 10);
+                                }
+                                return new TextDecoder().decode(total);
+                            }
+                        } else {  // encode
+                            if (encoding == "unicode code points" || encoding == "latin1") {
+                                return (
+                                    Array
+                                    .from(text)
+                                    .reduce((acc, char) => acc.concat(char.charCodeAt(0).toString()), [])
+                                    .join(' ')
+                                );
+                            } else {
+                                return Array.from(new TextEncoder().encode(text)).map(c => c.toString()).join(" ");
+                            }
                         }
                     } catch (e) {
+                        console.log(e);
                         showWarning("Evaluation error at Decimal module");
                         return text;
                     }
@@ -220,17 +243,21 @@ export const moduleMetadata = {
                                 return total;
                             } else {  // utf8
                                 let cleansed = text.replaceAll(/0o/g, "").replaceAll(/[^\d]+/g, " ");
-                                let matches = cleansed.match(/(?:0)?\d{1,3}/g);
+                                let matches = cleansed.match(/(?:0)?\d{1,3}/g) ?? [];
                                 let total = new Uint8Array(matches.length);
-                                for (let i = 0; i < matches; i++) {
-                                    total[i] = parseInt(_, 8);
+                                for (let i = 0; i < matches.length; i++) {
+                                    total[i] = parseInt(matches[i], 8);
                                 }
                                 return new TextDecoder().decode(total);
                             }
-                        } else {
-                            return Array.from(text).map(c => c.charCodeAt(0).toString(8)).join(' ');
+                        } else {  // encode
+                            if (encoding == "latin1") {
+                                return Array.from(text).map(c => c.charCodeAt(0).toString(8)).join(' ');
+                            } else {
+                                return Array.from(new TextEncoder().encode(text)).map(c => c.toString(8)).join(' ');
+                            }
                         }
-                    } catch {
+                    } catch (e) {
                         showWarning(`Evaluation error at Octal module`);
                         return text;
                     }

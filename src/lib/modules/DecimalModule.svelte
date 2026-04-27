@@ -13,7 +13,7 @@
 
 <div class="side-by-side">
     <Dropdown bind:value={info.method} options={["encode", "decode"]}/>
-    <Dropdown bind:value={info.encoding} options={["utf8", "latin1"]}/>
+    <Dropdown bind:value={info.encoding} options={["utf8", "unicode code points", "latin1"]}/>
 </div>
 
 <style>
