@@ -6,6 +6,20 @@
     export let info = {};
 
     info.method = info.method ?? "decode";
+    info.encoding = info.encoding ?? "utf8";
 </script>
 
-<Dropdown bind:value={info.method} options={["encode", "decode"]}/>
+<div class="side-by-side">
+    <Dropdown bind:value={info.method} options={["encode", "decode"]}/>
+    <Dropdown bind:value={info.encoding} options={["utf8", "latin1"]}/>
+</div>
+
+<style>
+    div.side-by-side {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+        gap: 5px;
+    }
+</style>

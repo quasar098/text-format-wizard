@@ -11,33 +11,55 @@ export const moduleMetadata = {
         lore: "Convert to and from 0s and 1s",
         description: "Map 8-digit binary integers to UTF-8. Works in reverse too",
         processMaker: (args) => {
-            let { method } = args;
+            let { method, encoding } = args;
             method = method ?? "decode";
+            encoding = encoding ?? "utf8";
             try {
                 return (text) => {
                     try {
                         if (method == "decode") {
-                            let cleansed = text.replaceAll(/[^01]+/g, "");
-                            if (cleansed.length % 8) {
-                                showWarning("The # of 0s and 1s is not divisible by eight");
-                                return text;
+                            if (encoding == "latin1") {
+                                let cleansed = text.replaceAll(/[^01]+/g, "");
+                                if (cleansed.length % 8) {
+                                    showWarning("The # of 0s and 1s is not divisible by eight");
+                                    return text;
+                                }
+                                let total = "";
+                                while (cleansed.length) {
+                                    cleansed = cleansed.replaceAll(/.{8}$/g, (_) => {
+                                        total = String.fromCharCode(parseInt(_, 2)) + total;
+                                        return "";
+                                    })
+                                }
+                                return total;
+                            } else {  // utf8
+                                let cleansed = text.replaceAll(/[^01]+/g, "");
+                                if (cleansed.length % 8) {
+                                    showWarning("The # of 0s and 1s is not divisible by eight");
+                                    return text;
+                                }
+                                let total = new Uint8Array(cleansed.length/8);
+                                for (let i = 0; i < cleansed.length/8; i++) {
+                                    total[i] = parseInt(cleansed.substring(i*8, i*8+8), 2);
+                                }
+                                return new TextDecoder().decode(total);
                             }
-                            let total = "";
-                            while (cleansed.length) {
-                                cleansed = cleansed.replaceAll(/.{8}$/g, (_) => {
-                                    total = String.fromCharCode(parseInt(_, 2)) + total;
-                                    return "";
-                                })
-                            }
-                            return total;
                         } else {
-                            return (
-                                Array
-                                .from(text)
-                                .reduce((acc, char) => acc.concat(char.charCodeAt().toString(2)), [])
-                                .map(bin => '0'.repeat(8 - bin.length) + bin)
-                                .join(' ')
-                            );
+                            if (encoding == "utf8") {
+                                return (
+                                    Array.from(new TextEncoder().encode(text))
+                                    .reduce((acc, char) => acc.concat(char.toString(2)), [])
+                                    .map(bin => '0'.repeat(8 - bin.length) + bin)
+                                    .join(' ')
+                                );
+                            } else {  // latin1
+                                return (
+                                    Array.from(text)
+                                    .reduce((acc, char) => acc.concat(char.charCodeAt().toString(2)), [])
+                                    .map(bin => '0'.repeat(8 - bin.length) + bin)
+                                    .join(' ')
+                                );
+                            }
                         }
                     } catch (e) {
                         showWarning("Evaluation error at Binary module");
@@ -56,8 +78,9 @@ export const moduleMetadata = {
         lore: "Convert to and from decimal",
         description: "UTF-8 to decimal converter. Works in reverse too",
         processMaker: (args) => {
-            let { method } = args;
+            let { method, encoding } = args;
             method = method ?? "decode";
+            encoding = encoding ?? "utf8";
             try {
                 return (text) => {
                     try {
@@ -91,34 +114,73 @@ export const moduleMetadata = {
     [ModuleType.Hex]: {
         name: "Hexadecimal",
         color: moduleColor.encoding,
-        lore: "Convert ASCII to hexadecimal and vice versa",
-        description: "Convert ASCII to hexadecimal and other way too",
+        lore: "Convert text to hexadecimal and vice versa",
+        description: "Convert text to hexadecimal and vice versa",
         processMaker: (args) => {
-            let { method } = args;
+            let { method, encoding } = args;
             method = method ?? "decode";
+            encoding = encoding ?? "utf8";
             try {
                 return (text) => {
                     try {
-                        if (method == "decode") {
-                            text = text.replace(/^0x/, '');
-                            let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
-                            if (cleansed.length % 2) {
-                                showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
-                                return text;
+                        if (method.startsWith("decode")) {
+                            if (encoding == "utf8") {
+                                text = text.replaceAll(/0x/gi, '');
+                                let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
+                                if (cleansed.length % 2) {
+                                    showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
+                                    return text;
+                                }
+                                let lookupTable = {};
+                                for (let i = 0; i < 256; i++) {
+                                    lookupTable[i.toString(16).padStart(2, '0')] = i;
+                                }
+                                let total = new Uint8Array(cleansed.length/2);
+                                for (let i = 0; i < cleansed.length/2; i++) {
+                                    let hexchars = cleansed[i*2] + cleansed[i*2+1];
+                                    total[i] = lookupTable[hexchars];
+                                }
+                                return new TextDecoder().decode(total);
+                            } else {
+                                // js devs are on crack cocaine so latin1
+                                // is windows1252 larping as latin1 🤩
+                                // therefore we can't use TextDecoder 🤩🤩🤩
+                                // it's truly amazing
+                                text = text.replaceAll(/0x/gi, '');
+                                let cleansed = text.replaceAll(/[^0123456789abcdef]/gi, "");
+                                if (cleansed.length % 2) {
+                                    showWarning("Hexadecimal module takes groups of 2 hex digits at a time");
+                                    return text;
+                                }
+                                let lookupTable = {};
+                                for (let i = 0; i < 256; i++) {
+                                    lookupTable[i.toString(16).padStart(2, '0')] = i;
+                                }
+                                let total = new Array(cleansed.length/2);
+                                for (let i = 0; i < cleansed.length/2; i++) {
+                                    let hexchars = cleansed[i*2] + cleansed[i*2+1];
+                                    total[i] = lookupTable[hexchars];
+                                }
+                                return total.map(c => String.fromCharCode(c)).join("");
                             }
-                            let total = "";
-                            while (cleansed.length) {
-                                cleansed = cleansed.replaceAll(/.{2}$/g, (_) => {
-                                    total = String.fromCharCode(parseInt(_, 16)) + total;
-                                    return "";
-                                })
-                            }
-                            return total;
                         } else {
-                            return Array.from(text).map(c =>
-                                c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16).padStart(2, '0') :
-                                encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
-                              ).join('');
+                            if (encoding == "latin1") {
+                                let newText = Array.from(text).map(c =>
+                                    c.charCodeAt(0) < 256 ? c.charCodeAt(0).toString(16).padStart(2, '0') :
+                                    "??"
+                                ).join('');
+                                if (newText.includes("?")) {
+                                    showWarning(`Invalid text for latin1 encoding`);
+                                    return text;
+                                }
+                                return newText;
+                            }
+                            else {
+                                return Array.from(text).map(c =>
+                                    c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16).padStart(2, '0') :
+                                    encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
+                                ).join('');
+                            }
                         }
                     } catch {
                         showWarning(`Evaluation error at Hexadecimal module`);
@@ -137,19 +199,34 @@ export const moduleMetadata = {
         lore: "Convert ASCII to octal and back too",
         description: "Convert ASCII to octal and other way too",
         processMaker: (args) => {
-            let { method } = args;
+            let { method, encoding } = args;
             method = method ?? "decode";
+            encoding = encoding ?? "utf8";
             try {
                 return (text) => {
                     try {
                         if (method == "decode") {
-                            let cleansed = text.replaceAll(/0o/g, "").replaceAll(/[^\d]+/g, " ");
-                            let total = "";
-                            cleansed = cleansed.replaceAll(/(?:0)?\d{1,3}/g, (_) => {
-                                total += String.fromCharCode(parseInt(_, 8));
-                                return "";
-                            })
-                            return total;
+                            if (encoding == "latin1") {
+                                let cleansed = text.replaceAll(/0o/g, "").replaceAll(/[^\d]+/g, " ");
+                                let total = "";
+                                cleansed = cleansed.replaceAll(/(?:0)?\d{1,3}/g, (_) => {
+                                    total += parseInt(_, 8) < 256 ? String.fromCharCode(parseInt(_, 8)) : "?";
+                                    return "";
+                                })
+                                if (total.includes("?")) {
+                                    showWarning(`Invalid text for latin1 encoding`);
+                                    return text;
+                                }
+                                return total;
+                            } else {  // utf8
+                                let cleansed = text.replaceAll(/0o/g, "").replaceAll(/[^\d]+/g, " ");
+                                let matches = cleansed.match(/(?:0)?\d{1,3}/g);
+                                let total = new Uint8Array(matches.length);
+                                for (let i = 0; i < matches; i++) {
+                                    total[i] = parseInt(_, 8);
+                                }
+                                return new TextDecoder().decode(total);
+                            }
                         } else {
                             return Array.from(text).map(c => c.charCodeAt(0).toString(8)).join(' ');
                         }
@@ -212,7 +289,6 @@ export const moduleMetadata = {
                     }
                     return newText;
                 } catch (e) {
-                    console.log(e);
                     showWarning("XOR Hex error!");
                     return text;
                 }
@@ -290,17 +366,26 @@ export const moduleMetadata = {
     [ModuleType.Base64]: {
         name: "Base 64 Encryption",
         color: moduleColor.encoding,
-        lore: "Encrypt or decrypt base 64",
-        description: "Encrypt or decrypt base 64",
+        lore: "Encode or decode base 64 (utf8 only)",
+        description: "Encode or decode base 64 (utf8 only)",
         processMaker: (args) => {
             let { method } = args;
-            method = method ?? "encrypt";
+            method = method ?? "decode";
             return (text) => {
+                // backwards compatability;
+                if (method == "encrypt") {
+                    method = "encode";
+                }
+                if (method == "decrypt") {
+                    method = "decode";
+                }
                 try {
-                    if (method == "encrypt") {
-                        return btoa(text);
-                    } else if (method == "decrypt") {
-                        return atob(text);
+                    if (method == "encode") {
+                        let bytes = new TextEncoder().encode(text);
+                        return btoa(Array.from(bytes).map(c => String.fromCharCode(c)).join(""));
+                    } else if (method == "decode") {
+                        let bytes = new Uint8Array(Array.from(atob(text)).map(c => c.charCodeAt(0)));
+                        return new TextDecoder().decode(bytes);
                     } else {
                         return text;
                     }
@@ -337,7 +422,6 @@ export const moduleMetadata = {
                         return encodeURI(text);
                     }
                 } catch (e) {
-                    console.log(e);
                     showWarning("Error with the URL Encode Module");
                     return text;
                 }
@@ -359,7 +443,6 @@ export const moduleMetadata = {
                         return unescape(data);
                     }
                 } catch (e) {
-                    console.log(e)
                     showWarning("Error with the URL Decode Module")
                     return text;
                 }

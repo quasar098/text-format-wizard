@@ -1,20 +1,16 @@
 # text format wizard
 
-![liccap2](https://github.com/user-attachments/assets/90fd4055-bedb-4537-afe8-432c56d6c46f)
+![gif of text format wizard usage](https://github.com/user-attachments/assets/90fd4055-bedb-4537-afe8-432c56d6c46f)
 
-*this project is under construction (feels like it always will be), but feel free to use at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard)*
+available for use at [quasar.name/text-format-wizard](https://quasar.name/text-format-wizard)
 
-**IMPORTANT: NO SLOPPING POLICY.** i do not accept pull requests that used agentic slopping.
+**IMPORTANT: NO SLOPPING POLICY.** i do not accept pull requests that used ai slopping.
 
 ## what this
 
 text format issues begone!
 gone are the days of ad-ridden poor-quality online tools! now you can do it in one place and in a more powerful manner.
-
-## what about cyberchef?
-
-i had no idea that cyberchef existed before making this<br>
-this is not a replacement for cyberchef
+also much faster to develop than writing python scripts for text manipulation.
 
 ## try now
 
@@ -22,7 +18,7 @@ it can be found at [quasar.name/text-format-wizard](https://quasar.name/text-for
 if it's not working, it's because my server crashed somehow<br>
 you can try cloning, running `npm i`, and then `npm run dev` and going to `http://localhost:5173` instead
 
-## cool packages that i used
+## noteworthy dependencies and other
 
 - uses [svelte](https://svelte.dev/), a front-end component framework
 - uses [svrollbar](https://github.com/daylilyfield/svrollbar), a scrollbar component for svelte
@@ -36,7 +32,7 @@ you can try cloning, running `npm i`, and then `npm run dev` and going to `http:
 when i think of this project i think of imagemagick (the logo of it) but text formatting edition
 
 ## todo:
-- save custom modules to a remote server
+- save custom modules to a user-specified remote server
 - fix calculate being not defined in custom JS function (by nonobvious method)
 - similarly to above, bundle necessary functions when custom JS
 - better type checking because this uses typescript
@@ -44,6 +40,3 @@ when i think of this project i think of imagemagick (the logo of it) but text fo
 - ability to pause the thing and have a run button to do it manually
 - unit tests ughhhhghhhh dont want to do it (boring)
 - changelog for users to know what changes
-
-## module ideas:
-- CRT module

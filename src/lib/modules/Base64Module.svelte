@@ -5,7 +5,19 @@
 
     export let info = {};
 
-    info.method = info.method ?? "decrypt";
+    info.method = info.method ?? "decode";
 </script>
 
-<Dropdown bind:value={info.method} options={["encrypt", "decrypt"]}/>
+<div class="side-by-side">
+    <Dropdown bind:value={info.method} options={["encode", "decode"]}/>
+</div>
+
+<style>
+    div.side-by-side {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+        gap: 5px;
+    }
+</style>

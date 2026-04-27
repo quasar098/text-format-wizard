@@ -65,7 +65,12 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        z-index: 10;
+    }
+    .dropdown-option:first-child {
+        border-radius: 4px 4px 0px 0px;
+    }
+    .dropdown-option:last-child {
+        border-radius: 0px 0px 4px 4px;
     }
     .dropdown-title {
         width: calc(100% - 50px);
@@ -87,6 +92,7 @@
         position: absolute;
         background-color: #EEE;
         border-radius: 4px;
+        z-index: 2;
         box-shadow: inset 0px 0px 0.4rem rgba(0, 0, 0, 0.2);
     }
     .dropdown-option {
