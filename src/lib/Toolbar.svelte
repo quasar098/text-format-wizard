@@ -93,6 +93,10 @@
         return false;
     }
 
+    function openGithub() {
+        window.open("https://github.com/quasar098/text-format-wizard", '_blank').focus();
+    }
+
     applyCurrentTheme();
 </script>
 
@@ -120,8 +124,10 @@
     <Tooltipable text="Toggle Custom JS Output (janky for me but YMMV)" icon="Info">
         <h4 class="icon code" on:click={changeJs} on:keydown={changeJs}> <div class="l1">󰘦</div> </h4>
     </Tooltipable>
+    <Tooltipable text="View Source Code" icon="Info">
+        <h4 class="icon code" on:click={openGithub}> <div class="l1"></div> </h4>
+    </Tooltipable>
 </div>
-
 <style>
     .toolbar {
         width: 100%;
